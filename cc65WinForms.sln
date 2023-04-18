@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65WinForms", "cc65WinForms\cc65WinForms.csproj", "{5118A877-5D27-48E1-AB82-25089EC5E4DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65Wrapper", "cc65Wrapper\cc65Wrapper.csproj", "{0437D8F5-CA2A-4178-8F91-A04F43F060DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5118A877-5D27-48E1-AB82-25089EC5E4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5118A877-5D27-48E1-AB82-25089EC5E4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5118A877-5D27-48E1-AB82-25089EC5E4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5118A877-5D27-48E1-AB82-25089EC5E4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0437D8F5-CA2A-4178-8F91-A04F43F060DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0437D8F5-CA2A-4178-8F91-A04F43F060DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0437D8F5-CA2A-4178-8F91-A04F43F060DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0437D8F5-CA2A-4178-8F91-A04F43F060DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC92B890-E462-4829-BF0E-6DC325119BBF}
+	EndGlobalSection
+EndGlobal

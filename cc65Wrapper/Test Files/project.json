@@ -1,0 +1,15 @@
+{
+  "ProjectName": "Inflate",
+  "WorkingDirectory": "D:\\Commodore Stuff\\PET Stuff\\csource\\inflate",
+  "TargetPlatform": "pet",
+  "InputFiles": [
+    "inflate.c"
+  ],
+  "HeaderFiles": [
+    "screen.h"
+  ],
+  "OutputFile": "inflate",
+  "OptimiseCode": true,
+  "Version": 1000,
+  "FullOutputFilePath": "D:\\Commodore Stuff\\PET Stuff\\csource\\inflate\\inflate"
+}
