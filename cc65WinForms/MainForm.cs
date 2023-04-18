@@ -420,7 +420,16 @@ namespace cc65WinForms
 
         private void cbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tmp = cbTargetPlatform.SelectedItem as string;
+            ChangeSelectedPlatform();
+        }
+
+        private void ChangeSelectedPlatform()
+        {
+            var selectedPlatform = cbTargetPlatform.SelectedItem as string;
+
+            // Only change project target platform if a project is loaded !
+            if (Project != null)
+                Project.TargetPlatform = selectedPlatform.ToLower();
         }
 
         private async void btBuildProject_Click(object sender, EventArgs e)
