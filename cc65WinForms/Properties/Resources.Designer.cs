@@ -73,6 +73,16 @@ namespace cc65WinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _15411 {
+            get {
+                object obj = ResourceManager.GetObject("15411", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap btInvisibleChars_Image {
             get {
                 object obj = ResourceManager.GetObject("btInvisibleChars.Image", resourceCulture);
@@ -136,6 +146,16 @@ namespace cc65WinForms.Properties {
         internal static System.Drawing.Bitmap Disk {
             get {
                 object obj = ResourceManager.GetObject("Disk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Disk1 {
+            get {
+                object obj = ResourceManager.GetObject("Disk1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -3,14 +3,9 @@ using cc65Wrapper.Enumerations;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +13,15 @@ namespace cc65WinForms
 {
     public partial class MainForm : Form
     {
+
+        #region Constants
+
+        private const string HEADER_FILES = "Header Files";
+        private const string SOURCE_FILES = "Source Files";
+        private const string NO_PROJECT_LOADED = "No Project Loaded";
+
+        #endregion
+
         #region Fields and properties
 
         string[] keywords = { "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "add", "alias", "ascending", "descending", "dynamic", "from", "get", "global", "group", "into", "join", "let", "orderby", "partial", "remove", "select", "set", "value", "var", "where", "yield" };
@@ -69,6 +73,9 @@ namespace cc65WinForms
             filepath = Path.Combine(filepath, "emulators.json");
             var json = File.ReadAllText(filepath);
             emulators = Cc65Emulators.FromJson(json);
+
+            // Initialise the tree view ...
+            PopulateTreeView();
         }
 
         private void NewToolStripButton_Click(object sender, EventArgs e)
@@ -101,7 +108,7 @@ namespace cc65WinForms
             var tb = (tab.Controls[0] as FastColoredTextBox);
             if (tab.Tag == null)
             {
-                if (sfdMain.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                if (sfdMain.ShowDialog() != DialogResult.OK)
                     return false;
                 tab.Title = Path.GetFileName(sfdMain.FileName);
                 tab.Tag = sfdMain.FileName;
@@ -303,7 +310,7 @@ namespace cc65WinForms
             }
             catch (Exception ex)
             {
-                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Retry)
+                if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
                     CreateTab(fileName);
             }
         }
@@ -315,7 +322,7 @@ namespace cc65WinForms
 
         private void OpenFile()
         {
-            if (ofdMain.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (ofdMain.ShowDialog() == DialogResult.OK)
                 CreateTab(ofdMain.FileName);
         }
 
@@ -365,7 +372,8 @@ namespace cc65WinForms
                     //undoStripButton.Enabled = undoToolStripMenuItem.Enabled = tb.UndoEnabled;
                     //redoStripButton.Enabled = redoToolStripMenuItem.Enabled = tb.RedoEnabled;
                     saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = tb.IsChanged;
-                    saveAsToolStripMenuItem.Enabled = true;                    
+                    closeFileToolStripMenuItem.Enabled = true;
+                    saveAsToolStripMenuItem.Enabled = true;
                     //pasteToolStripButton.Enabled = pasteToolStripMenuItem.Enabled = true;
                     //cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     //copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = !tb.Selection.IsEmpty;
@@ -375,6 +383,7 @@ namespace cc65WinForms
                 {
                     saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = false;
                     saveAsToolStripMenuItem.Enabled = false;
+                    closeFileToolStripMenuItem.Enabled = false;
                     //cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     //copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = false;
                     //pasteToolStripButton.Enabled = pasteToolStripMenuItem.Enabled = false;
@@ -384,7 +393,7 @@ namespace cc65WinForms
                     //dgvObjectExplorer.RowCount = 0;
                 }
 
-                saveProjectToolStripMenuItem.Enabled = this.isProjectLoaded;
+                saveProjectToolStripMenuItem.Enabled = saveProjectToolStripMenuItem.Enabled = closeProjectToolStripMenuItem.Enabled = this.Project != null;
             }
             catch (Exception ex)
             {
@@ -546,6 +555,20 @@ namespace cc65WinForms
         {
             ClearTreeView();
 
+            // Show empty tree view if no project loaded ...
+            if (Project == null)
+            {
+                var emptyNode = new TreeNode
+                {
+                    Name = NO_PROJECT_LOADED,
+                    Text = NO_PROJECT_LOADED,
+                    Tag = string.Empty
+                };
+                tvProjectFiles.Nodes.Add(emptyNode);
+
+                return;
+            }
+
             // Add root node ...
             var rootNode = new TreeNode
             {
@@ -558,8 +581,8 @@ namespace cc65WinForms
             // Add 'Header Files' node ...
             var hdrFiles = new TreeNode
             {
-                Name = "Header Files",
-                Text = "Header Files",
+                Name = HEADER_FILES,
+                Text = HEADER_FILES,
                 Tag = string.Empty,
                 // IsExpanded = true
             };
@@ -568,7 +591,7 @@ namespace cc65WinForms
             // Add 'Source Files' node ...
             var srcFiles = new TreeNode
             {
-                Name = "Source Files",
+                Name = SOURCE_FILES,
                 Text = "Source Files",
                 Tag = string.Empty,
                 // IsExpanded = true
@@ -623,12 +646,36 @@ namespace cc65WinForms
                 }
 
                 // Nope, so open a new tab for tab
-                if (matchingItem == null) 
+                if (matchingItem == null)
                 {
                     CreateTab(e.Node.Tag as string);
                 }
+
+                return;
             }
-                
+
+            var title = e.Node.Text;
+
+            switch (title)
+            {
+                case HEADER_FILES:
+                    break;
+
+                case SOURCE_FILES:
+                    break;
+            }
+        }
+
+        private void closeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseFile();
+        }
+
+        private void CloseFile()
+        {
+            SaveFile();
+
+            tsFiles.RemoveTab(tsFiles.SelectedItem);
         }
     }
 }
