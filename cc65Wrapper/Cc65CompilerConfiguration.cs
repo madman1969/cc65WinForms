@@ -40,7 +40,7 @@ namespace cc65Wrapper
         public Cc65CompilerConfiguration()
         {
             // Try to read env vars ...
-            var envVars = Environment.GetEnvironmentVariables();
+            System.Collections.IDictionary envVars = Environment.GetEnvironmentVariables();
 
             // Use env var settings, if present ...
             cc65Home = envVars.Contains(CC65_HOME) ? envVars[CC65_HOME].ToString() : string.Empty;
@@ -68,11 +68,11 @@ namespace cc65Wrapper
                 Environment.SetEnvironmentVariable(LD65_CFG, ld65Cfg);
                 Environment.SetEnvironmentVariable(LD65_LIB, ld65Lib);
                 Environment.SetEnvironmentVariable(MAKE_HOME, makeHome);
-                
+
                 // If got here then must be successful ...
                 result = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Oops ...
             }

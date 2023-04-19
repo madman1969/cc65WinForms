@@ -57,7 +57,7 @@ namespace cc65Wrapper
             c64Path = string.Empty;
             c128Path = string.Empty;
             petPath = string.Empty;
-            vic20Path = string.Empty;   
+            vic20Path = string.Empty;
             plus4Path = string.Empty;
         }
 
@@ -103,7 +103,7 @@ namespace cc65Wrapper
                 Directory.SetCurrentDirectory(project.WorkingDirectory);
 
                 // Build an arguments list from the project settings to pass to CL65 ...
-                var argumentList = BuildArgumentsList(project);
+                List<string> argumentList = BuildArgumentsList(project);
 
                 var selectedEmulator = GetSelectedEmulator(project, emulators);
 

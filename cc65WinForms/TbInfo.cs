@@ -7,4 +7,3 @@ namespace cc65WinForms
         public AutocompleteMenu popupMenu;
     }
 }
-  

@@ -46,7 +46,7 @@ namespace cc65Wrapper
                 Directory.SetCurrentDirectory(project.WorkingDirectory);
 
                 // Build an arguments list from the project settings to pass to CL65 ...
-                var argumentList = BuildArgumentsList(project);
+                List<string> argumentList = BuildArgumentsList(project);
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(CL65)
@@ -82,7 +82,7 @@ namespace cc65Wrapper
             var errorsList = new List<string>(splitErrors);
             var dedupedList = errorsList.Distinct().ToList();
 
-            return dedupedList; 
+            return dedupedList;
         }
 
         #region Private Methods

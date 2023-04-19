@@ -49,7 +49,10 @@ namespace cc65WinForms
             get
             {
                 if (tsFiles.SelectedItem == null)
+                {
                     return null;
+                }
+
                 return (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
             }
 
@@ -85,9 +88,9 @@ namespace cc65WinForms
 
         void Tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            FastColoredTextBox tb = (sender as FastColoredTextBox);
+            var tb = (sender as FastColoredTextBox);
             //rebuild object explorer
-            string text = (sender as FastColoredTextBox).Text;
+            var text = (sender as FastColoredTextBox).Text;
             //ThreadPool.QueueUserWorkItem(
             //    (o) => ReBuildObjectExplorer(text)
             //);
@@ -100,7 +103,9 @@ namespace cc65WinForms
         {
             range.ClearStyle(invisibleCharsStyle);
             if (btInvisibleChars.Checked)
+            {
                 range.SetStyle(invisibleCharsStyle, @".$|.\r\n|\s");
+            }
         }
 
         private bool Save(FATabStripItem tab)
@@ -109,7 +114,10 @@ namespace cc65WinForms
             if (tab.Tag == null)
             {
                 if (sfdMain.ShowDialog() != DialogResult.OK)
+                {
                     return false;
+                }
+
                 tab.Title = Path.GetFileName(sfdMain.FileName);
                 tab.Tag = sfdMain.FileName;
             }
@@ -122,9 +130,13 @@ namespace cc65WinForms
             catch (Exception ex)
             {
                 if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                {
                     return Save(tab);
+                }
                 else
+                {
                     return false;
+                }
             }
 
             tb.Invalidate();
@@ -148,18 +160,26 @@ namespace cc65WinForms
             //highlight same words
             tb.VisibleRange.ClearStyle(sameWordsStyle);
             if (!tb.Selection.IsEmpty)
+            {
                 return;//user selected diapason
+            }
             //get fragment around caret
-            var fragment = tb.Selection.GetFragment(@"\w");
-            string text = fragment.Text;
+            Range fragment = tb.Selection.GetFragment(@"\w");
+            var text = fragment.Text;
             if (text.Length == 0)
+            {
                 return;
+            }
             //highlight same words
             Range[] ranges = tb.VisibleRange.GetRanges("\\b" + text + "\\b").ToArray();
 
             if (ranges.Length > 1)
-                foreach (var r in ranges)
+            {
+                foreach (Range r in ranges)
+                {
                     r.SetStyle(sameWordsStyle);
+                }
+            }
         }
 
         void tb_KeyDown(object sender, KeyEventArgs e)
@@ -187,19 +207,24 @@ namespace cc65WinForms
         void tb_MouseMove(object sender, MouseEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
-            var place = tb.PointToPlace(e.Location);
+            Place place = tb.PointToPlace(e.Location);
             var r = new Range(tb, place, place);
 
-            string text = r.GetFragment("[a-zA-Z]").Text;
+            var text = r.GetFragment("[a-zA-Z]").Text;
             lbWordUnderMouse.Text = text;
         }
 
         private void btInvisibleChars_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
+            {
                 HighlightInvisibleChars((tab.Controls[0] as FastColoredTextBox).Range);
+            }
+
             if (CurrentTB != null)
+            {
                 CurrentTB.Invalidate();
+            }
         }
 
         private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
@@ -208,19 +233,21 @@ namespace cc65WinForms
 
         private bool NavigateBackward()
         {
-            DateTime max = new DateTime();
-            int iLine = -1;
+            var max = new DateTime();
+            var iLine = -1;
             FastColoredTextBox tb = null;
-            for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+            for (var iTab = 0; iTab < tsFiles.Items.Count; iTab++)
             {
                 var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
-                for (int i = 0; i < t.LinesCount; i++)
+                for (var i = 0; i < t.LinesCount; i++)
+                {
                     if (t[i].LastVisit < lastNavigatedDateTime && t[i].LastVisit > max)
                     {
                         max = t[i].LastVisit;
                         iLine = i;
                         tb = t;
                     }
+                }
             }
             if (iLine >= 0)
             {
@@ -233,24 +260,28 @@ namespace cc65WinForms
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
 
         private bool NavigateForward()
         {
             DateTime min = DateTime.Now;
-            int iLine = -1;
+            var iLine = -1;
             FastColoredTextBox tb = null;
-            for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+            for (var iTab = 0; iTab < tsFiles.Items.Count; iTab++)
             {
                 var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
-                for (int i = 0; i < t.LinesCount; i++)
+                for (var i = 0; i < t.LinesCount; i++)
+                {
                     if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
                     {
                         min = t[i].LastVisit;
                         iLine = i;
                         tb = t;
                     }
+                }
             }
             if (iLine >= 0)
             {
@@ -263,7 +294,9 @@ namespace cc65WinForms
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
 
         private void CreateTab(string fileName)
@@ -285,7 +318,10 @@ namespace cc65WinForms
                     Tag = fileName
                 };
                 if (fileName != null)
+                {
                     tb.OpenFile(fileName);
+                }
+
                 tb.Tag = new TbInfo();
                 tsFiles.AddTab(tab);
                 tsFiles.SelectedItem = tab;
@@ -298,7 +334,10 @@ namespace cc65WinForms
                 tb.MouseMove += new MouseEventHandler(tb_MouseMove);
                 tb.ChangedLineColor = changedLineColor;
                 if (btHighlightCurrentLine.Checked)
+                {
                     tb.CurrentLineColor = currentLineColor;
+                }
+
                 tb.ShowFoldingLines = btShowFoldingLines.Checked;
                 tb.HighlightingRangeType = HighlightingRangeType.VisibleRange;
                 //create autocomplete popup menu
@@ -311,7 +350,9 @@ namespace cc65WinForms
             catch (Exception ex)
             {
                 if (MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                {
                     CreateTab(fileName);
+                }
             }
         }
 
@@ -323,7 +364,9 @@ namespace cc65WinForms
         private void OpenFile()
         {
             if (ofdMain.ShowDialog() == DialogResult.OK)
+            {
                 CreateTab(ofdMain.FileName);
+            }
         }
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
@@ -334,7 +377,9 @@ namespace cc65WinForms
         private void SaveFile()
         {
             if (tsFiles.SelectedItem != null)
+            {
                 Save(tsFiles.SelectedItem);
+            }
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -346,14 +391,16 @@ namespace cc65WinForms
         {
             if (tsFiles.SelectedItem != null)
             {
-                string oldFile = tsFiles.SelectedItem.Tag as string;
+                var oldFile = tsFiles.SelectedItem.Tag as string;
                 tsFiles.SelectedItem.Tag = null;
                 if (!Save(tsFiles.SelectedItem))
+                {
                     if (oldFile != null)
                     {
                         tsFiles.SelectedItem.Tag = oldFile;
                         tsFiles.SelectedItem.Title = Path.GetFileName(oldFile);
                     }
+                }
             }
         }
 
@@ -368,12 +415,12 @@ namespace cc65WinForms
             {
                 if (CurrentTB != null && tsFiles.Items.Count > 0)
                 {
-                    var tb = CurrentTB;
+                    FastColoredTextBox tb = CurrentTB;
                     //undoStripButton.Enabled = undoToolStripMenuItem.Enabled = tb.UndoEnabled;
                     //redoStripButton.Enabled = redoToolStripMenuItem.Enabled = tb.RedoEnabled;
                     saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = tb.IsChanged;
                     closeFileToolStripMenuItem.Enabled = true;
-                    saveAsToolStripMenuItem.Enabled = true;                    
+                    saveAsToolStripMenuItem.Enabled = true;
                     //pasteToolStripButton.Enabled = pasteToolStripMenuItem.Enabled = true;
                     //cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     //copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = !tb.Selection.IsEmpty;
@@ -412,20 +459,31 @@ namespace cc65WinForms
             foreach (FATabStripItem tab in tsFiles.Items)
             {
                 if (btHighlightCurrentLine.Checked)
+                {
                     (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = currentLineColor;
+                }
                 else
+                {
                     (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = Color.Transparent;
+                }
             }
             if (CurrentTB != null)
+            {
                 CurrentTB.Invalidate();
+            }
         }
 
         private void btShowFoldingLines_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
+            {
                 (tab.Controls[0] as FastColoredTextBox).ShowFoldingLines = btShowFoldingLines.Checked;
+            }
+
             if (CurrentTB != null)
+            {
                 CurrentTB.Invalidate();
+            }
         }
 
         private void cbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
@@ -511,11 +569,11 @@ namespace cc65WinForms
             tbOutput.AppendText($"Building {Project.InputFiles.Count} files for project [{Project.ProjectName}] targeting [{Project.TargetPlatform}]...{Environment.NewLine}");
 
             // Compile the project ...
-            var result = await Cc65Build.Compile(Project);
+            CliWrap.Models.ExecutionResult result = await Cc65Build.Compile(Project);
 
             if (result.ExitCode != 0)
             {
-                var errorList = Cc65Build.ErrorsAsList(result);
+                System.Collections.Generic.List<string> errorList = Cc65Build.ErrorsAsList(result);
 
                 tbOutput.AppendText($"Build failed, found {errorList.Count} errors:{Environment.NewLine}");
 
@@ -546,7 +604,7 @@ namespace cc65WinForms
             {
                 tbOutput.AppendText($"Launching {Project.ProjectName} in emulator ...{Environment.NewLine}");
 
-                var result = await Cc65Emulators.LaunchEmulator(Project, emulators);
+                CliWrap.Models.ExecutionResult result = await Cc65Emulators.LaunchEmulator(Project, emulators);
             }
         }
 
@@ -699,7 +757,9 @@ namespace cc65WinForms
         private bool CanSaveProject()
         {
             if (this.Project == null)
+            {
                 return false;
+            }
 
             return Project.IsModified;
         }
@@ -736,7 +796,9 @@ namespace cc65WinForms
         {
             // Bail if no project loaded or unamed ...
             if (Project == null || string.IsNullOrEmpty(Project.ProjectName))
+            {
                 return;
+            }
 
             // Convert project to JSON ...
             var asJSON = Project.AsJson();
@@ -744,7 +806,7 @@ namespace cc65WinForms
             // Do we have a project filepath ? ...
             if (string.IsNullOrEmpty(ProjectFile))
             {
-                SaveFileDialog dlg = new SaveFileDialog
+                var dlg = new SaveFileDialog
                 {
                     Filter = "Project Files|*.json",
                     DefaultExt = ".json"

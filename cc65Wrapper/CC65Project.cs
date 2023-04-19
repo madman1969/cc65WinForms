@@ -132,7 +132,7 @@ namespace cc65Wrapper
         /// <returns></returns>
         public static Cc65Project FromJson(string Json)
         {
-            var result = JsonConvert.DeserializeObject<Cc65Project>(Json);
+            Cc65Project result = JsonConvert.DeserializeObject<Cc65Project>(Json);
 
             result.InputFiles.Sort();
             result.HeaderFiles.Sort();
