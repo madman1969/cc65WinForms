@@ -373,7 +373,7 @@ namespace cc65WinForms
                     //redoStripButton.Enabled = redoToolStripMenuItem.Enabled = tb.RedoEnabled;
                     saveToolStripButton.Enabled = saveToolStripMenuItem.Enabled = tb.IsChanged;
                     closeFileToolStripMenuItem.Enabled = true;
-                    saveAsToolStripMenuItem.Enabled = true;
+                    saveAsToolStripMenuItem.Enabled = true;                    
                     //pasteToolStripButton.Enabled = pasteToolStripMenuItem.Enabled = true;
                     //cutToolStripButton.Enabled = cutToolStripMenuItem.Enabled =
                     //copyToolStripButton.Enabled = copyToolStripMenuItem.Enabled = !tb.Selection.IsEmpty;
@@ -393,7 +393,8 @@ namespace cc65WinForms
                     //dgvObjectExplorer.RowCount = 0;
                 }
 
-                saveProjectToolStripMenuItem.Enabled = saveProjectToolStripMenuItem.Enabled = closeProjectToolStripMenuItem.Enabled = this.Project != null;
+                closeProjectToolStripMenuItem.Enabled = this.Project != null;
+                saveProjectToolStripMenuItem.Enabled = saveProjectToolStripButton.Enabled = CanSaveProject();
             }
             catch (Exception ex)
             {
@@ -438,7 +439,13 @@ namespace cc65WinForms
 
             // Only change project target platform if a project is loaded !
             if (Project != null)
+            {
                 Project.TargetPlatform = selectedPlatform.ToLower();
+
+                // Flag as modified ...
+                Project.IsModified = true;
+            }
+
         }
 
         private async void btBuildProject_Click(object sender, EventArgs e)
@@ -479,6 +486,9 @@ namespace cc65WinForms
                 // Select the correct target for the project ...
                 Enum.TryParse(Project.TargetPlatform, out CC65ProjectTypes target);
                 cbTargetPlatform.SelectedIndex = (int)target;
+
+                // Clear the modified flag ...
+                Project.IsModified = false;
 
                 // Update status bar items ...
                 // DisplayLoadedProject();
@@ -676,6 +686,85 @@ namespace cc65WinForms
             SaveFile();
 
             tsFiles.RemoveTab(tsFiles.SelectedItem);
+        }
+
+        private void CloseAllFiles()
+        {
+            while (tsFiles.Items.Count > 0)
+            {
+                tsFiles.RemoveTab(tsFiles.Items[0]);
+            }
+        }
+
+        private bool CanSaveProject()
+        {
+            if (this.Project == null)
+                return false;
+
+            return Project.IsModified;
+        }
+
+        private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseProject();
+        }
+
+        private void CloseProject()
+        {
+            // Unload the project ...
+            this.Project = null;
+
+            // Close any open files ...
+            CloseAllFiles();
+
+            // Clear the project tree ...
+            PopulateTreeView();
+
+            // Reset the selected platform target ...
+            cbTargetPlatform.SelectedIndex = 0;
+        }
+
+        private void saveProjectToolStripButton_Click(object sender, EventArgs e)
+        {
+            SaveProject();
+        }
+
+        /// <summary>
+        /// Saves the current project settings
+        /// </summary>
+        private void SaveProject()
+        {
+            // Bail if no project loaded or unamed ...
+            if (Project == null || string.IsNullOrEmpty(Project.ProjectName))
+                return;
+
+            // Convert project to JSON ...
+            var asJSON = Project.AsJson();
+
+            // Do we have a project filepath ? ...
+            if (string.IsNullOrEmpty(ProjectFile))
+            {
+                SaveFileDialog dlg = new SaveFileDialog
+                {
+                    Filter = "Project Files|*.json",
+                    DefaultExt = ".json"
+                };
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    ProjectFile = dlg.FileName;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            // Write project details to file ...
+            File.WriteAllText(ProjectFile, asJSON);
+
+            // Clear the modified flag ...
+            Project.IsModified = false;
         }
     }
 }

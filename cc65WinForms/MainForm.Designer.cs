@@ -92,9 +92,9 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lbWordUnderMouse});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 831);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 882);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1182, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1284, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -110,7 +110,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1182, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1284, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -151,6 +151,7 @@
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
             this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
+            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripButton_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -199,7 +200,7 @@
             this.btShowFoldingLines});
             this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1182, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(1284, 28);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -252,8 +253,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tsFiles);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer1.Size = new System.Drawing.Size(1180, 628);
-            this.splitContainer1.SplitterDistance = 176;
+            this.splitContainer1.Size = new System.Drawing.Size(1282, 669);
+            this.splitContainer1.SplitterDistance = 245;
             this.splitContainer1.TabIndex = 3;
             // 
             // tvProjectFiles
@@ -262,7 +263,7 @@
             this.tvProjectFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvProjectFiles.Location = new System.Drawing.Point(0, 0);
             this.tvProjectFiles.Name = "tvProjectFiles";
-            this.tvProjectFiles.Size = new System.Drawing.Size(176, 628);
+            this.tvProjectFiles.Size = new System.Drawing.Size(245, 669);
             this.tvProjectFiles.TabIndex = 0;
             this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseClick);
             // 
@@ -272,7 +273,7 @@
             this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tsFiles.Location = new System.Drawing.Point(1, 1);
             this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(998, 626);
+            this.tsFiles.Size = new System.Drawing.Size(1031, 667);
             this.tsFiles.TabIndex = 0;
             this.tsFiles.Text = "faTabStrip1";
             // 
@@ -308,8 +309,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tbOutput);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer2.Size = new System.Drawing.Size(1182, 775);
-            this.splitContainer2.SplitterDistance = 630;
+            this.splitContainer2.Size = new System.Drawing.Size(1284, 826);
+            this.splitContainer2.SplitterDistance = 671;
             this.splitContainer2.TabIndex = 4;
             // 
             // tbOutput
@@ -322,7 +323,7 @@
             this.tbOutput.Name = "tbOutput";
             this.tbOutput.ReadOnly = true;
             this.tbOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbOutput.Size = new System.Drawing.Size(1180, 139);
+            this.tbOutput.Size = new System.Drawing.Size(1282, 149);
             this.tbOutput.TabIndex = 0;
             // 
             // toolStripSeparator3
@@ -372,6 +373,7 @@
             this.saveProjectToolStripButton.Size = new System.Drawing.Size(29, 25);
             this.saveProjectToolStripButton.Text = "toolStripButton1";
             this.saveProjectToolStripButton.ToolTipText = "Save Project";
+            this.saveProjectToolStripButton.Click += new System.EventHandler(this.saveProjectToolStripButton_Click);
             // 
             // btBuildProject
             // 
@@ -487,12 +489,13 @@
             this.closeProjectToolStripMenuItem.Name = "closeProjectToolStripMenuItem";
             this.closeProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.closeProjectToolStripMenuItem.Text = "Close Project";
+            this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.closeProjectToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1182, 853);
+            this.ClientSize = new System.Drawing.Size(1284, 904);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);

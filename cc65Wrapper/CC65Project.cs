@@ -85,6 +85,14 @@ namespace cc65Wrapper
         /// </value>
         public string FullOutputFilePath => Path.Combine(WorkingDirectory, OutputFile);
 
+        /// <summary>
+        /// Specifies if the project has been modified since it was loaded
+        /// </summary>
+        /// <value>
+        /// A boolean value
+        /// </value>
+        public bool IsModified { get; set; }
+
         #endregion
 
         #region Class Constructor
@@ -101,6 +109,7 @@ namespace cc65Wrapper
             OutputFile = string.Empty;
             OptimiseCode = false;
             Version = VERSION;
+            IsModified = false;
         }
 
         #endregion
