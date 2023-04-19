@@ -113,6 +113,7 @@
     <None Include="Resources\C64-icon.png" />
     <None Include="Resources\Commodore\32X32\1541.png" />
     <None Include="Resources\Commodore\32X32\Disk.png" />
+    <None Include="Resources\performance.png" />
     <Content Include="TabStrip.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -50,6 +50,7 @@
     <Compile Include="Cc65Build.cs" />
     <Compile Include="Cc65CompilerConfiguration.cs" />
     <Compile Include="Cc65Emulators.cs" />
+    <Compile Include="Cc65Error.cs" />
     <Compile Include="CC65Project.cs" />
     <Compile Include="Enumerations\CC65FileTypes.cs" />
     <Compile Include="Enumerations\CC65ProjectTypes.cs" />

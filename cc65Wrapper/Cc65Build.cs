@@ -12,7 +12,6 @@ namespace cc65Wrapper
     /// </summary>
     public class Cc65Build
     {
-
         #region Constants
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace cc65Wrapper
         /// <returns></returns>
         public static async Task<ExecutionResult> Compile(Cc65Project project)
         {
-            CliWrap.Models.ExecutionResult result;
+            ExecutionResult result;
 
             // Take a copy of the current working directory ...
             var originalDir = Directory.GetCurrentDirectory();
@@ -50,10 +49,10 @@ namespace cc65Wrapper
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(CL65)
-                .SetEnvironmentVariable(CC65_TARGET, project.TargetPlatform)
-                .SetArguments(argumentList)
-                .EnableExitCodeValidation(false)
-                .ExecuteAsync();
+                    .SetEnvironmentVariable(CC65_TARGET, project.TargetPlatform)
+                    .SetArguments(argumentList)
+                    .EnableExitCodeValidation(false)
+                    .ExecuteAsync();
             }
             finally
             {
@@ -68,21 +67,50 @@ namespace cc65Wrapper
 
         /// <summary>
         /// Converts the ExecutionResult.StandardErrors string into a List of strings
-        /// 
+        ///
         /// N.B. We also de-duplicate the errors
-        /// 
+        ///
         /// </summary>
         /// <returns>A List of strings representing the individual errors</returns>
-        public static List<string> ErrorsAsList(ExecutionResult executionResult)
+        public static List<string> ErrorsAsStringList(ExecutionResult executionResult)
         {
             var splitErrors = executionResult.StandardError.Split(
                 new string[] { "\r\n", "\r", "\n" },
-                System.StringSplitOptions.RemoveEmptyEntries);
+                System.StringSplitOptions.RemoveEmptyEntries
+            );
 
             var errorsList = new List<string>(splitErrors);
             var dedupedList = errorsList.Distinct().ToList();
 
             return dedupedList;
+        }
+
+        public static List<Cc65Error> ErrorsAsErrorList(ExecutionResult executionResult)
+        {
+            var errorList = new List<Cc65Error>();
+
+            var firstPass = executionResult.StandardError.Split(
+                new string[] { "\r\n", "\r", "\n" },
+                System.StringSplitOptions.RemoveEmptyEntries
+            );
+
+            foreach (var error in firstPass)
+            {
+                var tmp = error.Split(
+                    new string[] { ":" },
+                    System.StringSplitOptions.RemoveEmptyEntries
+                );
+                errorList.Add(
+                    new Cc65Error
+                    {
+                        Filename = tmp[0],
+                        LineNumber = int.Parse(tmp[1]),
+                        Error = $"{tmp[2]} - {tmp[3]}"
+                    }
+                );
+            }
+
+            return errorList;
         }
 
         #region Private Methods
