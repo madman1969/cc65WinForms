@@ -3,12 +3,13 @@ using cc65Wrapper.Enumerations;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace cc65WinForms
 {
@@ -355,6 +356,7 @@ namespace cc65WinForms
                     //dgvObjectExplorer.RowCount = 0;
                 }
 
+                openProjectToolStripMenuItem.Enabled = this.Project == null;
                 closeProjectToolStripMenuItem.Enabled =
                     btBuildProject.Enabled =
                     btExecuteProject.Enabled =
@@ -461,6 +463,36 @@ namespace cc65WinForms
         private void saveProjectToolStripButton_Click(object sender, EventArgs e)
         {
             SaveProject();
+        }
+
+        private void errorsDataGridView_SelectionChanged(Object sender, EventArgs e)
+        {
+            // Bail if no errorList selected ...
+            if (errorsDataGridView.SelectedRows.Count < 1)
+            {
+                return;
+            }
+
+            // Extract the error ...
+            var selectedError = (Cc65Error)errorsDataGridView.SelectedRows[0].DataBoundItem;
+            // Switch to the editor instance and navigate to the error line ...
+
+            // Is there already an open tab for file ?
+            FATabStripItem matchingItem = null;
+
+            foreach (FATabStripItem item in tsFiles.Items)
+            {
+                if (item.Caption == selectedError.Filename)
+                {
+                    // Yep, so make it the active tab
+
+                    matchingItem = item;
+                    tsFiles.SelectedItem = matchingItem;
+
+                    var tb = (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
+                    tb.Navigate(Math.Max(0, selectedError.LineNumber - 1));
+                }
+            }
         }
 
         #endregion
@@ -864,19 +896,23 @@ namespace cc65WinForms
             // Compile the project ...
             CliWrap.Models.ExecutionResult result = await Cc65Build.Compile(Project);
 
+            List<Cc65Error> errorList = new List<Cc65Error>();
+
             if (result.ExitCode != 0)
             {
-                List<string> errorList = Cc65Build.ErrorsAsStringList(result);
-                var tmp = Cc65Build.ErrorsAsErrorList(result);
+                // List<string> errorList = Cc65Build.ErrorsAsStringList(result);
+                errorList = Cc65Build.ErrorsAsErrorList(result);
+
+                PopulateErrorsDataGridView(errorList);
 
                 tbOutput.AppendText(
-                    $"Build failed, found {errorList.Count} errors:{Environment.NewLine}"
+                    $"Build failed, found {errorList.Count} errors{Environment.NewLine}"
                 );
 
-                foreach (var error in errorList)
-                {
-                    tbOutput.AppendText($"{error}{Environment.NewLine}");
-                }
+                //foreach (var error in errorList)
+                //{
+                //    tbOutput.AppendText($"{error}{Environment.NewLine}");
+                //}
             }
             else
             {
@@ -884,9 +920,20 @@ namespace cc65WinForms
                 tbOutput.AppendText($"Build successful{Environment.NewLine}");
             }
 
+            PopulateErrorsDataGridView(errorList);
+
             // tbOutput.ScrollToEnd();
 
             return builtOK;
+        }
+
+        /// <summary>
+        /// Populates the error list with build errorList
+        /// </summary>
+        /// <param name="errorList"></param>
+        private void PopulateErrorsDataGridView(List<Cc65Error> errorList)
+        {
+            errorsDataGridView.DataSource = errorList;
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace cc65Wrapper
         /// <summary>
         /// Compiles source file associated with project file into output file using 'cl65'
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">A populated Cc65Project instance</param>
         /// <returns></returns>
         public static async Task<ExecutionResult> Compile(Cc65Project project)
         {
@@ -96,18 +96,33 @@ namespace cc65Wrapper
 
             foreach (var error in firstPass)
             {
-                var tmp = error.Split(
+                var errorDetails = error.Split(
                     new string[] { ":" },
                     System.StringSplitOptions.RemoveEmptyEntries
                 );
-                errorList.Add(
-                    new Cc65Error
-                    {
-                        Filename = tmp[0],
-                        LineNumber = int.Parse(tmp[1]),
-                        Error = $"{tmp[2]} - {tmp[3]}"
-                    }
-                );
+
+                if (errorDetails.Length < 4)
+                {
+                    errorList.Add(
+                        new Cc65Error
+                        {
+                            Filename = errorDetails[0],
+                            LineNumber = 0,
+                            Error = $"{errorDetails[1]} - {errorDetails[2]}"
+                        }
+                    );
+                }
+                else
+                {
+                    errorList.Add(
+                        new Cc65Error
+                        {
+                            Filename = errorDetails[0],
+                            LineNumber = int.Parse(errorDetails[1]),
+                            Error = $"{errorDetails[2]} - {errorDetails[3]}"
+                        }
+                    );
+                }
             }
 
             return errorList;
@@ -118,7 +133,7 @@ namespace cc65Wrapper
         /// <summary>
         /// Builds from supplied project file a list of string arguments to pass to 'cl65'
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">A populated Cc65Project instance</param>
         /// <returns>A List of strings representing the CL65 arguments</returns>
         private static List<string> BuildArgumentsList(Cc65Project project)
         {
