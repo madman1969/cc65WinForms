@@ -28,10 +28,12 @@ namespace cc65Wrapper
         #region Public methods
 
         /// <summary>
-        /// Compiles source file associated with project file into output file using 'cl65'
+        /// Compiles source files associated with the passed <c>Cc65Project</c>instance into an output file using 'cl65'
+        /// from the CC65 compiler suite
         /// </summary>
-        /// <param name="project">A populated Cc65Project instance</param>
-        /// <returns></returns>
+        /// <param name="project">A populated <c>Cc65Project</c> instance</param>
+        /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
+        /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
         public static async Task<ExecutionResult> Compile(Cc65Project project)
         {
             ExecutionResult result;
@@ -65,13 +67,13 @@ namespace cc65Wrapper
 
         #endregion
 
+        #region Public Helper Methods
+
         /// <summary>
-        /// Converts the ExecutionResult.StandardErrors string into a List of strings
-        ///
-        /// N.B. We also de-duplicate the errors
-        ///
+        /// Parses the <c>ExecutionResult</c> from a build command into a list of <c>string</c> instances
         /// </summary>
-        /// <returns>A List of strings representing the individual errors</returns>
+        /// <returns>A List of <c>string</c> values representing the individual errors</returns>
+        /// <remarks>It also de-duplicates the errors</remarks>
         public static List<string> ErrorsAsStringList(ExecutionResult executionResult)
         {
             var splitErrors = executionResult.StandardError.Split(
@@ -85,6 +87,12 @@ namespace cc65Wrapper
             return dedupedList;
         }
 
+        /// <summary>
+        /// Parses the <c>ExecutionResult</c> from a build command into a list of <c>Cc65Error</c> instances
+        /// </summary>
+        /// <param name="executionResult">The execution result.</param>
+        /// <returns>A list of <c>Cc65Error</c> instances parsed from the passed <c>ExecutionResult</c> instance</returns>
+        /// <remarks>It also de-duplicates the errors</remarks>
         public static List<Cc65Error> ErrorsAsErrorList(ExecutionResult executionResult)
         {
             var errorList = new List<Cc65Error>();
@@ -94,7 +102,10 @@ namespace cc65Wrapper
                 System.StringSplitOptions.RemoveEmptyEntries
             );
 
-            foreach (var error in firstPass)
+            var tmp = new List<string>(firstPass);
+            var dedupedList = tmp.Distinct().ToList();
+
+            foreach (var error in dedupedList)
             {
                 var errorDetails = error.Split(
                     new string[] { ":" },
@@ -106,9 +117,10 @@ namespace cc65Wrapper
                     errorList.Add(
                         new Cc65Error
                         {
-                            Filename = errorDetails[0],
+                            Filename = errorDetails[0].Trim(),
                             LineNumber = 0,
-                            Error = $"{errorDetails[1]} - {errorDetails[2]}"
+                            Type = errorDetails[1].Trim(),
+                            Error = errorDetails[2].Trim()
                         }
                     );
                 }
@@ -117,24 +129,28 @@ namespace cc65Wrapper
                     errorList.Add(
                         new Cc65Error
                         {
-                            Filename = errorDetails[0],
-                            LineNumber = int.Parse(errorDetails[1]),
-                            Error = $"{errorDetails[2]} - {errorDetails[3]}"
+                            Filename = errorDetails[0].Trim(),
+                            LineNumber = int.Parse(errorDetails[1].Trim()),
+                            Type = errorDetails[2].Trim(),
+                            Error = errorDetails[3].Trim()
                         }
                     );
+                    ;
                 }
             }
 
             return errorList;
         }
 
+        #endregion
+
         #region Private Methods
 
         /// <summary>
-        /// Builds from supplied project file a list of string arguments to pass to 'cl65'
+        /// Builds a list of <c>string</c> arguments to pass to 'cl65' from supplied <c>Cc65Project</c> instance
         /// </summary>
         /// <param name="project">A populated Cc65Project instance</param>
-        /// <returns>A List of strings representing the CL65 arguments</returns>
+        /// <returns>A List of <c>string</c> instances representing the CL65 arguments</returns>
         private static List<string> BuildArgumentsList(Cc65Project project)
         {
             // Add the target platform ...

@@ -81,6 +81,7 @@
             this.errorsDataGridView = new System.Windows.Forms.DataGridView();
             this.filenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lineNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.errorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cc65ErrorBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.statusStrip1.SuspendLayout();
@@ -587,6 +588,7 @@
             this.errorsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.filenameDataGridViewTextBoxColumn,
             this.lineNumberDataGridViewTextBoxColumn,
+            this.Type,
             this.errorDataGridViewTextBoxColumn});
             this.errorsDataGridView.DataSource = this.cc65ErrorBindingSource;
             this.errorsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -618,6 +620,15 @@
             this.lineNumberDataGridViewTextBoxColumn.Name = "lineNumberDataGridViewTextBoxColumn";
             this.lineNumberDataGridViewTextBoxColumn.ReadOnly = true;
             this.lineNumberDataGridViewTextBoxColumn.Width = 70;
+            // 
+            // Type
+            // 
+            this.Type.DataPropertyName = "Type";
+            this.Type.HeaderText = "Type";
+            this.Type.MinimumWidth = 6;
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            this.Type.Width = 75;
             // 
             // errorDataGridViewTextBoxColumn
             // 
@@ -722,12 +733,13 @@
         private FarsiLibrary.Win.FATabStripItem errorsTSI;
         private System.Windows.Forms.DataGridView errorsDataGridView;
         private System.Windows.Forms.BindingSource cc65ErrorBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn filenameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lineNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn errorDataGridViewTextBoxColumn;
         private System.Windows.Forms.ToolStripStatusLabel CursorPositionLabel;
         private System.Windows.Forms.ToolStripStatusLabel ProjectLabel;
         private System.Windows.Forms.ToolStripStatusLabel PlatformTargetLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn filenameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lineNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn errorDataGridViewTextBoxColumn;
     }
 }
 

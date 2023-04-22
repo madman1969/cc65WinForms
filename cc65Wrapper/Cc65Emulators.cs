@@ -50,7 +50,7 @@ namespace cc65Wrapper
         #region Class Constructor
 
         /// <summary>
-        /// Class constructor
+        /// Initializes a new instance of the <see cref="Cc65Emulators"/> class.
         /// </summary>
         public Cc65Emulators()
         {
@@ -68,29 +68,32 @@ namespace cc65Wrapper
         /// <summary>
         /// Retrieves JSON representation of a project
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A JSON <c>string</c> of the supplied <c>Cc65Emulators</c> instance</returns>
         public string AsJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         /// <summary>
-        /// Convert JSON representation into project instance
+        /// Converts JSON <c>string</c> into a populated <c>Cc65Emulators</c> instance
         /// </summary>
-        /// <param name="Json"></param>
-        /// <returns></returns>
+        /// <param name="Json">A JSOM <c>string</c> representation of a <c>Cc65Emulators</c> instance</param>
+        /// <returns>A populated <c>Cc65Emulators</c> instance</returns>
         public static Cc65Emulators FromJson(string Json)
         {
             return JsonConvert.DeserializeObject<Cc65Emulators>(Json);
         }
 
         /// <summary>
-        /// Run the current emulator for the current project
+        /// Attempts to launch the associated binary in the appropriate WinVice emulator for the supplied project
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="emulators"></param>
-        /// <returns></returns>
-        public static async Task<ExecutionResult> LaunchEmulator(Cc65Project project, Cc65Emulators emulators)
+        /// <param name="project">A <c>Cc65Project</c> instance</param>
+        /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
+        /// <returns>An <c>ExecutionResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        public static async Task<ExecutionResult> LaunchEmulator(
+            Cc65Project project,
+            Cc65Emulators emulators
+        )
         {
             ExecutionResult result;
 
@@ -109,9 +112,9 @@ namespace cc65Wrapper
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(selectedEmulator)
-                .SetArguments(argumentList)
-                .EnableExitCodeValidation(false)
-                .ExecuteAsync();
+                    .SetArguments(argumentList)
+                    .EnableExitCodeValidation(false)
+                    .ExecuteAsync();
             }
             finally
             {
@@ -127,10 +130,11 @@ namespace cc65Wrapper
         #region Private Methods
 
         /// <summary>
-        /// Build the cmd-line options required to launch the current project binary in the emulator
+        /// Builds the cmd-line options required to build the project binary
         /// </summary>
-        /// <param name="project"></param>
-        /// <returns></returns>
+        /// <param name="project">A <c>Cc65Project</c> instance which lists the binary to run</param>
+        /// <returns>A list of <c>string</c> arguements to pass to the 'cl65' compiler</returns>
+        /// <remarks>The return value is passed as an arguement list to the 'cl65' compiler</remarks>
         private static List<string> BuildArgumentsList(Cc65Project project)
         {
             // Add the target platform ...
@@ -142,11 +146,11 @@ namespace cc65Wrapper
         }
 
         /// <summary>
-        /// Gets the selected emulator file path.
+        /// Retrieves the WinVICE emulator file path currently selected for the project
         /// </summary>
-        /// <param name="project">The project.</param>
-        /// <param name="emulators">The emulators.</param>
-        /// <returns></returns>
+        /// <param name="project">A <c>Cc65Project</c> instance</param>
+        /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
+        /// <returns>The file path to the appropriate WinVICE emulator for the project</returns>
         private static string GetSelectedEmulator(Cc65Project project, Cc65Emulators emulators)
         {
             var result = string.Empty;

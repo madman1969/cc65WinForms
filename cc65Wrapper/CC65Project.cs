@@ -119,17 +119,17 @@ namespace cc65Wrapper
         /// <summary>
         /// Retrieves JSON representation of a project
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A JSON <c>string</c> representation of a <c>Cc65Project</c> instance</returns>
         public string AsJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         /// <summary>
-        /// Convert JSON representation into project instance
+        /// Converts JSON <c>string</c> representation of a <c>Cc65Project</c> into a <c>Cc65Project</c> instance
         /// </summary>
-        /// <param name="Json"></param>
-        /// <returns></returns>
+        /// <param name="Json">A JSON format <c>string</c> representation of a <c>Cc65Project</c></param>
+        /// <returns>A populated <c>Cc65Project</c> instance</returns>
         public static Cc65Project FromJson(string Json)
         {
             Cc65Project result = JsonConvert.DeserializeObject<Cc65Project>(Json);

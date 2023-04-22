@@ -206,11 +206,21 @@ namespace cc65WinForms
 
         #region Event Handlers
 
+        /// <summary>
+        /// Creates new toolstripbutton_click.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void NewToolStripButton_Click(object sender, EventArgs e)
         {
             CreateTab(null);
         }
 
+        /// <summary>
+        /// Handles the TextChangedDelayed event of the Tb control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TextChangedEventArgs"/> instance containing the event data.</param>
         void Tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             var tb = (sender as FastColoredTextBox);
@@ -224,6 +234,11 @@ namespace cc65WinForms
             HighlightInvisibleChars(e.ChangedRange);
         }
 
+        /// <summary>
+        /// Handles the SelectionChangedDelayed event of the tb control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -262,6 +277,11 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the KeyDown event of the tb control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
         void tb_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.OemMinus)
@@ -284,6 +304,11 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the MouseMove event of the tb control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         void tb_MouseMove(object sender, MouseEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -296,6 +321,11 @@ namespace cc65WinForms
             //lbWordUnderMouse.Text = text;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btInvisibleChars control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btInvisibleChars_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -309,26 +339,51 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the openToolStripButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFile();
         }
 
+        /// <summary>
+        /// Handles the Click event of the saveToolStripButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
             SaveFile();
         }
 
+        /// <summary>
+        /// Handles the Click event of the saveAsToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileAs();
         }
 
+        /// <summary>
+        /// Handles the Click event of the quitToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Handles the Tick event of the tmUpdateInterface control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void tmUpdateInterface_Tick(object sender, EventArgs e)
         {
             try
@@ -374,11 +429,21 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btHighlightCurrentLine control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btHighlightCurrentLine_Click(object sender, EventArgs e)
         {
             ChangeCurrentLineHighLight();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btShowFoldingLines control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btShowFoldingLines_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -393,28 +458,53 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the cbTargetPlatform control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void cbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeSelectedPlatform();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btBuildProject control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private async void btBuildProject_Click(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Building Project{Environment.NewLine}");
             _ = await BuildProject();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btExecuteProject control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private async void btExecuteProject_Click(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Executing Project{Environment.NewLine}");
             await ExecuteProject();
         }
 
+        /// <summary>
+        /// Handles the Click event of the openProjectToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenProject();
         }
 
+        /// <summary>
+        /// Handles the NodeMouseClick event of the tvProjectFiles control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TreeNodeMouseClickEventArgs"/> instance containing the event data.</param>
         private void tvProjectFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             FATabStripItem matchingItem = null;
@@ -454,21 +544,41 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the closeFileToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void closeFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseFile();
         }
 
+        /// <summary>
+        /// Handles the Click event of the closeProjectToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseProject();
         }
 
+        /// <summary>
+        /// Handles the Click event of the saveProjectToolStripButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void saveProjectToolStripButton_Click(object sender, EventArgs e)
         {
             SaveProject();
         }
 
+        /// <summary>
+        /// Handles the SelectionChanged event of the errorsDataGridView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void errorsDataGridView_SelectionChanged(Object sender, EventArgs e)
         {
             // Bail if no errorList selected ...
@@ -526,12 +636,18 @@ namespace cc65WinForms
         private void HighlightInvisibleChars(Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
+
             if (btInvisibleChars.Checked)
             {
                 range.SetStyle(invisibleCharsStyle, @".$|.\r\n|\s");
             }
         }
 
+        /// <summary>
+        /// Saves the text associated with the specified tab.
+        /// </summary>
+        /// <param name="tab">The currently selected editor tab.</param>
+        /// <returns><c>true</c> if successful; else <c>false</c></returns>
         private bool Save(FATabStripItem tab)
         {
             var tb = (tab.Controls[0] as FastColoredTextBox);
@@ -643,6 +759,10 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Creates a new text editor tab and loads the contents of the specified file
+        /// </summary>
+        /// <param name="fileName">Name of the file to load into the editor tab</param>
         private void CreateTab(string fileName)
         {
             try
@@ -712,6 +832,11 @@ namespace cc65WinForms
             }
         }
 
+        #region File Handling Methods
+
+        /// <summary>
+        /// Displays the 'Open File' dialog and loads the selection into a new editor tab
+        /// </summary>
         private void OpenFile()
         {
             if (ofdMain.ShowDialog() == DialogResult.OK)
@@ -720,6 +845,11 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Save the contents of the current text editor tab.
+        ///
+        /// Exits if now text editor tab is current.
+        /// </summary>
         private void SaveFile()
         {
             if (tsFiles.SelectedItem != null)
@@ -728,6 +858,11 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Saves the contents of all open text editor tabs.
+        ///
+        /// Will prompt if a file name is required
+        /// </summary>
         private void SaveOpenFiles()
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -736,30 +871,51 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Saves the contents of the current text editor tab as the specified name.
+        ///
+        /// If save operation cancelled, then restores the original details
+        /// </summary>
         private void SaveFileAs()
         {
-            if (tsFiles.SelectedItem != null)
+            // Bail if no editor tab selected ...
+            if (tsFiles.SelectedItem == null)
             {
-                var oldFile = tsFiles.SelectedItem.Tag as string;
-                tsFiles.SelectedItem.Tag = null;
-                if (!Save(tsFiles.SelectedItem))
+                return;
+            }
+
+            // Note the original filename and reset it ...
+            var oldFile = tsFiles.SelectedItem.Tag as string;
+            tsFiles.SelectedItem.Tag = null;
+
+            // Did we managed to save the file ? ...
+            if (!Save(tsFiles.SelectedItem))
+            {
+                // Nope, so restore the tag and title ...
+                if (oldFile != null)
                 {
-                    if (oldFile != null)
-                    {
-                        tsFiles.SelectedItem.Tag = oldFile;
-                        tsFiles.SelectedItem.Title = Path.GetFileName(oldFile);
-                    }
+                    tsFiles.SelectedItem.Tag = oldFile;
+                    tsFiles.SelectedItem.Title = Path.GetFileName(oldFile);
                 }
             }
         }
 
+        /// <summary>
+        /// Closes the current text editor tab. Automatically saves the current contents before closing the tab
+        /// </summary>
         private void CloseFile()
         {
             SaveFile();
 
-            tsFiles.RemoveTab(tsFiles.SelectedItem);
+            if (tsFiles.SelectedItem != null)
+            {
+                tsFiles.RemoveTab(tsFiles.SelectedItem);
+            }
         }
 
+        /// <summary>
+        /// Closes all open text editor tabs
+        /// </summary>
         private void CloseAllFiles()
         {
             while (tsFiles.Items.Count > 0)
@@ -768,6 +924,11 @@ namespace cc65WinForms
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Changes the selected target platform for the current project
+        /// </summary>
         private void ChangeSelectedPlatform()
         {
             var selectedPlatform = cbTargetPlatform.SelectedItem as string;
@@ -782,6 +943,9 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Toggles the current line highlight across all open text editor tabs.
+        /// </summary>
         private void ChangeCurrentLineHighLight()
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -801,6 +965,10 @@ namespace cc65WinForms
             }
         }
 
+        /// <summary>
+        /// Updates the cursor position label in the application status bar.
+        /// </summary>
+        /// <param name="place">A Place instance containing the new row/column value</param>
         private void UpdateCursorPositionLabel(Place place)
         {
             var message = $"Line {place.iLine}, Column {place.iChar}";
@@ -810,8 +978,11 @@ namespace cc65WinForms
         #region Project routines
 
         /// <summary>
-        /// Opens the project.
+        /// Displays the 'Open Project' dialog
         /// </summary>
+        /// <remarks>
+        /// If a project is opened it will populate the 'Target Platform', project tree view and update the status bar
+        /// </remarks>
         private void OpenProject()
         {
             var dlg = new OpenFileDialog
@@ -847,6 +1018,11 @@ namespace cc65WinForms
             UpdateProjectStatusLabel(Project.ProjectName);
         }
 
+        /// <summary>
+        /// Updates the status bar to show the currently loaded project.
+        /// </summary>
+        /// <param name="projectName">Name of the project.</param>
+        /// <remarks>Will display 'No Project Loaded' if passed null</remarks>
         private void UpdateProjectStatusLabel(string projectName)
         {
             string message;
@@ -863,6 +1039,10 @@ namespace cc65WinForms
             ProjectLabel.Text = message;
         }
 
+        /// <summary>
+        /// Closes the currently open project.
+        /// </summary>
+        /// <remarks>Will close any open files and clear the project tree</remarks>
         private void CloseProject()
         {
             tbOutput.AppendText($"Closed project: {ProjectFile} ...{Environment.NewLine}");
@@ -882,6 +1062,12 @@ namespace cc65WinForms
             UpdateProjectStatusLabel(null);
         }
 
+        /// <summary>
+        /// Helper method which returns a boolean if a project is loaded and has been modified
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if there is a modified loaded project; otherwise, <c>false</c>.
+        /// </returns>
         private bool CanSaveProject()
         {
             if (this.Project == null)
@@ -933,8 +1119,10 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Builds the project.
+        /// Builds the currenlt loaded project
         /// </summary>
+        /// <returns><c>true</c> if build successful; else <c>false</c></returns>
+        /// <remarks>Will save any open files first</remarks>
         private async Task<bool> BuildProject()
         {
             SaveOpenFiles();
@@ -952,19 +1140,17 @@ namespace cc65WinForms
 
             if (result.ExitCode != 0)
             {
-                // List<string> errorList = Cc65Build.ErrorsAsStringList(result);
+                List<string> tmp = Cc65Build.ErrorsAsStringList(result);
                 errorList = Cc65Build.ErrorsAsErrorList(result);
+
+                // Force the 'Errors List' to be selected ...
+                tsOutput.SelectedItem = tsOutput.Items[1];
 
                 PopulateErrorsDataGridView(errorList);
 
                 tbOutput.AppendText(
                     $"Build failed, found {errorList.Count} errors{Environment.NewLine}"
                 );
-
-                //foreach (var error in errorList)
-                //{
-                //    tbOutput.AppendText($"{error}{Environment.NewLine}");
-                //}
             }
             else
             {
@@ -974,22 +1160,41 @@ namespace cc65WinForms
 
             PopulateErrorsDataGridView(errorList);
 
-            // tbOutput.ScrollToEnd();
-
             return builtOK;
         }
 
         /// <summary>
-        /// Populates the error list with build errorList
+        /// Populates the error list from the supplied list of <c>Cc65Error</c> instances
         /// </summary>
         /// <param name="errorList"></param>
+        /// <remarks>The error rows will be highlighted according to their <c>Cc65Error.Type</c> value</remarks>
         private void PopulateErrorsDataGridView(List<Cc65Error> errorList)
         {
+            // Populate the data grid view
             errorsDataGridView.DataSource = errorList;
+
+            // Set the appropriate background colour based on error type ...
+            foreach (var item in errorsDataGridView.Rows)
+            {
+                var error = (Cc65Error)((item as DataGridViewRow).DataBoundItem);
+
+                switch (error.Type)
+                {
+                    case "Warning":
+                        (item as DataGridViewRow).DefaultCellStyle.ForeColor = Color.Purple;
+                        break;
+                    case "Error":
+                        (item as DataGridViewRow).DefaultCellStyle.ForeColor = Color.Orange;
+                        break;
+                    case "Fatal":
+                        (item as DataGridViewRow).DefaultCellStyle.ForeColor = Color.Red;
+                        break;
+                }
+            }
         }
 
         /// <summary>
-        /// Launches the project in WinVICE.
+        /// Launches the current project in WinVICE using the current target platform selection.
         /// </summary>
         private async Task ExecuteProject()
         {
@@ -1013,7 +1218,7 @@ namespace cc65WinForms
         #region TreeView routines
 
         /// <summary>
-        /// Clears the TreeView.
+        /// Clears the project tree view
         /// </summary>
         private void ClearTreeView()
         {
@@ -1021,7 +1226,7 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Populate the tree with the project files
+        /// Populates project tree view with the source/header files referenced by the current <c>Cc65Project</c> instance
         /// </summary>
         private void PopulateTreeView()
         {
