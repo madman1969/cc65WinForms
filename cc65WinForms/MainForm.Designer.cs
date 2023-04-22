@@ -31,7 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lbWordUnderMouse = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ProjectLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.PlatformTargetLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CursorPositionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,17 +107,50 @@
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lbWordUnderMouse});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1042);
+            this.ProjectLabel,
+            this.PlatformTargetLabel,
+            this.CursorPositionLabel});
+            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1034);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1303, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1303, 30);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // lbWordUnderMouse
+            // ProjectLabel
             // 
-            this.lbWordUnderMouse.Name = "lbWordUnderMouse";
-            this.lbWordUnderMouse.Size = new System.Drawing.Size(0, 16);
+            this.ProjectLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.ProjectLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.ProjectLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.ProjectLabel.Name = "ProjectLabel";
+            this.ProjectLabel.Size = new System.Drawing.Size(142, 24);
+            this.ProjectLabel.Text = "No Project Loaded";
+            // 
+            // PlatformTargetLabel
+            // 
+            this.PlatformTargetLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.PlatformTargetLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.PlatformTargetLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.PlatformTargetLabel.Name = "PlatformTargetLabel";
+            this.PlatformTargetLabel.Size = new System.Drawing.Size(109, 24);
+            this.PlatformTargetLabel.Text = "Target: NONE";
+            // 
+            // CursorPositionLabel
+            // 
+            this.CursorPositionLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.CursorPositionLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.CursorPositionLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.CursorPositionLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.CursorPositionLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.CursorPositionLabel.Name = "CursorPositionLabel";
+            this.CursorPositionLabel.Size = new System.Drawing.Size(148, 24);
+            this.CursorPositionLabel.Text = "Line 00, Column 00";
             // 
             // menuStrip1
             // 
@@ -124,7 +159,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1303, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1303, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -143,7 +178,7 @@
             this.toolStripSeparator1,
             this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -270,9 +305,9 @@
             this.btInvisibleChars,
             this.btHighlightCurrentLine,
             this.btShowFoldingLines});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 30);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1303, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(1303, 28);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -282,7 +317,7 @@
             this.newToolStripButton.Image = global::cc65WinForms.Properties.Resources.newToolStripButton_Image;
             this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(29, 28);
+            this.newToolStripButton.Size = new System.Drawing.Size(29, 25);
             this.newToolStripButton.Text = "newToolStripButton";
             this.newToolStripButton.ToolTipText = "New File";
             this.newToolStripButton.Click += new System.EventHandler(this.NewToolStripButton_Click);
@@ -293,7 +328,7 @@
             this.openToolStripButton.Image = global::cc65WinForms.Properties.Resources.openToolStripButton_Image;
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(29, 28);
+            this.openToolStripButton.Size = new System.Drawing.Size(29, 25);
             this.openToolStripButton.Text = "toolStripButton1";
             this.openToolStripButton.ToolTipText = "Open File";
             this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
@@ -301,7 +336,7 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 28);
             // 
             // saveToolStripButton
             // 
@@ -309,7 +344,7 @@
             this.saveToolStripButton.Image = global::cc65WinForms.Properties.Resources.Disk1;
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(29, 28);
+            this.saveToolStripButton.Size = new System.Drawing.Size(29, 25);
             this.saveToolStripButton.Text = "toolStripButton1";
             this.saveToolStripButton.ToolTipText = "Save File";
             this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
@@ -320,7 +355,7 @@
             this.saveProjectToolStripButton.Image = global::cc65WinForms.Properties.Resources._15411;
             this.saveProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveProjectToolStripButton.Name = "saveProjectToolStripButton";
-            this.saveProjectToolStripButton.Size = new System.Drawing.Size(29, 28);
+            this.saveProjectToolStripButton.Size = new System.Drawing.Size(29, 25);
             this.saveProjectToolStripButton.Text = "toolStripButton1";
             this.saveProjectToolStripButton.ToolTipText = "Save Project";
             this.saveProjectToolStripButton.Click += new System.EventHandler(this.saveProjectToolStripButton_Click);
@@ -328,12 +363,12 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
             // 
             // lbTargetPlatform
             // 
             this.lbTargetPlatform.Name = "lbTargetPlatform";
-            this.lbTargetPlatform.Size = new System.Drawing.Size(111, 28);
+            this.lbTargetPlatform.Size = new System.Drawing.Size(111, 25);
             this.lbTargetPlatform.Text = "Target Platform";
             // 
             // cbTargetPlatform
@@ -346,14 +381,14 @@
             "Plus4",
             "VIC20"});
             this.cbTargetPlatform.Name = "cbTargetPlatform";
-            this.cbTargetPlatform.Size = new System.Drawing.Size(121, 31);
+            this.cbTargetPlatform.Size = new System.Drawing.Size(121, 28);
             this.cbTargetPlatform.Sorted = true;
             this.cbTargetPlatform.SelectedIndexChanged += new System.EventHandler(this.cbTargetPlatform_SelectedIndexChanged);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 28);
             // 
             // btBuildProject
             // 
@@ -361,7 +396,7 @@
             this.btBuildProject.Image = global::cc65WinForms.Properties.Resources.work_process;
             this.btBuildProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btBuildProject.Name = "btBuildProject";
-            this.btBuildProject.Size = new System.Drawing.Size(29, 28);
+            this.btBuildProject.Size = new System.Drawing.Size(29, 25);
             this.btBuildProject.Text = "Build Project";
             this.btBuildProject.Click += new System.EventHandler(this.btBuildProject_Click);
             // 
@@ -371,14 +406,14 @@
             this.btExecuteProject.Image = global::cc65WinForms.Properties.Resources.C64_icon;
             this.btExecuteProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btExecuteProject.Name = "btExecuteProject";
-            this.btExecuteProject.Size = new System.Drawing.Size(29, 28);
+            this.btExecuteProject.Size = new System.Drawing.Size(29, 25);
             this.btExecuteProject.Text = "Execute Project";
             this.btExecuteProject.Click += new System.EventHandler(this.btExecuteProject_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 28);
             // 
             // btInvisibleChars
             // 
@@ -387,7 +422,7 @@
             this.btInvisibleChars.Image = global::cc65WinForms.Properties.Resources.paragraph_16x16;
             this.btInvisibleChars.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btInvisibleChars.Name = "btInvisibleChars";
-            this.btInvisibleChars.Size = new System.Drawing.Size(29, 28);
+            this.btInvisibleChars.Size = new System.Drawing.Size(29, 25);
             this.btInvisibleChars.Text = "toolStripButton1";
             this.btInvisibleChars.ToolTipText = "Show invisible chars";
             this.btInvisibleChars.Click += new System.EventHandler(this.btInvisibleChars_Click);
@@ -401,7 +436,7 @@
             this.btHighlightCurrentLine.Image = global::cc65WinForms.Properties.Resources.edit_padding_top;
             this.btHighlightCurrentLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btHighlightCurrentLine.Name = "btHighlightCurrentLine";
-            this.btHighlightCurrentLine.Size = new System.Drawing.Size(29, 28);
+            this.btHighlightCurrentLine.Size = new System.Drawing.Size(29, 25);
             this.btHighlightCurrentLine.Text = "toolStripButton1";
             this.btHighlightCurrentLine.ToolTipText = "Highlight current line";
             this.btHighlightCurrentLine.Click += new System.EventHandler(this.btHighlightCurrentLine_Click);
@@ -415,7 +450,7 @@
             this.btShowFoldingLines.Image = global::cc65WinForms.Properties.Resources.btShowFoldingLines_Image;
             this.btShowFoldingLines.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btShowFoldingLines.Name = "btShowFoldingLines";
-            this.btShowFoldingLines.Size = new System.Drawing.Size(29, 28);
+            this.btShowFoldingLines.Size = new System.Drawing.Size(29, 25);
             this.btShowFoldingLines.Text = "toolStripButton1";
             this.btShowFoldingLines.ToolTipText = "Show folding lines";
             this.btShowFoldingLines.Click += new System.EventHandler(this.btShowFoldingLines_Click);
@@ -434,7 +469,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tsFiles);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer1.Size = new System.Drawing.Size(1301, 690);
+            this.splitContainer1.Size = new System.Drawing.Size(1301, 687);
             this.splitContainer1.SplitterDistance = 248;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -444,7 +479,7 @@
             this.tvProjectFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvProjectFiles.Location = new System.Drawing.Point(0, 0);
             this.tvProjectFiles.Name = "tvProjectFiles";
-            this.tvProjectFiles.Size = new System.Drawing.Size(248, 690);
+            this.tvProjectFiles.Size = new System.Drawing.Size(248, 687);
             this.tvProjectFiles.TabIndex = 0;
             this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseClick);
             // 
@@ -454,7 +489,7 @@
             this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tsFiles.Location = new System.Drawing.Point(1, 1);
             this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(1047, 688);
+            this.tsFiles.Size = new System.Drawing.Size(1047, 685);
             this.tsFiles.TabIndex = 0;
             this.tsFiles.Text = "faTabStrip1";
             // 
@@ -477,7 +512,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 61);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 56);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -490,8 +525,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tsOutput);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer2.Size = new System.Drawing.Size(1303, 981);
-            this.splitContainer2.SplitterDistance = 692;
+            this.splitContainer2.Size = new System.Drawing.Size(1303, 978);
+            this.splitContainer2.SplitterDistance = 689;
             this.splitContainer2.TabIndex = 4;
             // 
             // tsOutput
@@ -510,6 +545,7 @@
             // 
             // outputTSI
             // 
+            this.outputTSI.CanClose = false;
             this.outputTSI.Controls.Add(this.tbOutput);
             this.outputTSI.IsDrawn = true;
             this.outputTSI.Name = "outputTSI";
@@ -533,6 +569,7 @@
             // 
             // errorsTSI
             // 
+            this.errorsTSI.CanClose = false;
             this.errorsTSI.Controls.Add(this.errorsDataGridView);
             this.errorsTSI.IsDrawn = true;
             this.errorsTSI.Name = "errorsTSI";
@@ -571,7 +608,7 @@
             this.filenameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.filenameDataGridViewTextBoxColumn.Name = "filenameDataGridViewTextBoxColumn";
             this.filenameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.filenameDataGridViewTextBoxColumn.Width = 125;
+            this.filenameDataGridViewTextBoxColumn.Width = 115;
             // 
             // lineNumberDataGridViewTextBoxColumn
             // 
@@ -580,7 +617,7 @@
             this.lineNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.lineNumberDataGridViewTextBoxColumn.Name = "lineNumberDataGridViewTextBoxColumn";
             this.lineNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            this.lineNumberDataGridViewTextBoxColumn.Width = 90;
+            this.lineNumberDataGridViewTextBoxColumn.Width = 70;
             // 
             // errorDataGridViewTextBoxColumn
             // 
@@ -648,7 +685,6 @@
         private System.Windows.Forms.ToolStripButton newToolStripButton;
         private System.Windows.Forms.ToolStripButton btHighlightCurrentLine;
         private System.Windows.Forms.ToolStripButton btShowFoldingLines;
-        private System.Windows.Forms.ToolStripStatusLabel lbWordUnderMouse;
         private System.Windows.Forms.ToolStripButton btInvisibleChars;
         private System.Windows.Forms.ToolStripButton openToolStripButton;
         private System.Windows.Forms.OpenFileDialog ofdMain;
@@ -689,6 +725,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn filenameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn lineNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn errorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ToolStripStatusLabel CursorPositionLabel;
+        private System.Windows.Forms.ToolStripStatusLabel ProjectLabel;
+        private System.Windows.Forms.ToolStripStatusLabel PlatformTargetLabel;
     }
 }
 

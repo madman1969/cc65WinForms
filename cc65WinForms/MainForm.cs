@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -154,7 +156,7 @@ namespace cc65WinForms
             "protected ^{ get; set; }"
         };
         Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
-        Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
+        Color currentLineColor = Color.FromArgb(100, 200, 200, 255);
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
 
         private string ProjectFile = string.Empty;
@@ -286,10 +288,12 @@ namespace cc65WinForms
         {
             var tb = sender as FastColoredTextBox;
             Place place = tb.PointToPlace(e.Location);
-            var r = new Range(tb, place, place);
 
-            var text = r.GetFragment("[a-zA-Z]").Text;
-            lbWordUnderMouse.Text = text;
+            UpdateCursorPositionLabel(place);
+
+            //var r = new Range(tb, place, place);
+            //var text = r.GetFragment("[a-zA-Z]").Text;
+            //lbWordUnderMouse.Text = text;
         }
 
         private void btInvisibleChars_Click(object sender, EventArgs e)
@@ -475,11 +479,24 @@ namespace cc65WinForms
 
             // Extract the error ...
             var selectedError = (Cc65Error)errorsDataGridView.SelectedRows[0].DataBoundItem;
-            // Switch to the editor instance and navigate to the error line ...
 
-            // Is there already an open tab for file ?
+            var fileInfo = new FileInfo(selectedError.Filename);
+
+            switch (fileInfo.Extension.ToLower())
+            {
+                case ".c":
+                case ".h":
+                    break;
+
+                // Bail if not a source or header file ...
+                default:
+                    return;
+            }
+
+            // Switch to the editor instance and navigate to the error line ...
             FATabStripItem matchingItem = null;
 
+            // Is there already an open tab for file ?
             foreach (FATabStripItem item in tsFiles.Items)
             {
                 if (item.Caption == selectedError.Filename)
@@ -488,11 +505,18 @@ namespace cc65WinForms
 
                     matchingItem = item;
                     tsFiles.SelectedItem = matchingItem;
-
-                    var tb = (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
-                    tb.Navigate(Math.Max(0, selectedError.LineNumber - 1));
                 }
             }
+
+            // Didn't find open tab for file ...
+            if (matchingItem == null)
+            {
+                CreateTab(Path.Combine(Project.WorkingDirectory, selectedError.Filename));
+            }
+
+            // Highlight the line in error ...
+            var tb = (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
+            tb.Navigate(Math.Max(0, selectedError.LineNumber - 1));
         }
 
         #endregion
@@ -777,7 +801,13 @@ namespace cc65WinForms
             }
         }
 
-        #region Project Routines
+        private void UpdateCursorPositionLabel(Place place)
+        {
+            var message = $"Line {place.iLine}, Column {place.iChar}";
+            CursorPositionLabel.Text = message;
+        }
+
+        #region Project routines
 
         /// <summary>
         /// Opens the project.
@@ -813,10 +843,30 @@ namespace cc65WinForms
             PopulateTreeView();
 
             tbOutput.AppendText($"Loaded project: {ProjectFile} ...{Environment.NewLine}");
+
+            UpdateProjectStatusLabel(Project.ProjectName);
+        }
+
+        private void UpdateProjectStatusLabel(string projectName)
+        {
+            string message;
+
+            if (projectName != null)
+            {
+                message = $"Project {projectName} loaded";
+            }
+            else
+            {
+                message = "No Project Loaded";
+            }
+
+            ProjectLabel.Text = message;
         }
 
         private void CloseProject()
         {
+            tbOutput.AppendText($"Closed project: {ProjectFile} ...{Environment.NewLine}");
+
             // Unload the project ...
             this.Project = null;
 
@@ -828,6 +878,8 @@ namespace cc65WinForms
 
             // Reset the selected platform target ...
             cbTargetPlatform.SelectedIndex = 0;
+
+            UpdateProjectStatusLabel(null);
         }
 
         private bool CanSaveProject()
