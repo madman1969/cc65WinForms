@@ -27,7 +27,10 @@ namespace cc65WinForms
 
         #region Fields and properties
 
-        string[] keywords =
+        /// <summary>
+        /// A list of C/C# keywords used for syntax highlight by the FCTB instance
+        /// </summary>
+        private readonly string[] keywords =
         {
             "abstract",
             "as",
@@ -159,15 +162,30 @@ namespace cc65WinForms
         Color currentLineColor = Color.FromArgb(100, 200, 200, 255);
         Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
 
+        /// <summary>
+        /// A private <c>string</c> used internally as a shortcut to the current project name
+        /// </summary>
         private string ProjectFile = string.Empty;
 
+        /// <summary>
+        /// Gets or sets the current project.
+        /// </summary>
+        /// <value>A <c>Cc65Project</c> instance</value>
         public Cc65Project Project { get; set; } = null;
+
+        /// <summary>
+        /// A private instance of the <c>Cc65Emulators</c> used internally
+        /// </summary>
         private Cc65Emulators emulators;
         private Style sameWordsStyle = new MarkerStyle(
             new SolidBrush(Color.FromArgb(50, Color.Gray))
         );
 
-        FastColoredTextBox CurrentTB
+        /// <summary>
+        /// Gets or sets the currently active <c>FastColoredTextBox</c> instance
+        /// </summary>
+        /// <value>A <c>FastColoredTextBox</c> instance</value>
+        private FastColoredTextBox CurrentTB
         {
             get
             {
@@ -419,6 +437,7 @@ namespace cc65WinForms
                 closeProjectToolStripMenuItem.Enabled =
                     btBuildProject.Enabled =
                     btExecuteProject.Enabled =
+                    projectSettingsToolStripMenuItem.Enabled =
                         this.Project != null;
                 saveProjectToolStripMenuItem.Enabled = saveProjectToolStripButton.Enabled =
                     CanSaveProject();
@@ -509,6 +528,13 @@ namespace cc65WinForms
         {
             FATabStripItem matchingItem = null;
 
+            // Bail if not left mouse button up ...
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            // Was a source/header file node selected ? ...
             if (e.Node.Tag as string != string.Empty)
             {
                 // Is there already an open tab for file ?
@@ -517,7 +543,6 @@ namespace cc65WinForms
                     if (item.Caption == e.Node.Text)
                     {
                         // Yep, so make it the active tab
-
                         matchingItem = item;
                         tsFiles.SelectedItem = matchingItem;
                     }
@@ -529,19 +554,79 @@ namespace cc65WinForms
                     CreateTab(e.Node.Tag as string);
                 }
 
+                // Job done ...
                 return;
             }
 
-            var title = e.Node.Text;
+            // If we got here the user selected one of the following:
+            //
+            // + Root project node
+            // + 'Header Files' node
+            // + 'Source Files' node
+            //
+            // So work out which ...
+            //var title = e.Node.Text;
 
-            switch (title)
+            //switch (title)
+            //{
+            //    case HEADER_FILES:
+            //        break;
+
+            //    case SOURCE_FILES:
+            //        break;
+
+            //    // Root project node ...
+            //    default:
+            //        break;
+            //}
+        }
+
+        private void tvProjectFiles_MouseUp(Object sender, MouseEventArgs e)
+        {
+            // Bail if not right mouse button up ...
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            TreeNode node = tvProjectFiles.GetNodeAt(e.X, e.Y);
+
+            // Bail if no node selected ...
+            if (node == null)
+            {
+                return;
+            }
+
+            var nodeTitle = node.Text;
+
+            switch (nodeTitle)
             {
                 case HEADER_FILES:
                     break;
 
                 case SOURCE_FILES:
                     break;
+
+                default:
+                    return;
             }
+
+            tvProjectFiles.SelectedNode = node;
+            ContextMenu menu = new ContextMenu();
+            MenuItem item = new MenuItem("Add new file");
+            item.Click += new EventHandler(item_Click);
+            item.Tag = nodeTitle;
+            menu.MenuItems.Add(item);
+            item = new MenuItem("Remove file");
+            item.Click += new EventHandler(item_Click);
+            item.Tag = nodeTitle;
+            menu.MenuItems.Add(item);
+            menu.Show(tvProjectFiles, e.Location);
+        }
+
+        void item_Click(object sender, EventArgs e)
+        {
+            ;
         }
 
         /// <summary>
@@ -627,6 +712,16 @@ namespace cc65WinForms
             // Highlight the line in error ...
             var tb = (tsFiles.SelectedItem.Controls[0] as FastColoredTextBox);
             tb.Navigate(Math.Max(0, selectedError.LineNumber - 1));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the projectSettingsToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void projectSettingsToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            DisplayProjectSettingsDialog();
         }
 
         #endregion
@@ -941,6 +1036,8 @@ namespace cc65WinForms
                 // Flag as modified ...
                 Project.IsModified = true;
             }
+
+            UpdateTargetPlatformLabel();
         }
 
         /// <summary>
@@ -1037,6 +1134,26 @@ namespace cc65WinForms
             }
 
             ProjectLabel.Text = message;
+        }
+
+        /// <summary>
+        /// Updates the status bar to show the current target platform selection.
+        /// </summary>
+        /// <remarks>If passed null assumes target platform is C128</remarks>
+        private void UpdateTargetPlatformLabel()
+        {
+            string message;
+
+            if (Project == null)
+            {
+                message = "Target: C128";
+            }
+            else
+            {
+                message = $"Target: {Project.TargetPlatform.ToUpper()}";
+            }
+
+            PlatformTargetLabel.Text = message;
         }
 
         /// <summary>
@@ -1210,6 +1327,20 @@ namespace cc65WinForms
                     Project,
                     emulators
                 );
+            }
+        }
+
+        /// <summary>
+        /// Displays the project settings dialog.
+        /// </summary>
+        /// <remarks>Allows the user to modified the project settings/// </remarks>
+        private void DisplayProjectSettingsDialog()
+        {
+            var dlg = new ProjectSettings();
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                // User has changed project settings !
             }
         }
 

@@ -51,6 +51,8 @@
             this.closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -157,7 +159,8 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1303, 28);
@@ -286,6 +289,21 @@
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.projectSettingsToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // projectSettingsToolStripMenuItem
+            // 
+            this.projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
+            this.projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(195, 26);
+            this.projectSettingsToolStripMenuItem.Text = "Project Settings";
+            this.projectSettingsToolStripMenuItem.Click += new System.EventHandler(this.projectSettingsToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -483,6 +501,7 @@
             this.tvProjectFiles.Size = new System.Drawing.Size(248, 687);
             this.tvProjectFiles.TabIndex = 0;
             this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseClick);
+            this.tvProjectFiles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tvProjectFiles_MouseUp);
             // 
             // tsFiles
             // 
@@ -740,6 +759,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn lineNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn errorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectSettingsToolStripMenuItem;
     }
 }
 
