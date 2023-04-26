@@ -12,6 +12,8 @@ using System.Windows.Forms;
 
 namespace cc65WinForms
 {
+    // TODO: Handle 'Set Path' buttons for 'Project Settings' dialog
+
     /// <summary>
     ///
     /// </summary>

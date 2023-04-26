@@ -611,6 +611,9 @@ namespace cc65WinForms
                     return;
             }
 
+            // TODO: Handle adding new header/source files to project
+            // TODO: Handle removing header/source files to project
+
             tvProjectFiles.SelectedNode = node;
             ContextMenu menu = new ContextMenu();
             MenuItem item = new MenuItem("Add new file");
@@ -1156,6 +1159,8 @@ namespace cc65WinForms
             PlatformTargetLabel.Text = message;
         }
 
+        // TODO: Handle adding new project
+
         /// <summary>
         /// Closes the currently open project.
         /// </summary>
@@ -1340,7 +1345,7 @@ namespace cc65WinForms
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                // User has changed project settings !
+                // TODO: Handle user has changes to project settings !
             }
         }
 
