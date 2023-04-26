@@ -31,6 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectSettings));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.outputPathTextBox = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.setOutputFilebutton = new System.Windows.Forms.Button();
+            this.outputFileLabel = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButtom = new System.Windows.Forms.Button();
@@ -41,22 +45,18 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.projectNameTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.setWorkingDirButton = new System.Windows.Forms.Button();
             this.workingDirLabel = new System.Windows.Forms.Label();
+            this.TargetPlatformComboBox = new System.Windows.Forms.ComboBox();
+            this.optimiseCodeCheckBox = new System.Windows.Forms.CheckBox();
+            this.versionTextBox = new System.Windows.Forms.TextBox();
             this.targetPlatformImageList = new System.Windows.Forms.ImageList(this.components);
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.setOutputFilebutton = new System.Windows.Forms.Button();
-            this.outputFileLabel = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -64,7 +64,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel1.Controls.Add(this.textBox3, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.outputPathTextBox, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -74,11 +74,11 @@
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.label7, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.projectNameTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.checkBox1, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.textBox2, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.TargetPlatformComboBox, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.optimiseCodeCheckBox, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.versionTextBox, 1, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -92,8 +92,57 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(644, 328);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(644, 333);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // outputPathTextBox
+            // 
+            this.outputPathTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.outputPathTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.outputPathTextBox.Location = new System.Drawing.Point(195, 253);
+            this.outputPathTextBox.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
+            this.outputPathTextBox.Name = "outputPathTextBox";
+            this.outputPathTextBox.ReadOnly = true;
+            this.outputPathTextBox.Size = new System.Drawing.Size(400, 22);
+            this.outputPathTextBox.TabIndex = 15;
+            this.outputPathTextBox.Text = "<Not Set>";
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.setOutputFilebutton, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.outputFileLabel, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(198, 128);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(438, 34);
+            this.tableLayoutPanel3.TabIndex = 12;
+            // 
+            // setOutputFilebutton
+            // 
+            this.setOutputFilebutton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setOutputFilebutton.Location = new System.Drawing.Point(341, 3);
+            this.setOutputFilebutton.Name = "setOutputFilebutton";
+            this.setOutputFilebutton.Size = new System.Drawing.Size(94, 28);
+            this.setOutputFilebutton.TabIndex = 0;
+            this.setOutputFilebutton.Text = "Set Path";
+            this.setOutputFilebutton.UseVisualStyleBackColor = true;
+            // 
+            // outputFileLabel
+            // 
+            this.outputFileLabel.AutoSize = true;
+            this.outputFileLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputFileLabel.Location = new System.Drawing.Point(0, 0);
+            this.outputFileLabel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.outputFileLabel.Name = "outputFileLabel";
+            this.outputFileLabel.Size = new System.Drawing.Size(335, 34);
+            this.outputFileLabel.TabIndex = 1;
+            this.outputFileLabel.Text = "<Not Set>";
+            this.outputFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // flowLayoutPanel1
             // 
@@ -103,7 +152,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(198, 288);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(438, 32);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(438, 37);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // cancelButton
@@ -112,7 +161,7 @@
             this.cancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cancelButton.Location = new System.Drawing.Point(360, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 25);
+            this.cancelButton.Size = new System.Drawing.Size(75, 30);
             this.cancelButton.TabIndex = 0;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -122,7 +171,7 @@
             this.okButtom.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.okButtom.Location = new System.Drawing.Point(279, 3);
             this.okButtom.Name = "okButtom";
-            this.okButtom.Size = new System.Drawing.Size(75, 25);
+            this.okButtom.Size = new System.Drawing.Size(75, 30);
             this.okButtom.TabIndex = 1;
             this.okButtom.Text = "OK";
             this.okButtom.UseVisualStyleBackColor = true;
@@ -219,16 +268,16 @@
             this.label7.Text = "Output File Path";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox1
+            // projectNameTextBox
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(198, 13);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 8, 250, 0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 22);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.Text = "<Not Set>";
+            this.projectNameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.projectNameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectNameTextBox.Location = new System.Drawing.Point(198, 13);
+            this.projectNameTextBox.Margin = new System.Windows.Forms.Padding(3, 8, 250, 0);
+            this.projectNameTextBox.Name = "projectNameTextBox";
+            this.projectNameTextBox.Size = new System.Drawing.Size(191, 22);
+            this.projectNameTextBox.TabIndex = 9;
+            this.projectNameTextBox.Text = "<Not Set>";
             // 
             // tableLayoutPanel2
             // 
@@ -266,6 +315,40 @@
             this.workingDirLabel.Text = "<Not Set>";
             this.workingDirLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // TargetPlatformComboBox
+            // 
+            this.TargetPlatformComboBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.TargetPlatformComboBox.FormattingEnabled = true;
+            this.TargetPlatformComboBox.Location = new System.Drawing.Point(198, 93);
+            this.TargetPlatformComboBox.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+            this.TargetPlatformComboBox.Name = "TargetPlatformComboBox";
+            this.TargetPlatformComboBox.Size = new System.Drawing.Size(90, 24);
+            this.TargetPlatformComboBox.TabIndex = 11;
+            // 
+            // optimiseCodeCheckBox
+            // 
+            this.optimiseCodeCheckBox.AutoSize = true;
+            this.optimiseCodeCheckBox.Checked = true;
+            this.optimiseCodeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.optimiseCodeCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.optimiseCodeCheckBox.Location = new System.Drawing.Point(198, 168);
+            this.optimiseCodeCheckBox.Name = "optimiseCodeCheckBox";
+            this.optimiseCodeCheckBox.Size = new System.Drawing.Size(438, 34);
+            this.optimiseCodeCheckBox.TabIndex = 13;
+            this.optimiseCodeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // versionTextBox
+            // 
+            this.versionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.versionTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.versionTextBox.Location = new System.Drawing.Point(198, 213);
+            this.versionTextBox.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+            this.versionTextBox.Name = "versionTextBox";
+            this.versionTextBox.ReadOnly = true;
+            this.versionTextBox.Size = new System.Drawing.Size(100, 22);
+            this.versionTextBox.TabIndex = 14;
+            this.versionTextBox.Text = "1.0.0.0";
+            // 
             // targetPlatformImageList
             // 
             this.targetPlatformImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("targetPlatformImageList.ImageStream")));
@@ -277,95 +360,13 @@
             this.targetPlatformImageList.Images.SetKeyName(4, "Plus4.png");
             this.targetPlatformImageList.Images.SetKeyName(5, "Vic20.png");
             // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(198, 93);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(90, 24);
-            this.comboBox1.TabIndex = 11;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.setOutputFilebutton, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.outputFileLabel, 0, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(198, 128);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(438, 34);
-            this.tableLayoutPanel3.TabIndex = 12;
-            // 
-            // setOutputFilebutton
-            // 
-            this.setOutputFilebutton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.setOutputFilebutton.Location = new System.Drawing.Point(341, 3);
-            this.setOutputFilebutton.Name = "setOutputFilebutton";
-            this.setOutputFilebutton.Size = new System.Drawing.Size(94, 28);
-            this.setOutputFilebutton.TabIndex = 0;
-            this.setOutputFilebutton.Text = "Set Path";
-            this.setOutputFilebutton.UseVisualStyleBackColor = true;
-            // 
-            // outputFileLabel
-            // 
-            this.outputFileLabel.AutoSize = true;
-            this.outputFileLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outputFileLabel.Location = new System.Drawing.Point(3, 0);
-            this.outputFileLabel.Name = "outputFileLabel";
-            this.outputFileLabel.Size = new System.Drawing.Size(332, 34);
-            this.outputFileLabel.TabIndex = 1;
-            this.outputFileLabel.Text = "<Not Set>";
-            this.outputFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox1.Location = new System.Drawing.Point(198, 168);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(438, 34);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // textBox2
-            // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.textBox2.Location = new System.Drawing.Point(198, 213);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
-            this.textBox2.TabIndex = 14;
-            this.textBox2.Text = "1.0.0.0";
-            // 
-            // textBox3
-            // 
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.textBox3.Location = new System.Drawing.Point(195, 253);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(100, 22);
-            this.textBox3.TabIndex = 15;
-            this.textBox3.Text = "<Not Set>";
-            // 
             // ProjectSettings
             // 
             this.AcceptButton = this.okButtom;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(644, 328);
+            this.ClientSize = new System.Drawing.Size(644, 333);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -374,13 +375,14 @@
             this.Name = "ProjectSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Settings";
+            this.Load += new System.EventHandler(this.ProjectSettings_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -398,17 +400,17 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox projectNameTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button setWorkingDirButton;
         private System.Windows.Forms.Label workingDirLabel;
         private System.Windows.Forms.ImageList targetPlatformImageList;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox TargetPlatformComboBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button setOutputFilebutton;
         private System.Windows.Forms.Label outputFileLabel;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.CheckBox optimiseCodeCheckBox;
+        private System.Windows.Forms.TextBox versionTextBox;
+        private System.Windows.Forms.TextBox outputPathTextBox;
     }
 }

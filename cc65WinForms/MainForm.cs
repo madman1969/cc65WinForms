@@ -1336,7 +1336,7 @@ namespace cc65WinForms
         /// <remarks>Allows the user to modified the project settings/// </remarks>
         private void DisplayProjectSettingsDialog()
         {
-            var dlg = new ProjectSettings();
+            var dlg = new ProjectSettings { Project = Project };
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
