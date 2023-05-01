@@ -112,30 +112,48 @@ namespace cc65Wrapper
                     System.StringSplitOptions.RemoveEmptyEntries
                 );
 
-                if (errorDetails.Length < 4)
+                switch (errorDetails.Length)
                 {
-                    errorList.Add(
-                        new Cc65Error
+                    case 3:
+                        errorList.Add(
+                            new Cc65Error
+                            {
+                                Filename = errorDetails[0].Trim(),
+                                LineNumber = 0,
+                                Type = errorDetails[1].Trim(),
+                                Error = errorDetails[2].Trim()
+                            }
+                        );
+                        break;
+
+                    case 4:
+                        errorList.Add(
+                            new Cc65Error
+                            {
+                                Filename = errorDetails[0].Trim(),
+                                LineNumber = int.Parse(errorDetails[1].Trim()),
+                                Type = errorDetails[2].Trim(),
+                                Error = errorDetails[3].Trim()
+                            }
+                        );
+                        break;
+
+                    default:
+                        var errorText = string.Empty;
+                        for (int i = 2; i < errorDetails.Length; i++)
                         {
-                            Filename = errorDetails[0].Trim(),
-                            LineNumber = 0,
-                            Type = errorDetails[1].Trim(),
-                            Error = errorDetails[2].Trim()
+                            errorText += errorDetails[i].ToString();
                         }
-                    );
-                }
-                else
-                {
-                    errorList.Add(
-                        new Cc65Error
-                        {
-                            Filename = errorDetails[0].Trim(),
-                            LineNumber = int.Parse(errorDetails[1].Trim()),
-                            Type = errorDetails[2].Trim(),
-                            Error = errorDetails[3].Trim()
-                        }
-                    );
-                    ;
+                        errorList.Add(
+                            new Cc65Error
+                            {
+                                Filename = errorDetails[0].Trim(),
+                                LineNumber = 0,
+                                Type = errorDetails[1].Trim(),
+                                Error = errorText
+                            }
+                        );
+                        break;
                 }
             }
 
