@@ -33,8 +33,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.outputPathTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.setOutputFilebutton = new System.Windows.Forms.Button();
-            this.outputFileLabel = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButtom = new System.Windows.Forms.Button();
@@ -53,6 +51,7 @@
             this.optimiseCodeCheckBox = new System.Windows.Forms.CheckBox();
             this.versionTextBox = new System.Windows.Forms.TextBox();
             this.targetPlatformImageList = new System.Windows.Forms.ImageList(this.components);
+            this.outputFileTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -112,8 +111,7 @@
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.setOutputFilebutton, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.outputFileLabel, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.outputFileTextBox, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(198, 128);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -121,28 +119,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(438, 34);
             this.tableLayoutPanel3.TabIndex = 12;
-            // 
-            // setOutputFilebutton
-            // 
-            this.setOutputFilebutton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.setOutputFilebutton.Location = new System.Drawing.Point(341, 3);
-            this.setOutputFilebutton.Name = "setOutputFilebutton";
-            this.setOutputFilebutton.Size = new System.Drawing.Size(94, 28);
-            this.setOutputFilebutton.TabIndex = 0;
-            this.setOutputFilebutton.Text = "Set Path";
-            this.setOutputFilebutton.UseVisualStyleBackColor = true;
-            // 
-            // outputFileLabel
-            // 
-            this.outputFileLabel.AutoSize = true;
-            this.outputFileLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outputFileLabel.Location = new System.Drawing.Point(0, 0);
-            this.outputFileLabel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.outputFileLabel.Name = "outputFileLabel";
-            this.outputFileLabel.Size = new System.Drawing.Size(335, 34);
-            this.outputFileLabel.TabIndex = 1;
-            this.outputFileLabel.Text = "<Not Set>";
-            this.outputFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // flowLayoutPanel1
             // 
@@ -303,6 +279,7 @@
             this.setWorkingDirButton.TabIndex = 0;
             this.setWorkingDirButton.Text = "Set Path";
             this.setWorkingDirButton.UseVisualStyleBackColor = true;
+            this.setWorkingDirButton.Click += new System.EventHandler(this.setWorkingDirButton_Click);
             // 
             // workingDirLabel
             // 
@@ -360,6 +337,16 @@
             this.targetPlatformImageList.Images.SetKeyName(4, "Plus4.png");
             this.targetPlatformImageList.Images.SetKeyName(5, "Vic20.png");
             // 
+            // outputFileTextBox
+            // 
+            this.outputFileTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.outputFileTextBox.Location = new System.Drawing.Point(3, 8);
+            this.outputFileTextBox.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+            this.outputFileTextBox.Name = "outputFileTextBox";
+            this.outputFileTextBox.Size = new System.Drawing.Size(188, 22);
+            this.outputFileTextBox.TabIndex = 2;
+            this.outputFileTextBox.TextChanged += new System.EventHandler(this.outputFileTextBox_TextChanged);
+            // 
             // ProjectSettings
             // 
             this.AcceptButton = this.okButtom;
@@ -407,10 +394,9 @@
         private System.Windows.Forms.ImageList targetPlatformImageList;
         private System.Windows.Forms.ComboBox TargetPlatformComboBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Button setOutputFilebutton;
-        private System.Windows.Forms.Label outputFileLabel;
         private System.Windows.Forms.CheckBox optimiseCodeCheckBox;
         private System.Windows.Forms.TextBox versionTextBox;
         private System.Windows.Forms.TextBox outputPathTextBox;
+        private System.Windows.Forms.TextBox outputFileTextBox;
     }
 }
