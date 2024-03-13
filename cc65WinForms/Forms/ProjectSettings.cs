@@ -27,7 +27,7 @@ namespace cc65WinForms
         /// <value>
         /// A <c>Cc65Project</c> instance.
         /// </value>
-        public Cc65Project Project { get; set; }
+        public CC65Project Project { get; set; }
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace cc65WinForms
         #region Event Handlers
 
         /// <summary>
-        /// Handles the Click event of the okButtom control.
+        /// Handles the Click event of the ok Button control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
@@ -55,25 +55,46 @@ namespace cc65WinForms
         {
             // Check if project settings have changed ...
 
-            if (Project.ProjectName != projectNameTextBox.Text)
+            if (
+                string.Compare(
+                    Project.ProjectName,
+                    projectNameTextBox.Text,
+                    StringComparison.Ordinal
+                ) != 0
+            )
             {
                 Project.ProjectName = projectNameTextBox.Text;
                 Project.IsModified = true;
             }
 
-            if (Project.WorkingDirectory != workingDirLabel.Text)
+            if (
+                string.Compare(
+                    Project.WorkingDirectory,
+                    workingDirLabel.Text,
+                    StringComparison.Ordinal
+                ) != 0
+            )
             {
                 Project.WorkingDirectory = workingDirLabel.Text;
                 Project.IsModified = true;
             }
 
-            if (Project.TargetPlatform != TargetPlatformComboBox.SelectedItem as string)
+            if (
+                string.Compare(
+                    Project.TargetPlatform,
+                    TargetPlatformComboBox.SelectedItem as string,
+                    StringComparison.Ordinal
+                ) != 0
+            )
             {
                 Project.TargetPlatform = TargetPlatformComboBox.SelectedItem as string;
                 Project.IsModified = true;
             }
 
-            if (Project.OutputFile != outputFileTextBox.Text)
+            if (
+                string.Compare(Project.OutputFile, outputFileTextBox.Text, StringComparison.Ordinal)
+                != 0
+            )
             {
                 Project.OutputFile = outputFileTextBox.Text;
                 Project.IsModified = true;

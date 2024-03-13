@@ -9,17 +9,17 @@ namespace cc65Wrapper.Enumerations
     public enum CC65FileTypes
     {
         /// <summary>
-        /// The default file type enumeration
+        /// The default type enumeration
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// The source file file type enumeration
+        /// The source file type enumeration
         /// </summary>
         SourceFile = 2,
 
         /// <summary>
-        /// The include file file type enumeration
+        /// The include file type enumeration
         /// </summary>
         IncludeFile = 4
     }

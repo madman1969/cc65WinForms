@@ -54,6 +54,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\MainForm.EventHandlers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.FileHandling.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.ProjectHandling.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Helpers\InvisibleCharsRenderer.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

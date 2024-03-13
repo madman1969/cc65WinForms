@@ -1,5 +1,6 @@
 ﻿using CliWrap;
 using CliWrap.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace cc65Wrapper
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
         /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
         /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
-        public static async Task<ExecutionResult> Compile(Cc65Project project)
+        public static async Task<ExecutionResult> Compile(CC65Project project)
         {
             ExecutionResult result;
 
@@ -77,7 +78,7 @@ namespace cc65Wrapper
         public static List<string> ErrorsAsStringList(ExecutionResult executionResult)
         {
             var splitErrors = executionResult.StandardError.Split(
-                new string[] { "\r\n", "\r", "\n" },
+                new string[] { Environment.NewLine, "\r", "\n" },
                 System.StringSplitOptions.RemoveEmptyEntries
             );
 
@@ -98,7 +99,7 @@ namespace cc65Wrapper
             var errorList = new List<Cc65Error>();
 
             var firstPass = executionResult.StandardError.Split(
-                new string[] { "\r\n", "\r", "\n" },
+                new string[] { Environment.NewLine, "\r", "\n" },
                 System.StringSplitOptions.RemoveEmptyEntries
             );
 
@@ -169,7 +170,7 @@ namespace cc65Wrapper
         /// </summary>
         /// <param name="project">A populated Cc65Project instance</param>
         /// <returns>A List of <c>string</c> instances representing the CL65 arguments</returns>
-        private static List<string> BuildArgumentsList(Cc65Project project)
+        private static List<string> BuildArgumentsList(CC65Project project)
         {
             // Add the target platform ...
             var result = new List<string>

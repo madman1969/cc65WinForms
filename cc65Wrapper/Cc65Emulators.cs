@@ -91,7 +91,7 @@ namespace cc65Wrapper
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
         /// <returns>An <c>ExecutionResult</c> instance containing the result of the attempt to launch the emulator</returns>
         public static async Task<ExecutionResult> LaunchEmulator(
-            Cc65Project project,
+            CC65Project project,
             Cc65Emulators emulators
         )
         {
@@ -133,9 +133,9 @@ namespace cc65Wrapper
         /// Builds the cmd-line options required to build the project binary
         /// </summary>
         /// <param name="project">A <c>Cc65Project</c> instance which lists the binary to run</param>
-        /// <returns>A list of <c>string</c> arguements to pass to the 'cl65' compiler</returns>
-        /// <remarks>The return value is passed as an arguement list to the 'cl65' compiler</remarks>
-        private static List<string> BuildArgumentsList(Cc65Project project)
+        /// <returns>A list of <c>string</c> arguments to pass to the 'cl65' compiler</returns>
+        /// <remarks>The return value is passed as an argument list to the 'cl65' compiler</remarks>
+        private static List<string> BuildArgumentsList(CC65Project project)
         {
             // Add the target platform ...
             var result = new List<string>();
@@ -151,7 +151,7 @@ namespace cc65Wrapper
         /// <param name="project">A <c>Cc65Project</c> instance</param>
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
         /// <returns>The file path to the appropriate WinVICE emulator for the project</returns>
-        private static string GetSelectedEmulator(Cc65Project project, Cc65Emulators emulators)
+        private static string GetSelectedEmulator(CC65Project project, Cc65Emulators emulators)
         {
             var result = string.Empty;
 

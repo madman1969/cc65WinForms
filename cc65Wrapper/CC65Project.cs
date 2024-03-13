@@ -7,7 +7,7 @@ namespace cc65Wrapper
     /// <summary>
     /// Class defining the elements of a project
     /// </summary>
-    public class Cc65Project
+    public class CC65Project
     {
         #region Constants
 
@@ -100,7 +100,7 @@ namespace cc65Wrapper
         /// <summary>
         /// Class Constructor
         /// </summary>
-        public Cc65Project()
+        public CC65Project()
         {
             WorkingDirectory = string.Empty;
             TargetPlatform = "pet";
@@ -130,9 +130,9 @@ namespace cc65Wrapper
         /// </summary>
         /// <param name="Json">A JSON format <c>string</c> representation of a <c>Cc65Project</c></param>
         /// <returns>A populated <c>Cc65Project</c> instance</returns>
-        public static Cc65Project FromJson(string Json)
+        public static CC65Project FromJson(string Json)
         {
-            Cc65Project result = JsonConvert.DeserializeObject<Cc65Project>(Json);
+            CC65Project result = JsonConvert.DeserializeObject<CC65Project>(Json);
 
             result.InputFiles.Sort();
             result.HeaderFiles.Sort();
