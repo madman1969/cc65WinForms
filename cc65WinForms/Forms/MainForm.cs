@@ -22,141 +22,9 @@ namespace cc65WinForms
         #endregion
 
         #region Fields and properties
-
-        /// <summary>
-        /// A list of C/C# keywords used for syntax highlight by the FCTB instance
-        /// </summary>
-        private readonly string[] keywords =
-        {
-            "abstract",
-            "as",
-            "base",
-            "bool",
-            "break",
-            "byte",
-            "case",
-            "catch",
-            "char",
-            "checked",
-            "class",
-            "const",
-            "continue",
-            "decimal",
-            "default",
-            "delegate",
-            "do",
-            "double",
-            "else",
-            "enum",
-            "event",
-            "explicit",
-            "extern",
-            "false",
-            "finally",
-            "fixed",
-            "float",
-            "for",
-            "foreach",
-            "goto",
-            "if",
-            "implicit",
-            "in",
-            "int",
-            "interface",
-            "internal",
-            "is",
-            "lock",
-            "long",
-            "namespace",
-            "new",
-            "null",
-            "object",
-            "operator",
-            "out",
-            "override",
-            "params",
-            "private",
-            "protected",
-            "public",
-            "readonly",
-            "ref",
-            "return",
-            "sbyte",
-            "sealed",
-            "short",
-            "sizeof",
-            "stackalloc",
-            "static",
-            "string",
-            "struct",
-            "switch",
-            "this",
-            "throw",
-            "true",
-            "try",
-            "typeof",
-            "uint",
-            "ulong",
-            "unchecked",
-            "unsafe",
-            "ushort",
-            "using",
-            "virtual",
-            "void",
-            "volatile",
-            "while",
-            "add",
-            "alias",
-            "ascending",
-            "descending",
-            "dynamic",
-            "from",
-            "get",
-            "global",
-            "group",
-            "into",
-            "join",
-            "let",
-            "orderby",
-            "partial",
-            "remove",
-            "select",
-            "set",
-            "value",
-            "var",
-            "where",
-            "yield"
-        };
-        string[] methods = { "Equals()", "GetHashCode()", "GetType()", "ToString()" };
-        string[] snippets =
-        {
-            "if(^)\n{\n;\n}",
-            "if(^)\n{\n;\n}\nelse\n{\n;\n}",
-            "for(^;;)\n{\n;\n}",
-            "while(^)\n{\n;\n}",
-            "do\n{\n^;\n}while();",
-            "switch(^)\n{\ncase : break;\n}"
-        };
-        string[] declarationSnippets =
-        {
-            "public class ^\n{\n}",
-            "private class ^\n{\n}",
-            "internal class ^\n{\n}",
-            "public struct ^\n{\n;\n}",
-            "private struct ^\n{\n;\n}",
-            "internal struct ^\n{\n;\n}",
-            "public void ^()\n{\n;\n}",
-            "private void ^()\n{\n;\n}",
-            "internal void ^()\n{\n;\n}",
-            "protected void ^()\n{\n;\n}",
-            "public ^{ get; set; }",
-            "private ^{ get; set; }",
-            "internal ^{ get; set; }",
-            "protected ^{ get; set; }"
-        };
-        Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
-        Color currentLineColor = Color.FromArgb(100, 200, 200, 255);
-        Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
+        readonly Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
+        readonly Color currentLineColor = Color.FromArgb(100, 200, 200, 255);
+        readonly Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
 
         /// <summary>
         /// A private <c>string</c> used internally as a shortcut to the current project name
@@ -172,8 +40,8 @@ namespace cc65WinForms
         /// <summary>
         /// A private instance of the <c>Cc65Emulators</c> used internally
         /// </summary>
-        private Cc65Emulators emulators;
-        private Style sameWordsStyle = new MarkerStyle(
+        readonly Cc65Emulators emulators;
+        readonly Style sameWordsStyle = new MarkerStyle(
             new SolidBrush(Color.FromArgb(50, Color.Gray))
         );
 
@@ -361,15 +229,17 @@ namespace cc65WinForms
         {
             try
             {
-                var tb = new FastColoredTextBox();
-                tb.Font = new Font("Consolas", 9.75f);
-                // tb.Font = new Font("Fira Code", 9.75f);
-                // tb.ContextMenuStrip = cmMain;
-                tb.Dock = DockStyle.Fill;
-                tb.BorderStyle = BorderStyle.Fixed3D;
-                //tb.VirtualSpace = true;
-                tb.LeftPadding = 17;
-                tb.Language = Language.CSharp;
+                var tb = new FastColoredTextBox()
+                {
+                    Font = new Font("Consolas", 9.75f),
+                    /* tb.Font = new Font("Fira Code", 9.75f);*/
+                    /* tb.ContextMenuStrip = cmMain;*/
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.Fixed3D,
+                    /*tb.VirtualSpace = true;*/
+                    LeftPadding = 17,
+                    Language = Language.CSharp
+                };
                 tb.AddStyle(sameWordsStyle); //same words style
                 var tab = new FATabStripItem(
                     fileName != null ? Path.GetFileName(fileName) : "[new]",
@@ -392,9 +262,9 @@ namespace cc65WinForms
                 tb.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(
                     Tb_TextChangedDelayed
                 );
-                tb.SelectionChangedDelayed += new EventHandler(tb_SelectionChangedDelayed);
-                tb.KeyDown += new KeyEventHandler(tb_KeyDown);
-                tb.MouseMove += new MouseEventHandler(tb_MouseMove);
+                tb.SelectionChangedDelayed += new EventHandler(Tb_SelectionChangedDelayed);
+                tb.KeyDown += new KeyEventHandler(Tb_KeyDown);
+                tb.MouseMove += new MouseEventHandler(Tb_MouseMove);
                 tb.ChangedLineColor = changedLineColor;
                 if (btHighlightCurrentLine.Checked)
                 {
@@ -461,10 +331,8 @@ namespace cc65WinForms
                     (tab.Controls[0] as FastColoredTextBox).CurrentLineColor = Color.Transparent;
                 }
             }
-            if (CurrentTB != null)
-            {
-                CurrentTB.Invalidate();
-            }
+
+            CurrentTB?.Invalidate();
         }
 
         /// <summary>

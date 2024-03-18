@@ -227,14 +227,14 @@
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
             this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.openProjectToolStripMenuItem.Text = "Open Project";
-            this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
+            this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.OpenProjectToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
             this.openFileToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.openFileToolStripMenuItem.Text = "Open File";
-            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openToolStripButton_Click);
+            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripButton_Click);
             // 
             // toolStripSeparator6
             // 
@@ -246,21 +246,21 @@
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
             this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
-            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripButton_Click);
+            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.SaveProjectToolStripButton_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.saveToolStripMenuItem.Text = "Save File";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripButton_Click);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripButton_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.saveAsToolStripMenuItem.Text = "Save As";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
@@ -272,14 +272,14 @@
             this.closeFileToolStripMenuItem.Name = "closeFileToolStripMenuItem";
             this.closeFileToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.closeFileToolStripMenuItem.Text = "Close File";
-            this.closeFileToolStripMenuItem.Click += new System.EventHandler(this.closeFileToolStripMenuItem_Click);
+            this.closeFileToolStripMenuItem.Click += new System.EventHandler(this.CloseFileToolStripMenuItem_Click);
             // 
             // closeProjectToolStripMenuItem
             // 
             this.closeProjectToolStripMenuItem.Name = "closeProjectToolStripMenuItem";
             this.closeProjectToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.closeProjectToolStripMenuItem.Text = "Close Project";
-            this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.closeProjectToolStripMenuItem_Click);
+            this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.CloseProjectToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -291,7 +291,7 @@
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -306,7 +306,7 @@
             this.projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
             this.projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(237, 34);
             this.projectSettingsToolStripMenuItem.Text = "Project Settings";
-            this.projectSettingsToolStripMenuItem.Click += new System.EventHandler(this.projectSettingsToolStripMenuItem_Click);
+            this.projectSettingsToolStripMenuItem.Click += new System.EventHandler(this.ProjectSettingsToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -353,7 +353,7 @@
             this.openToolStripButton.Size = new System.Drawing.Size(34, 28);
             this.openToolStripButton.Text = "toolStripButton1";
             this.openToolStripButton.ToolTipText = "Open File";
-            this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
+            this.openToolStripButton.Click += new System.EventHandler(this.OpenToolStripButton_Click);
             // 
             // toolStripSeparator3
             // 
@@ -369,7 +369,7 @@
             this.saveToolStripButton.Size = new System.Drawing.Size(34, 28);
             this.saveToolStripButton.Text = "toolStripButton1";
             this.saveToolStripButton.ToolTipText = "Save File";
-            this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
+            this.saveToolStripButton.Click += new System.EventHandler(this.SaveToolStripButton_Click);
             // 
             // saveProjectToolStripButton
             // 
@@ -380,7 +380,7 @@
             this.saveProjectToolStripButton.Size = new System.Drawing.Size(34, 28);
             this.saveProjectToolStripButton.Text = "toolStripButton1";
             this.saveProjectToolStripButton.ToolTipText = "Save Project";
-            this.saveProjectToolStripButton.Click += new System.EventHandler(this.saveProjectToolStripButton_Click);
+            this.saveProjectToolStripButton.Click += new System.EventHandler(this.SaveProjectToolStripButton_Click);
             // 
             // toolStripSeparator2
             // 
@@ -405,7 +405,7 @@
             this.cbTargetPlatform.Name = "cbTargetPlatform";
             this.cbTargetPlatform.Size = new System.Drawing.Size(136, 33);
             this.cbTargetPlatform.Sorted = true;
-            this.cbTargetPlatform.SelectedIndexChanged += new System.EventHandler(this.cbTargetPlatform_SelectedIndexChanged);
+            this.cbTargetPlatform.SelectedIndexChanged += new System.EventHandler(this.CbTargetPlatform_SelectedIndexChanged);
             // 
             // toolStripSeparator4
             // 
@@ -420,7 +420,7 @@
             this.btBuildProject.Name = "btBuildProject";
             this.btBuildProject.Size = new System.Drawing.Size(34, 28);
             this.btBuildProject.Text = "Build Project";
-            this.btBuildProject.Click += new System.EventHandler(this.btBuildProject_Click);
+            this.btBuildProject.Click += new System.EventHandler(this.BtBuildProject_ClickAsync);
             // 
             // btExecuteProject
             // 
@@ -430,7 +430,7 @@
             this.btExecuteProject.Name = "btExecuteProject";
             this.btExecuteProject.Size = new System.Drawing.Size(34, 28);
             this.btExecuteProject.Text = "Execute Project";
-            this.btExecuteProject.Click += new System.EventHandler(this.btExecuteProject_Click);
+            this.btExecuteProject.Click += new System.EventHandler(this.BtExecuteProject_ClickAsync);
             // 
             // toolStripSeparator5
             // 
@@ -447,7 +447,7 @@
             this.btInvisibleChars.Size = new System.Drawing.Size(34, 28);
             this.btInvisibleChars.Text = "toolStripButton1";
             this.btInvisibleChars.ToolTipText = "Show invisible chars";
-            this.btInvisibleChars.Click += new System.EventHandler(this.btInvisibleChars_Click);
+            this.btInvisibleChars.Click += new System.EventHandler(this.BtInvisibleChars_Click);
             // 
             // btHighlightCurrentLine
             // 
@@ -461,7 +461,7 @@
             this.btHighlightCurrentLine.Size = new System.Drawing.Size(34, 28);
             this.btHighlightCurrentLine.Text = "toolStripButton1";
             this.btHighlightCurrentLine.ToolTipText = "Highlight current line";
-            this.btHighlightCurrentLine.Click += new System.EventHandler(this.btHighlightCurrentLine_Click);
+            this.btHighlightCurrentLine.Click += new System.EventHandler(this.BtHighlightCurrentLine_Click);
             // 
             // btShowFoldingLines
             // 
@@ -475,7 +475,7 @@
             this.btShowFoldingLines.Size = new System.Drawing.Size(34, 28);
             this.btShowFoldingLines.Text = "toolStripButton1";
             this.btShowFoldingLines.ToolTipText = "Show folding lines";
-            this.btShowFoldingLines.Click += new System.EventHandler(this.btShowFoldingLines_Click);
+            this.btShowFoldingLines.Click += new System.EventHandler(this.BtShowFoldingLines_Click);
             // 
             // splitContainer1
             // 
@@ -505,8 +505,8 @@
             this.tvProjectFiles.Name = "tvProjectFiles";
             this.tvProjectFiles.Size = new System.Drawing.Size(279, 862);
             this.tvProjectFiles.TabIndex = 0;
-            this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseClick);
-            this.tvProjectFiles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tvProjectFiles_MouseUp);
+            this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TvProjectFiles_NodeMouseClick);
+            this.tvProjectFiles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TvProjectFiles_MouseUp);
             // 
             // tsFiles
             // 
@@ -532,7 +532,7 @@
             // 
             this.tmUpdateInterface.Enabled = true;
             this.tmUpdateInterface.Interval = 400;
-            this.tmUpdateInterface.Tick += new System.EventHandler(this.tmUpdateInterface_Tick);
+            this.tmUpdateInterface.Tick += new System.EventHandler(this.TmUpdateInterface_Tick);
             // 
             // splitContainer2
             // 
@@ -628,7 +628,7 @@
             this.errorsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.errorsDataGridView.Size = new System.Drawing.Size(1461, 329);
             this.errorsDataGridView.TabIndex = 1;
-            this.errorsDataGridView.SelectionChanged += new System.EventHandler(this.errorsDataGridView_SelectionChanged);
+            this.errorsDataGridView.SelectionChanged += new System.EventHandler(this.ErrorsDataGridView_SelectionChanged);
             // 
             // filenameDataGridViewTextBoxColumn
             // 

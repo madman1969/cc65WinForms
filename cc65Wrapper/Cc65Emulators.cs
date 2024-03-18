@@ -17,7 +17,7 @@ namespace cc65Wrapper
         /// <value>
         /// The C64 path.
         /// </value>
-        public string c64Path { get; set; }
+        public string C64Path { get; set; }
 
         /// <summary>
         /// Gets or sets the path for the C128 emulator.
@@ -25,7 +25,7 @@ namespace cc65Wrapper
         /// <value>
         /// The C128 path.
         /// </value>
-        public string c128Path { get; set; }
+        public string C128Path { get; set; }
 
         /// <summary>
         /// Gets or sets the path for the CBM PET emulator.
@@ -33,17 +33,17 @@ namespace cc65Wrapper
         /// <value>
         /// The pet path.
         /// </value>
-        public string petPath { get; set; }
+        public string PetPath { get; set; }
 
         /// <summary>
         /// Gets or sets the path for the VIC 20 emulator
         /// </summary>
-        public string vic20Path { get; set; }
+        public string Vic20Path { get; set; }
 
         /// <summary>
         /// Gets or sets the path for the Plus4 emulator
         /// </summary>
-        public string plus4Path { get; set; }
+        public string Plus4Path { get; set; }
 
         #endregion
 
@@ -54,11 +54,11 @@ namespace cc65Wrapper
         /// </summary>
         public Cc65Emulators()
         {
-            c64Path = string.Empty;
-            c128Path = string.Empty;
-            petPath = string.Empty;
-            vic20Path = string.Empty;
-            plus4Path = string.Empty;
+            C64Path = string.Empty;
+            C128Path = string.Empty;
+            PetPath = string.Empty;
+            Vic20Path = string.Empty;
+            Plus4Path = string.Empty;
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace cc65Wrapper
         /// <param name="project">A <c>Cc65Project</c> instance</param>
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
         /// <returns>An <c>ExecutionResult</c> instance containing the result of the attempt to launch the emulator</returns>
-        public static async Task<ExecutionResult> LaunchEmulator(
+        public static async Task<ExecutionResult> LaunchEmulatorAsync(
             CC65Project project,
             Cc65Emulators emulators
         )
@@ -138,9 +138,11 @@ namespace cc65Wrapper
         private static List<string> BuildArgumentsList(CC65Project project)
         {
             // Add the target platform ...
-            var result = new List<string>();
-            result.Add($"-autostart");
-            result.Add(Path.Combine(project.WorkingDirectory, project.OutputFile));
+            var result = new List<string>
+            {
+                $"-autostart",
+                Path.Combine(project.WorkingDirectory, project.OutputFile)
+            };
 
             return result;
         }
@@ -153,33 +155,33 @@ namespace cc65Wrapper
         /// <returns>The file path to the appropriate WinVICE emulator for the project</returns>
         private static string GetSelectedEmulator(CC65Project project, Cc65Emulators emulators)
         {
-            var result = string.Empty;
+            System.String result;
 
             switch (project.TargetPlatform)
             {
                 case "pet":
-                    result = emulators.petPath;
+                    result = emulators.PetPath;
                     break;
 
                 case "c64":
-                    result = emulators.c64Path;
+                    result = emulators.C64Path;
                     break;
 
                 case "c128":
-                    result = emulators.c128Path;
+                    result = emulators.C128Path;
                     break;
 
                 case "vic20":
-                    result = emulators.vic20Path;
+                    result = emulators.Vic20Path;
                     break;
 
                 case "plus4":
                 case "c16":
-                    result = emulators.plus4Path;
+                    result = emulators.Plus4Path;
                     break;
 
                 default:
-                    result = emulators.c64Path;
+                    result = emulators.C64Path;
                     break;
             }
 

@@ -43,7 +43,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        void tb_SelectionChangedDelayed(object sender, EventArgs e)
+        void Tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
             //remember last visit time
@@ -86,7 +86,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        void tb_KeyDown(object sender, KeyEventArgs e)
+        void Tb_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.OemMinus)
             {
@@ -113,7 +113,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
-        void tb_MouseMove(object sender, MouseEventArgs e)
+        void Tb_MouseMove(object sender, MouseEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
             Place place = tb.PointToPlace(e.Location);
@@ -130,17 +130,14 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btInvisibleChars_Click(object sender, EventArgs e)
+        private void BtInvisibleChars_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
             {
                 HighlightInvisibleChars((tab.Controls[0] as FastColoredTextBox).Range);
             }
 
-            if (CurrentTB != null)
-            {
-                CurrentTB.Invalidate();
-            }
+            CurrentTB?.Invalidate();
         }
 
         /// <summary>
@@ -148,7 +145,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void openToolStripButton_Click(object sender, EventArgs e)
+        private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFile();
         }
@@ -158,7 +155,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void saveToolStripButton_Click(object sender, EventArgs e)
+        private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
             SaveFile();
         }
@@ -168,7 +165,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileAs();
         }
@@ -178,7 +175,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void QuitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -188,7 +185,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void tmUpdateInterface_Tick(object sender, EventArgs e)
+        private void TmUpdateInterface_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -239,7 +236,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btHighlightCurrentLine_Click(object sender, EventArgs e)
+        private void BtHighlightCurrentLine_Click(object sender, EventArgs e)
         {
             ChangeCurrentLineHighLight();
         }
@@ -249,7 +246,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void btShowFoldingLines_Click(object sender, EventArgs e)
+        private void BtShowFoldingLines_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
             {
@@ -257,10 +254,7 @@ namespace cc65WinForms
                     btShowFoldingLines.Checked;
             }
 
-            if (CurrentTB != null)
-            {
-                CurrentTB.Invalidate();
-            }
+            CurrentTB?.Invalidate();
         }
 
         /// <summary>
@@ -268,7 +262,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void cbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
+        private void CbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeSelectedPlatform();
         }
@@ -278,10 +272,17 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private async void btBuildProject_Click(object sender, EventArgs e)
+        private async void BtBuildProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Building Project{Environment.NewLine}");
-            _ = await BuildProject();
+            try
+            {
+                _ = await BuildProjectAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -289,10 +290,17 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private async void btExecuteProject_Click(object sender, EventArgs e)
+        private async void BtExecuteProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Executing Project{Environment.NewLine}");
-            await ExecuteProject();
+            try
+            {
+                await ExecuteProjectAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -300,7 +308,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenProject();
         }
@@ -310,7 +318,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="TreeNodeMouseClickEventArgs"/> instance containing the event data.</param>
-        private void tvProjectFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void TvProjectFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             FATabStripItem matchingItem = null;
 
@@ -367,7 +375,7 @@ namespace cc65WinForms
             //}
         }
 
-        private void tvProjectFiles_MouseUp(Object sender, MouseEventArgs e)
+        private void TvProjectFiles_MouseUp(Object sender, MouseEventArgs e)
         {
             // Bail if not right mouse button up ...
             if (e.Button != MouseButtons.Right)
@@ -403,17 +411,17 @@ namespace cc65WinForms
             tvProjectFiles.SelectedNode = node;
             ContextMenu menu = new ContextMenu();
             MenuItem item = new MenuItem("Add new file");
-            item.Click += new EventHandler(item_Click);
+            item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
             menu.MenuItems.Add(item);
             item = new MenuItem("Remove file");
-            item.Click += new EventHandler(item_Click);
+            item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
             menu.MenuItems.Add(item);
             menu.Show(tvProjectFiles, e.Location);
         }
 
-        void item_Click(object sender, EventArgs e)
+        void Item_Click(object sender, EventArgs e)
         {
             ;
         }
@@ -423,7 +431,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void closeFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseFile();
         }
@@ -433,7 +441,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseProject();
         }
@@ -443,7 +451,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void saveProjectToolStripButton_Click(object sender, EventArgs e)
+        private void SaveProjectToolStripButton_Click(object sender, EventArgs e)
         {
             SaveProject();
         }
@@ -453,7 +461,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void errorsDataGridView_SelectionChanged(Object sender, EventArgs e)
+        private void ErrorsDataGridView_SelectionChanged(Object sender, EventArgs e)
         {
             // Bail if no errorList selected ...
             if (errorsDataGridView.SelectedRows.Count < 1)
@@ -511,11 +519,10 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void projectSettingsToolStripMenuItem_Click(Object sender, EventArgs e)
+        private void ProjectSettingsToolStripMenuItem_Click(Object sender, EventArgs e)
         {
             DisplayProjectSettingsDialog();
         }
-
         #endregion
     }
 }

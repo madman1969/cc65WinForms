@@ -183,7 +183,7 @@ namespace cc65WinForms
         /// </summary>
         /// <returns><c>true</c> if build successful; else <c>false</c></returns>
         /// <remarks>Will save any open files first</remarks>
-        private async Task<bool> BuildProject()
+        private async Task<bool> BuildProjectAsync()
         {
             SaveOpenFiles();
 
@@ -193,8 +193,8 @@ namespace cc65WinForms
                 $"Building {Project.InputFiles.Count} files for project [{Project.ProjectName}] targeting [{Project.TargetPlatform}]...{Environment.NewLine}"
             );
 
-            // Compile the project ...
-            CliWrap.Models.ExecutionResult result = await Cc65Build.Compile(Project);
+            // CompileAsync the project ...
+            var result = await Cc65Build.CompileAsync(Project);
 
             List<Cc65Error> errorList = new List<Cc65Error>();
 
@@ -255,9 +255,9 @@ namespace cc65WinForms
         /// <summary>
         /// Launches the current project in WinVICE using the current target platform selection.
         /// </summary>
-        private async Task ExecuteProject()
+        private async Task ExecuteProjectAsync()
         {
-            var builtOK = await BuildProject();
+            var builtOK = await BuildProjectAsync();
 
             if (builtOK)
             {
@@ -265,7 +265,7 @@ namespace cc65WinForms
                     $"Launching {Project.ProjectName} in emulator ...{Environment.NewLine}"
                 );
 
-                _ = await Cc65Emulators.LaunchEmulator(Project, emulators);
+                _ = await Cc65Emulators.LaunchEmulatorAsync(Project, emulators);
             }
         }
 

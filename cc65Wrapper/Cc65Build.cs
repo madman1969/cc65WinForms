@@ -35,7 +35,7 @@ namespace cc65Wrapper
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
         /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
         /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
-        public static async Task<ExecutionResult> Compile(CC65Project project)
+        public static async Task<ExecutionResult> CompileAsync(CC65Project project)
         {
             ExecutionResult result;
 
@@ -135,6 +135,18 @@ namespace cc65Wrapper
                                 LineNumber = int.Parse(errorDetails[1].Trim()),
                                 Type = errorDetails[2].Trim(),
                                 Error = errorDetails[3].Trim()
+                            }
+                        );
+                        break;
+
+                    case 5:
+                        errorList.Add(
+                            new Cc65Error
+                            {
+                                Filename = errorDetails[0].Trim(),
+                                LineNumber = int.Parse(errorDetails[1].Trim()),
+                                Type = errorDetails[2].Trim(),
+                                Error = $"{errorDetails[3].Trim()}{errorDetails[4]}"
                             }
                         );
                         break;
