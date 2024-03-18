@@ -96,7 +96,7 @@ namespace cc65WinForms
         }
 
         // TODO 3: Handle adding new project
-        // TODO 4: Update cursor position readout when cursor keys used
+        // TODO 4: Switch focus to 'Output' tab when no compilation errors.
         // TODO 5: Add emulator configuration support
 
         /// <summary>

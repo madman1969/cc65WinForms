@@ -7,8 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-// TODO 1: Refactor MainForm
-
 namespace cc65WinForms
 {
     public partial class MainForm : Form
@@ -158,9 +156,11 @@ namespace cc65WinForms
             var max = new DateTime();
             var iLine = -1;
             FastColoredTextBox tb = null;
+
             for (var iTab = 0; iTab < tsFiles.Items.Count; iTab++)
             {
                 var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
+
                 for (var i = 0; i < t.LinesCount; i++)
                 {
                     if (t[i].LastVisit < lastNavigatedDateTime && t[i].LastVisit > max)
@@ -171,6 +171,7 @@ namespace cc65WinForms
                     }
                 }
             }
+
             if (iLine >= 0)
             {
                 tsFiles.SelectedItem = (tb.Parent as FATabStripItem);
@@ -179,6 +180,7 @@ namespace cc65WinForms
                 Console.WriteLine($"Backward: {lastNavigatedDateTime}");
                 tb.Focus();
                 tb.Invalidate();
+
                 return true;
             }
             else
@@ -192,9 +194,11 @@ namespace cc65WinForms
             DateTime min = DateTime.Now;
             var iLine = -1;
             FastColoredTextBox tb = null;
+
             for (var iTab = 0; iTab < tsFiles.Items.Count; iTab++)
             {
                 var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
+
                 for (var i = 0; i < t.LinesCount; i++)
                 {
                     if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
@@ -205,6 +209,7 @@ namespace cc65WinForms
                     }
                 }
             }
+
             if (iLine >= 0)
             {
                 tsFiles.SelectedItem = (tb.Parent as FATabStripItem);
@@ -213,6 +218,7 @@ namespace cc65WinForms
                 Console.WriteLine($"Forward: {lastNavigatedDateTime}");
                 tb.Focus();
                 tb.Invalidate();
+
                 return true;
             }
             else
@@ -241,6 +247,7 @@ namespace cc65WinForms
                     Language = Language.CSharp
                 };
                 tb.AddStyle(sameWordsStyle); //same words style
+
                 var tab = new FATabStripItem(
                     fileName != null ? Path.GetFileName(fileName) : "[new]",
                     tb
@@ -248,6 +255,7 @@ namespace cc65WinForms
                 {
                     Tag = fileName
                 };
+
                 if (fileName != null)
                 {
                     tb.OpenFile(fileName);
@@ -263,9 +271,11 @@ namespace cc65WinForms
                     Tb_TextChangedDelayed
                 );
                 tb.SelectionChangedDelayed += new EventHandler(Tb_SelectionChangedDelayed);
+                tb.SelectionChanged += Tb_SelectionChanged;
                 tb.KeyDown += new KeyEventHandler(Tb_KeyDown);
                 tb.MouseMove += new MouseEventHandler(Tb_MouseMove);
                 tb.ChangedLineColor = changedLineColor;
+
                 if (btHighlightCurrentLine.Checked)
                 {
                     tb.CurrentLineColor = currentLineColor;

@@ -39,6 +39,19 @@ namespace cc65WinForms
         }
 
         /// <summary>
+        /// Handles the SelectionChanged event of the text box control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void Tb_SelectionChanged(Object sender, EventArgs e)
+        {
+            var tb = sender as FastColoredTextBox;
+
+            UpdateCursorPositionLabel(tb.Selection.Start);
+            // int cursorPosition = tb.Selection.Start.iChar;
+        }
+
+        /// <summary>
         /// Handles the SelectionChangedDelayed event of the tb control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -46,7 +59,8 @@ namespace cc65WinForms
         void Tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
-            //remember last visit time
+
+            // Remember last visit time ...
             if (tb.Selection.IsEmpty && tb.Selection.Start.iLine < tb.LinesCount)
             {
                 if (lastNavigatedDateTime != tb[tb.Selection.Start.iLine].LastVisit)
@@ -56,20 +70,24 @@ namespace cc65WinForms
                 }
             }
 
-            //highlight same words
+            // Highlight same words ...
             tb.VisibleRange.ClearStyle(sameWordsStyle);
+
             if (!tb.Selection.IsEmpty)
             {
                 return; //user selected diapason
             }
-            //get fragment around caret
+
+            // Get fragment around caret ...
             Range fragment = tb.Selection.GetFragment(@"\w");
             var text = fragment.Text;
+
             if (text.Length == 0)
             {
                 return;
             }
-            //highlight same words
+
+            // Highlight same words ...
             Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
 
             if (ranges.Length > 1)
@@ -82,7 +100,7 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the KeyDown event of the tb control.
+        /// Handles the KeyDown event of the text box control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
