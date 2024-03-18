@@ -79,7 +79,7 @@ namespace cc65Wrapper
         {
             var splitErrors = executionResult.StandardError.Split(
                 new string[] { Environment.NewLine, "\r", "\n" },
-                System.StringSplitOptions.RemoveEmptyEntries
+                StringSplitOptions.RemoveEmptyEntries
             );
 
             var errorsList = new List<string>(splitErrors);
@@ -98,19 +98,23 @@ namespace cc65Wrapper
         {
             var errorList = new List<Cc65Error>();
 
+            // Split by CR/LF ...
             var firstPass = executionResult.StandardError.Split(
                 new string[] { Environment.NewLine, "\r", "\n" },
-                System.StringSplitOptions.RemoveEmptyEntries
+                StringSplitOptions.RemoveEmptyEntries
             );
 
+            // De-duplicate the errors ...
             var tmp = new List<string>(firstPass);
             var dedupedList = tmp.Distinct().ToList();
 
+            // For each error ...
             foreach (var error in dedupedList)
             {
+                // Split into component parts, i.e. filename, line number, error type, etc ...
                 var errorDetails = error.Split(
                     new string[] { ":" },
-                    System.StringSplitOptions.RemoveEmptyEntries
+                    StringSplitOptions.RemoveEmptyEntries
                 );
 
                 switch (errorDetails.Length)
