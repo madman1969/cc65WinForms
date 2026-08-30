@@ -83,7 +83,7 @@ var loggerFactory = LoggerFactory.Create(builder =>
 });
 
 // Set global factory for static API usage
-LoggerFactory.SetLoggerFactory(loggerFactory);
+Cc65LoggerFactory.SetLoggerFactory(loggerFactory);
 
 // Now legacy code automatically logs
 var result = await Cc65Build.CompileAsync(project);
@@ -302,7 +302,7 @@ builder.AddFilter("cc65Wrapper.Parsers", LogLevel.Error);
 
 ```csharp
 // Must set global factory for static methods
-LoggerFactory.SetLoggerFactory(myLoggerFactory);
+Cc65LoggerFactory.SetLoggerFactory(myLoggerFactory);
 ```
 
 ## Configuration Examples
