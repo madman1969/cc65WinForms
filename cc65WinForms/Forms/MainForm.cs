@@ -2,6 +2,7 @@
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace cc65WinForms
         /// Gets or sets the current project.
         /// </summary>
         /// <value>A <c>Cc65Project</c> instance</value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CC65Project Project { get; set; } = null;
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace cc65WinForms
         /// Suppresses or highlights the invisible chars.
         /// </summary>
         /// <param name="range">The range.</param>
-        private void HighlightInvisibleChars(Range range)
+        private void HighlightInvisibleChars(FastColoredTextBoxNS.Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
 

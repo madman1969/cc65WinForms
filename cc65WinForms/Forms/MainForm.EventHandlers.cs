@@ -79,7 +79,7 @@ namespace cc65WinForms
             }
 
             // Get fragment around caret ...
-            Range fragment = tb.Selection.GetFragment(@"\w");
+            FastColoredTextBoxNS.Range fragment = tb.Selection.GetFragment(@"\w");
             var text = fragment.Text;
 
             if (text.Length == 0)
@@ -88,11 +88,11 @@ namespace cc65WinForms
             }
 
             // Highlight same words ...
-            Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
+            FastColoredTextBoxNS.Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
 
             if (ranges.Length > 1)
             {
-                foreach (Range r in ranges)
+                foreach (FastColoredTextBoxNS.Range r in ranges)
                 {
                     r.SetStyle(sameWordsStyle);
                 }
