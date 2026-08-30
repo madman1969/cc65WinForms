@@ -1,4 +1,9 @@
 ﻿using cc65Wrapper.Enumerations;
+using cc65Wrapper.Abstractions;
+using cc65Wrapper.Builders;
+using cc65Wrapper.Infrastructure;
+using cc65Wrapper.Parsers;
+using cc65Wrapper.Services;
 using CliWrap;
 using CliWrap.Buffered;
 using System;
@@ -12,6 +17,10 @@ namespace cc65Wrapper
     /// <summary>
     /// Wrapper class for CC65. Allows building of defined project
     /// </summary>
+    /// <remarks>
+    /// This class provides backward compatibility with the old static API.
+    /// For new code, use ICompiler with dependency injection.
+    /// </remarks>
     public class Cc65Build
     {
         #region Constants
@@ -36,7 +45,11 @@ namespace cc65Wrapper
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A <c>BufferedCommandResult</c> instance containing the results of the call out to CC65</returns>
-        /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
+        /// <remarks>
+        /// This is a legacy method maintained for backward compatibility.
+        /// For new code, use ICompiler with dependency injection.
+        /// It builds a valid CC65 cmd-line from the project source files and the project compiler setting
+        /// </remarks>
         /// <exception cref="ArgumentNullException">Thrown when project is null</exception>
         /// <exception cref="ArgumentException">Thrown when working directory is empty</exception>
         /// <exception cref="DirectoryNotFoundException">Thrown when working directory does not exist</exception>
@@ -137,37 +150,34 @@ namespace cc65Wrapper
                 {
                     case 3:
                         errorList.Add(
-                            new Cc65Error
-                            {
-                                Filename = errorDetails[0].Trim(),
-                                LineNumber = 0,
-                                Type = errorDetails[1].Trim(),
-                                Error = errorDetails[2].Trim()
-                            }
+                            new Cc65Error(
+                                Filename: errorDetails[0].Trim(),
+                                LineNumber: 0,
+                                Type: errorDetails[1].Trim(),
+                                Error: errorDetails[2].Trim()
+                            )
                         );
                         break;
 
                     case 4:
                         errorList.Add(
-                            new Cc65Error
-                            {
-                                Filename = errorDetails[0].Trim(),
-                                LineNumber = int.Parse(errorDetails[1].Trim()),
-                                Type = errorDetails[2].Trim(),
-                                Error = errorDetails[3].Trim()
-                            }
+                            new Cc65Error(
+                                Filename: errorDetails[0].Trim(),
+                                LineNumber: int.Parse(errorDetails[1].Trim()),
+                                Type: errorDetails[2].Trim(),
+                                Error: errorDetails[3].Trim()
+                            )
                         );
                         break;
 
                     case 5:
                         errorList.Add(
-                            new Cc65Error
-                            {
-                                Filename = errorDetails[0].Trim(),
-                                LineNumber = int.Parse(errorDetails[1].Trim()),
-                                Type = errorDetails[2].Trim(),
-                                Error = $"{errorDetails[3].Trim()}{errorDetails[4]}"
-                            }
+                            new Cc65Error(
+                                Filename: errorDetails[0].Trim(),
+                                LineNumber: int.Parse(errorDetails[1].Trim()),
+                                Type: errorDetails[2].Trim(),
+                                Error: $"{errorDetails[3].Trim()}{errorDetails[4]}"
+                            )
                         );
                         break;
 
@@ -178,13 +188,12 @@ namespace cc65Wrapper
                             errorText += errorDetails[i].ToString();
                         }
                         errorList.Add(
-                            new Cc65Error
-                            {
-                                Filename = errorDetails[0].Trim(),
-                                LineNumber = 0,
-                                Type = errorDetails[1].Trim(),
-                                Error = errorText
-                            }
+                            new Cc65Error(
+                                Filename: errorDetails[0].Trim(),
+                                LineNumber: 0,
+                                Type: errorDetails[1].Trim(),
+                                Error: errorText
+                            )
                         );
                         break;
                 }

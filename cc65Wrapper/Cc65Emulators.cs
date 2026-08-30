@@ -1,4 +1,8 @@
 ﻿using cc65Wrapper.Enumerations;
+using cc65Wrapper.Abstractions;
+using cc65Wrapper.Builders;
+using cc65Wrapper.Infrastructure;
+using cc65Wrapper.Services;
 using CliWrap;
 using CliWrap.Buffered;
 using Newtonsoft.Json;
@@ -8,6 +12,12 @@ using System.Threading.Tasks;
 
 namespace cc65Wrapper
 {
+    /// <summary>
+    /// Configuration for CC65 emulators
+    /// </summary>
+    /// <remarks>
+    /// Static methods provide backward compatibility. For new code, use IEmulatorLauncher with dependency injection.
+    /// </remarks>
     public class Cc65Emulators
     {
         #region Fields and properties
@@ -92,6 +102,10 @@ namespace cc65Wrapper
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
         /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A <c>BufferedCommandResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        /// <remarks>
+        /// This is a legacy method maintained for backward compatibility.
+        /// For new code, use IEmulatorLauncher with dependency injection.
+        /// </remarks>
         /// <exception cref="System.ArgumentNullException">Thrown when project or emulators is null</exception>
         /// <exception cref="System.ArgumentException">Thrown when working directory is empty</exception>
         /// <exception cref="DirectoryNotFoundException">Thrown when working directory does not exist</exception>
