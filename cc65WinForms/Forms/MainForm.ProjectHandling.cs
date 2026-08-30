@@ -35,8 +35,7 @@ namespace cc65WinForms
                 Project = CC65Project.FromJson(json);
 
                 // Select the correct target for the project ...
-                Enum.TryParse(Project.TargetPlatform, out CC65ProjectTypes target);
-                cbTargetPlatform.SelectedIndex = (int)target;
+                cbTargetPlatform.SelectedIndex = (int)Project.TargetPlatform;
 
                 // Clear the modified flag ...
                 Project.IsModified = false;
@@ -89,7 +88,7 @@ namespace cc65WinForms
             }
             else
             {
-                message = $"Target: {Project.TargetPlatform.ToUpper()}";
+                message = $"Target: {Project.TargetPlatform.ToString().ToUpper()}";
             }
 
             PlatformTargetLabel.Text = message;

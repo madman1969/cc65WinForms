@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using cc65Wrapper.Enumerations;
+using CliWrap;
 using CliWrap.Buffered;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -89,12 +90,30 @@ namespace cc65Wrapper
         /// </summary>
         /// <param name="project">A <c>Cc65Project</c> instance</param>
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
+        /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A <c>BufferedCommandResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when project or emulators is null</exception>
+        /// <exception cref="System.ArgumentException">Thrown when working directory is empty</exception>
+        /// <exception cref="DirectoryNotFoundException">Thrown when working directory does not exist</exception>
         public static async Task<BufferedCommandResult> LaunchEmulatorAsync(
             CC65Project project,
-            Cc65Emulators emulators
+            Cc65Emulators emulators,
+            System.Threading.CancellationToken cancellationToken = default
         )
         {
+            // Validate inputs
+            if (project == null)
+                throw new System.ArgumentNullException(nameof(project));
+
+            if (emulators == null)
+                throw new System.ArgumentNullException(nameof(emulators));
+
+            if (string.IsNullOrWhiteSpace(project.WorkingDirectory))
+                throw new System.ArgumentException("Working directory cannot be empty", nameof(project));
+
+            if (!Directory.Exists(project.WorkingDirectory))
+                throw new DirectoryNotFoundException($"Working directory not found: {project.WorkingDirectory}");
+
             BufferedCommandResult result;
 
             // Take a copy of the current working directory ...
@@ -114,7 +133,8 @@ namespace cc65Wrapper
                 result = await Cli.Wrap(selectedEmulator)
                     .WithArguments(argumentList)
                     .WithValidation(CommandResultValidation.None)
-                    .ExecuteBufferedAsync();
+                    .ExecuteBufferedAsync(cancellationToken)
+                    .ConfigureAwait(false);
             }
             finally
             {
@@ -155,37 +175,15 @@ namespace cc65Wrapper
         /// <returns>The file path to the appropriate WinVICE emulator for the project</returns>
         private static string GetSelectedEmulator(CC65Project project, Cc65Emulators emulators)
         {
-            System.String result;
-
-            switch (project.TargetPlatform)
+            return project.TargetPlatform switch
             {
-                case "pet":
-                    result = emulators.PetPath;
-                    break;
-
-                case "c64":
-                    result = emulators.C64Path;
-                    break;
-
-                case "c128":
-                    result = emulators.C128Path;
-                    break;
-
-                case "vic20":
-                    result = emulators.Vic20Path;
-                    break;
-
-                case "plus4":
-                case "c16":
-                    result = emulators.Plus4Path;
-                    break;
-
-                default:
-                    result = emulators.C64Path;
-                    break;
-            }
-
-            return result;
+                CC65ProjectTypes.pet => emulators.PetPath,
+                CC65ProjectTypes.c64 => emulators.C64Path,
+                CC65ProjectTypes.c128 => emulators.C128Path,
+                CC65ProjectTypes.vic20 => emulators.Vic20Path,
+                CC65ProjectTypes.plus4 or CC65ProjectTypes.c16 => emulators.Plus4Path,
+                _ => emulators.C64Path
+            };
         }
 
         #endregion

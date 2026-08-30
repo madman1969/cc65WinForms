@@ -75,16 +75,16 @@ namespace cc65WinForms
                 Project.IsModified = true;
             }
 
-            if (
-                string.Compare(
-                    Project.TargetPlatform,
-                    TargetPlatformComboBox.SelectedItem as string,
-                    StringComparison.Ordinal
-                ) != 0
-            )
+            // Parse the selected platform string to enum
+            var selectedPlatform = TargetPlatformComboBox.SelectedItem as string;
+            if (!string.IsNullOrEmpty(selectedPlatform) && 
+                Enum.TryParse<CC65ProjectTypes>(selectedPlatform, true, out var newPlatform))
             {
-                Project.TargetPlatform = TargetPlatformComboBox.SelectedItem as string;
-                Project.IsModified = true;
+                if (Project.TargetPlatform != newPlatform)
+                {
+                    Project.TargetPlatform = newPlatform;
+                    Project.IsModified = true;
+                }
             }
 
             if (
@@ -118,8 +118,7 @@ namespace cc65WinForms
                 this.Text = $"Project Settings - {Project.ProjectName}";
                 projectNameTextBox.Text = Project.ProjectName;
                 workingDirLabel.Text = Project.WorkingDirectory;
-                TargetPlatformComboBox.SelectedIndex = (int)
-                    Enum.Parse(typeof(CC65ProjectTypes), Project.TargetPlatform);
+                TargetPlatformComboBox.SelectedIndex = (int)Project.TargetPlatform;
                 outputFileTextBox.Text = Project.OutputFile;
                 optimiseCodeCheckBox.Checked = Project.OptimiseCode;
                 versionTextBox.Text = Project.Version.ToString();

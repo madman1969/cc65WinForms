@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using cc65Wrapper.Enumerations;
+using CliWrap;
 using CliWrap.Buffered;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,24 @@ namespace cc65Wrapper
         /// from the CC65 compiler suite
         /// </summary>
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
+        /// <param name="cancellationToken">Optional cancellation token</param>
         /// <returns>A <c>BufferedCommandResult</c> instance containing the results of the call out to CC65</returns>
         /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
-        public static async Task<BufferedCommandResult> CompileAsync(CC65Project project)
+        /// <exception cref="ArgumentNullException">Thrown when project is null</exception>
+        /// <exception cref="ArgumentException">Thrown when working directory is empty</exception>
+        /// <exception cref="DirectoryNotFoundException">Thrown when working directory does not exist</exception>
+        public static async Task<BufferedCommandResult> CompileAsync(CC65Project project, System.Threading.CancellationToken cancellationToken = default)
         {
+            // Validate inputs
+            if (project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            if (string.IsNullOrWhiteSpace(project.WorkingDirectory))
+                throw new ArgumentException("Working directory cannot be empty", nameof(project));
+
+            if (!Directory.Exists(project.WorkingDirectory))
+                throw new DirectoryNotFoundException($"Working directory not found: {project.WorkingDirectory}");
+
             BufferedCommandResult result;
 
             // Take a copy of the current working directory ...
@@ -52,10 +67,11 @@ namespace cc65Wrapper
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(CL65)
-                    .WithEnvironmentVariables(env => env.Set(CC65_TARGET, project.TargetPlatform))
+                    .WithEnvironmentVariables(env => env.Set(CC65_TARGET, project.TargetPlatform.ToString()))
                     .WithArguments(argumentList)
                     .WithValidation(CommandResultValidation.None)
-                    .ExecuteBufferedAsync();
+                    .ExecuteBufferedAsync(cancellationToken)
+                    .ConfigureAwait(false);
             }
             finally
             {
@@ -193,7 +209,7 @@ namespace cc65Wrapper
             {
                 // Add target args ...
                 TARGET_OPTION,
-                project.TargetPlatform
+                project.TargetPlatform.ToString()
             };
 
             // Add input files ...

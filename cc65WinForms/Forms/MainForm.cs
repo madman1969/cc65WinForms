@@ -1,4 +1,5 @@
 ﻿using cc65Wrapper;
+using cc65Wrapper.Enumerations;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
 using System;
@@ -316,12 +317,16 @@ namespace cc65WinForms
             var selectedPlatform = cbTargetPlatform.SelectedItem as string;
 
             // Only change project target platform if a project is loaded !
-            if (Project != null)
+            if (Project != null && !string.IsNullOrEmpty(selectedPlatform))
             {
-                Project.TargetPlatform = selectedPlatform.ToLower();
+                // Parse the selected platform string to enum
+                if (Enum.TryParse<CC65ProjectTypes>(selectedPlatform.ToLower(), true, out var platform))
+                {
+                    Project.TargetPlatform = platform;
 
-                // Flag as modified ...
-                Project.IsModified = true;
+                    // Flag as modified ...
+                    Project.IsModified = true;
+                }
             }
 
             UpdateTargetPlatformLabel();

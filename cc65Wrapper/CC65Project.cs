@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using cc65Wrapper.Enumerations;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
@@ -35,7 +36,7 @@ namespace cc65Wrapper
         /// <value>
         /// The target platform.
         /// </value>
-        public string TargetPlatform { get; set; }
+        public CC65ProjectTypes TargetPlatform { get; set; }
 
         /// <summary>
         /// Gets or sets the input files.
@@ -103,7 +104,7 @@ namespace cc65Wrapper
         public CC65Project()
         {
             WorkingDirectory = string.Empty;
-            TargetPlatform = "pet";
+            TargetPlatform = CC65ProjectTypes.pet;
             HeaderFiles = new List<string>();
             InputFiles = new List<string>();
             OutputFile = string.Empty;
