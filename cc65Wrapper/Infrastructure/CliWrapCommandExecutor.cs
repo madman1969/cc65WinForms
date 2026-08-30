@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using cc65Wrapper.Abstractions;
 using cc65Wrapper.Models;
+using Microsoft.Extensions.Logging;
+using cc65Wrapper.Logging;
 
 namespace cc65Wrapper.Infrastructure
 {
@@ -14,6 +16,16 @@ namespace cc65Wrapper.Infrastructure
     /// </summary>
     public class CliWrapCommandExecutor : ICommandExecutor
     {
+        private readonly ILogger<CliWrapCommandExecutor> _logger;
+
+        /// <summary>
+        /// Initializes a new instance of the CliWrapCommandExecutor class
+        /// </summary>
+        public CliWrapCommandExecutor(ILogger<CliWrapCommandExecutor> logger = null)
+        {
+            _logger = logger ?? Cc65LoggerFactory.CreateLogger<CliWrapCommandExecutor>();
+        }
+
         /// <summary>
         /// Executes a command asynchronously
         /// </summary>
@@ -24,6 +36,9 @@ namespace cc65Wrapper.Infrastructure
             string workingDirectory = null,
             CancellationToken cancellationToken = default)
         {
+            var argumentString = string.Join(" ", arguments);
+            _logger.LogCommandExecuting(executable, argumentString);
+
             var command = Cli.Wrap(executable)
                 .WithArguments(arguments)
                 .WithValidation(CommandResultValidation.None);
@@ -40,6 +55,15 @@ namespace cc65Wrapper.Infrastructure
             var result = await command
                 .ExecuteBufferedAsync(cancellationToken)
                 .ConfigureAwait(false);
+
+            if (result.ExitCode != 0)
+            {
+                _logger.LogCommandFailed(result.ExitCode, result.StandardError);
+            }
+            else
+            {
+                _logger.LogCommandCompleted(result.ExitCode);
+            }
 
             return new Models.CommandResult(
                 result.ExitCode,

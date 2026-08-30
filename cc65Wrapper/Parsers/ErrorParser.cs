@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using cc65Wrapper.Abstractions;
+using Microsoft.Extensions.Logging;
+using cc65Wrapper.Logging;
 
 namespace cc65Wrapper.Parsers
 {
@@ -11,14 +13,16 @@ namespace cc65Wrapper.Parsers
     public class ErrorParser : IErrorParser
     {
         private readonly IEnumerable<IErrorLineParser> _parsers;
+        private readonly ILogger<ErrorParser> _logger;
 
         /// <summary>
         /// Initializes a new instance with the specified line parsers
         /// </summary>
-        public ErrorParser(IEnumerable<IErrorLineParser> parsers)
+        public ErrorParser(IEnumerable<IErrorLineParser> parsers, ILogger<ErrorParser> logger = null)
         {
             _parsers = parsers?.OrderByDescending(p => p.Priority) 
                 ?? throw new ArgumentNullException(nameof(parsers));
+            _logger = logger ?? Cc65LoggerFactory.CreateLogger<ErrorParser>();
         }
 
         /// <summary>
@@ -34,7 +38,9 @@ namespace cc65Wrapper.Parsers
             var lines = errorOutput.Split(
                 new[] { Environment.NewLine, "\r", "\n" },
                 StringSplitOptions.RemoveEmptyEntries
-            ).Distinct();
+            ).Distinct().ToArray();
+
+            _logger.LogErrorParsingStarted(lines.Length, _parsers.Count());
 
             foreach (var line in lines)
             {
@@ -43,15 +49,25 @@ namespace cc65Wrapper.Parsers
                 {
                     try
                     {
-                        errors.Add(parser.Parse(line));
+                        var error = parser.Parse(line);
+                        errors.Add(error);
+                        _logger.LogErrorLineParsed(parser.GetType().Name, line);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // If parsing fails, skip this line
+                        _logger.LogWarning(ex, "Failed to parse error line: {Line}", line);
                         continue;
                     }
                 }
+                else
+                {
+                    _logger.LogErrorLineNotParsed(line);
+                }
             }
+
+            var errorCount = errors.Count(e => !e.Type.Equals("Warning", StringComparison.OrdinalIgnoreCase));
+            var warningCount = errors.Count(e => e.Type.Equals("Warning", StringComparison.OrdinalIgnoreCase));
+            _logger.LogErrorParsingCompleted(errorCount, warningCount);
 
             return errors;
         }

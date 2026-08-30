@@ -6,6 +6,8 @@ using cc65Wrapper.Abstractions;
 using cc65Wrapper.Builders;
 using cc65Wrapper.Enumerations;
 using cc65Wrapper.Models;
+using Microsoft.Extensions.Logging;
+using cc65Wrapper.Logging;
 
 namespace cc65Wrapper.Services
 {
@@ -16,16 +18,19 @@ namespace cc65Wrapper.Services
     {
         private readonly ICommandExecutor _commandExecutor;
         private readonly IArgumentBuilder<EmulatorLaunchOptions> _argumentBuilder;
+        private readonly ILogger<Cc65EmulatorLauncher> _logger;
 
         /// <summary>
         /// Initializes a new instance of the Cc65EmulatorLauncher class
         /// </summary>
         public Cc65EmulatorLauncher(
             ICommandExecutor commandExecutor,
-            IArgumentBuilder<EmulatorLaunchOptions> argumentBuilder)
+            IArgumentBuilder<EmulatorLaunchOptions> argumentBuilder,
+            ILogger<Cc65EmulatorLauncher> logger = null)
         {
             _commandExecutor = commandExecutor ?? throw new ArgumentNullException(nameof(commandExecutor));
             _argumentBuilder = argumentBuilder ?? throw new ArgumentNullException(nameof(argumentBuilder));
+            _logger = logger ?? Cc65LoggerFactory.CreateLogger<Cc65EmulatorLauncher>();
         }
 
         /// <summary>
@@ -46,11 +51,13 @@ namespace cc65Wrapper.Services
 
                 if (string.IsNullOrWhiteSpace(emulatorPath))
                 {
+                    var error = $"No emulator configured for platform: {project.TargetPlatform}";
+                    _logger.LogEmulatorLaunchFailed(error);
                     return new EmulatorLaunchResult
                     {
                         Success = false,
                         ExitCode = -1,
-                        Errors = new[] { $"No emulator configured for platform: {project.TargetPlatform}" },
+                        Errors = new[] { error },
                         StandardOutput = string.Empty,
                         StandardError = $"No emulator path found for {project.TargetPlatform}"
                     };
@@ -59,6 +66,10 @@ namespace cc65Wrapper.Services
                 // Build arguments
                 var options = new EmulatorLaunchOptions(project, emulatorPath);
                 var arguments = _argumentBuilder.Build(options);
+                var argumentString = string.Join(" ", arguments);
+
+                _logger.LogEmulatorStarted(emulatorPath, project.TargetPlatform.ToString());
+                _logger.LogEmulatorCommand(emulatorPath, argumentString);
 
                 // Launch emulator
                 var result = await _commandExecutor.ExecuteAsync(
@@ -66,6 +77,17 @@ namespace cc65Wrapper.Services
                     arguments,
                     workingDirectory: project.WorkingDirectory,
                     cancellationToken: cancellationToken);
+
+                _logger.LogCommandCompleted(result.ExitCode);
+
+                if (result.ExitCode == 0)
+                {
+                    _logger.LogEmulatorLaunched(0); // Process ID not available from CliWrap result
+                }
+                else
+                {
+                    _logger.LogEmulatorLaunchFailed($"Exit code: {result.ExitCode}");
+                }
 
                 return new EmulatorLaunchResult
                 {
@@ -78,6 +100,7 @@ namespace cc65Wrapper.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Emulator launch failed with exception");
                 return new EmulatorLaunchResult
                 {
                     Success = false,
@@ -92,17 +115,29 @@ namespace cc65Wrapper.Services
         private void ValidateInputs(CC65Project project, Cc65Emulators emulators)
         {
             if (project == null)
+            {
+                _logger.LogValidationFailed("Project is null");
                 throw new ArgumentNullException(nameof(project));
+            }
 
             if (emulators == null)
+            {
+                _logger.LogValidationFailed("Emulators configuration is null");
                 throw new ArgumentNullException(nameof(emulators));
+            }
 
             if (string.IsNullOrWhiteSpace(project.WorkingDirectory))
+            {
+                _logger.LogValidationFailed("Working directory cannot be empty");
                 throw new ArgumentException("Working directory cannot be empty", nameof(project));
+            }
 
             if (!System.IO.Directory.Exists(project.WorkingDirectory))
+            {
+                _logger.LogDirectoryNotFound(project.WorkingDirectory);
                 throw new System.IO.DirectoryNotFoundException(
                     $"Working directory not found: {project.WorkingDirectory}");
+            }
         }
 
         private string GetEmulatorPath(CC65ProjectTypes platform, Cc65Emulators emulators)
