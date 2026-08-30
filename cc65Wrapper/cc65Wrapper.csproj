@@ -22,7 +22,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.6.6" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="CliWrap" />
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 </Project>

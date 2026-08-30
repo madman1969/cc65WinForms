@@ -18,6 +18,6 @@
     <ProjectReference Include="..\cc65Wrapper\cc65Wrapper.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FCTB" Version="2.16.24" />
+    <PackageReference Include="FCTB" />
   </ItemGroup>
 </Project>
