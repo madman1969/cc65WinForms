@@ -427,15 +427,15 @@ namespace cc65WinForms
             // TODO 2: Handle removing header/source files to project
 
             tvProjectFiles.SelectedNode = node;
-            ContextMenu menu = new ContextMenu();
-            MenuItem item = new MenuItem("Add new file");
+            ContextMenuStrip menu = new ContextMenuStrip();
+            ToolStripMenuItem item = new ToolStripMenuItem("Add new file");
             item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
-            menu.MenuItems.Add(item);
-            item = new MenuItem("Remove file");
+            menu.Items.Add(item);
+            item = new ToolStripMenuItem("Remove file");
             item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
-            menu.MenuItems.Add(item);
+            menu.Items.Add(item);
             menu.Show(tvProjectFiles, e.Location);
         }
 
