@@ -84,18 +84,18 @@ public class Cc65Emulators
         return JsonConvert.DeserializeObject<Cc65Emulators>(Json);
     }
 
-    /// <summary>
-    /// Attempts to launch the associated binary in the appropriate WinVice emulator for the supplied project
-    /// </summary>
-    /// <param name="project">A <c>Cc65Project</c> instance</param>
-    /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
-    /// <returns>An <c>ExecutionResult</c> instance containing the result of the attempt to launch the emulator</returns>
-    public static async Task<BufferedCommandResult> LaunchEmulatorAsync(
-        CC65Project project,
-        Cc65Emulators emulators
-    )
-    {
-        BufferedCommandResult result;
+        /// <summary>
+        /// Attempts to launch the associated binary in the appropriate WinVice emulator for the supplied project
+        /// </summary>
+        /// <param name="project">A <c>Cc65Project</c> instance</param>
+        /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
+        /// <returns>A <c>BufferedCommandResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        public static async Task<BufferedCommandResult> LaunchEmulatorAsync(
+            CC65Project project,
+            Cc65Emulators emulators
+        )
+        {
+            BufferedCommandResult result;
 
         // Take a copy of the current working directory ...
         var originalDir = Directory.GetCurrentDirectory();

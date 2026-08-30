@@ -28,16 +28,16 @@ public class Cc65Build
 
     #region Public methods
 
-    /// <summary>
-    /// Compiles source files associated with the passed <c>Cc65Project</c>instance into an output file using 'cl65'
-    /// from the CC65 compiler suite
-    /// </summary>
-    /// <param name="project">A populated <c>Cc65Project</c> instance</param>
-    /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
-    /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
-    public static async Task<BufferedCommandResult> CompileAsync(CC65Project project)
-    {
-        BufferedCommandResult result;
+        /// <summary>
+        /// Compiles source files associated with the passed <c>Cc65Project</c>instance into an output file using 'cl65'
+        /// from the CC65 compiler suite
+        /// </summary>
+        /// <param name="project">A populated <c>Cc65Project</c> instance</param>
+        /// <returns>A <c>BufferedCommandResult</c> instance containing the results of the call out to CC65</returns>
+        /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
+        public static async Task<BufferedCommandResult> CompileAsync(CC65Project project)
+        {
+            BufferedCommandResult result;
 
         // Take a copy of the current working directory ...
         var originalDir = Directory.GetCurrentDirectory();
