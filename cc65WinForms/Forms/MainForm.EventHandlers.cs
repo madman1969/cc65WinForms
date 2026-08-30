@@ -293,14 +293,7 @@ namespace cc65WinForms
         private async void BtBuildProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Building Project{Environment.NewLine}");
-            try
-            {
-                _ = await BuildProjectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _ = await BuildProjectAsync();
         }
 
         /// <summary>
@@ -311,14 +304,7 @@ namespace cc65WinForms
         private async void BtExecuteProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Executing Project{Environment.NewLine}");
-            try
-            {
-                await ExecuteProjectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await ExecuteProjectAsync();
         }
 
         /// <summary>
