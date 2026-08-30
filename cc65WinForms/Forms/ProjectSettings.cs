@@ -1,6 +1,7 @@
 ﻿using cc65Wrapper;
 using cc65Wrapper.Enumerations;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace cc65WinForms
         /// <value>
         /// A <c>Cc65Project</c> instance.
         /// </value>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CC65Project Project { get; set; }
 
         #endregion

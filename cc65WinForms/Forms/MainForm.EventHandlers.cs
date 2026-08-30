@@ -79,7 +79,7 @@ namespace cc65WinForms
             }
 
             // Get fragment around caret ...
-            Range fragment = tb.Selection.GetFragment(@"\w");
+            FastColoredTextBoxNS.Range fragment = tb.Selection.GetFragment(@"\w");
             var text = fragment.Text;
 
             if (text.Length == 0)
@@ -88,11 +88,11 @@ namespace cc65WinForms
             }
 
             // Highlight same words ...
-            Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
+            FastColoredTextBoxNS.Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
 
             if (ranges.Length > 1)
             {
-                foreach (Range r in ranges)
+                foreach (FastColoredTextBoxNS.Range r in ranges)
                 {
                     r.SetStyle(sameWordsStyle);
                 }
@@ -293,14 +293,7 @@ namespace cc65WinForms
         private async void BtBuildProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Building Project{Environment.NewLine}");
-            try
-            {
-                _ = await BuildProjectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _ = await BuildProjectAsync();
         }
 
         /// <summary>
@@ -311,14 +304,7 @@ namespace cc65WinForms
         private async void BtExecuteProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Executing Project{Environment.NewLine}");
-            try
-            {
-                await ExecuteProjectAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await ExecuteProjectAsync();
         }
 
         /// <summary>
@@ -427,15 +413,15 @@ namespace cc65WinForms
             // TODO 2: Handle removing header/source files to project
 
             tvProjectFiles.SelectedNode = node;
-            ContextMenu menu = new ContextMenu();
-            MenuItem item = new MenuItem("Add new file");
+            ContextMenuStrip menu = new ContextMenuStrip();
+            ToolStripMenuItem item = new ToolStripMenuItem("Add new file");
             item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
-            menu.MenuItems.Add(item);
-            item = new MenuItem("Remove file");
+            menu.Items.Add(item);
+            item = new ToolStripMenuItem("Remove file");
             item.Click += new EventHandler(Item_Click);
             item.Tag = nodeTitle;
-            menu.MenuItems.Add(item);
+            menu.Items.Add(item);
             menu.Show(tvProjectFiles, e.Location);
         }
 

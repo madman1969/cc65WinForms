@@ -1,5 +1,5 @@
 ﻿using CliWrap;
-using CliWrap.Models;
+using CliWrap.Buffered;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,11 +33,11 @@ namespace cc65Wrapper
         /// from the CC65 compiler suite
         /// </summary>
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
-        /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
+        /// <returns>A <c>BufferedCommandResult</c> instance containing the results of the call out to CC65</returns>
         /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
-        public static async Task<ExecutionResult> CompileAsync(CC65Project project)
+        public static async Task<BufferedCommandResult> CompileAsync(CC65Project project)
         {
-            ExecutionResult result;
+            BufferedCommandResult result;
 
             // Take a copy of the current working directory ...
             var originalDir = Directory.GetCurrentDirectory();
@@ -52,10 +52,10 @@ namespace cc65Wrapper
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(CL65)
-                    .SetEnvironmentVariable(CC65_TARGET, project.TargetPlatform)
-                    .SetArguments(argumentList)
-                    .EnableExitCodeValidation(false)
-                    .ExecuteAsync();
+                    .WithEnvironmentVariables(env => env.Set(CC65_TARGET, project.TargetPlatform))
+                    .WithArguments(argumentList)
+                    .WithValidation(CommandResultValidation.None)
+                    .ExecuteBufferedAsync();
             }
             finally
             {
@@ -75,7 +75,7 @@ namespace cc65Wrapper
         /// </summary>
         /// <returns>A List of <c>string</c> values representing the individual errors</returns>
         /// <remarks>It also de-duplicates the errors</remarks>
-        public static List<string> ErrorsAsStringList(ExecutionResult executionResult)
+        public static List<string> ErrorsAsStringList(BufferedCommandResult executionResult)
         {
             var splitErrors = executionResult.StandardError.Split(
                 new string[] { Environment.NewLine, "\r", "\n" },
@@ -94,7 +94,7 @@ namespace cc65Wrapper
         /// <param name="executionResult">The execution result.</param>
         /// <returns>A list of <c>Cc65Error</c> instances parsed from the passed <c>ExecutionResult</c> instance</returns>
         /// <remarks>It also de-duplicates the errors</remarks>
-        public static List<Cc65Error> ErrorsAsErrorList(ExecutionResult executionResult)
+        public static List<Cc65Error> ErrorsAsErrorList(BufferedCommandResult executionResult)
         {
             var errorList = new List<Cc65Error>();
 

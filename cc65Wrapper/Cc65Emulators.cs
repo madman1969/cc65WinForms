@@ -1,5 +1,5 @@
 ﻿using CliWrap;
-using CliWrap.Models;
+using CliWrap.Buffered;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -89,13 +89,13 @@ namespace cc65Wrapper
         /// </summary>
         /// <param name="project">A <c>Cc65Project</c> instance</param>
         /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
-        /// <returns>An <c>ExecutionResult</c> instance containing the result of the attempt to launch the emulator</returns>
-        public static async Task<ExecutionResult> LaunchEmulatorAsync(
+        /// <returns>A <c>BufferedCommandResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        public static async Task<BufferedCommandResult> LaunchEmulatorAsync(
             CC65Project project,
             Cc65Emulators emulators
         )
         {
-            ExecutionResult result;
+            BufferedCommandResult result;
 
             // Take a copy of the current working directory ...
             var originalDir = Directory.GetCurrentDirectory();
@@ -112,9 +112,9 @@ namespace cc65Wrapper
 
                 // Call CL65 with project settings ...
                 result = await Cli.Wrap(selectedEmulator)
-                    .SetArguments(argumentList)
-                    .EnableExitCodeValidation(false)
-                    .ExecuteAsync();
+                    .WithArguments(argumentList)
+                    .WithValidation(CommandResultValidation.None)
+                    .ExecuteBufferedAsync();
             }
             finally
             {
