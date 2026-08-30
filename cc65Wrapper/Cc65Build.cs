@@ -33,7 +33,7 @@ namespace cc65Wrapper
         /// from the CC65 compiler suite
         /// </summary>
         /// <param name="project">A populated <c>Cc65Project</c> instance</param>
-        /// <returns>An <c>ExecutionResult</c> instance containing the results of the call out to CC65</returns>
+        /// <returns>A <c>BufferedCommandResult</c> instance containing the results of the call out to CC65</returns>
         /// <remarks>It builds a valid CC65 cmd-line from the project source files and the project compiler setting</remarks>
         public static async Task<BufferedCommandResult> CompileAsync(CC65Project project)
         {
