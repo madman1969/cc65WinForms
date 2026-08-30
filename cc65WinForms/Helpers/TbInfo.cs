@@ -1,9 +1,8 @@
 using FastColoredTextBoxNS;
 
-namespace cc65WinForms
+namespace cc65WinForms;
+
+public class TbInfo
 {
-    public class TbInfo
-    {
-        public AutocompleteMenu popupMenu;
-    }
+    public AutocompleteMenu popupMenu;
 }
