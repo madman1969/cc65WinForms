@@ -118,11 +118,40 @@ namespace cc65Wrapper
         }
 
         /// <summary>
-        /// Parses the <c>ExecutionResult</c> from a build command into a list of <c>Cc65Error</c> instances
+        /// Parses the <c>ExecutionResult</c> from a cc65 build command and returns a list of structured <see cref="Cc65Error"/> entries.
         /// </summary>
-        /// <param name="executionResult">The execution result.</param>
-        /// <returns>A list of <c>Cc65Error</c> instances parsed from the passed <c>ExecutionResult</c> instance</returns>
-        /// <remarks>It also de-duplicates the errors</remarks>
+        /// <param name="executionResult">The buffered command result whose <see cref="BufferedCommandResult.StandardError"/> text contains one or more cc65 error lines.</param>
+        /// <returns>
+        /// A <see cref="List{Cc65Error}"/> containing one entry for each parsed error line.
+        /// If the standard error output contains duplicate lines those are removed before parsing.
+        /// </returns>
+        /// <remarks>
+        /// Expected input format (examples):
+        /// - <c>file.asm:warning:unused label</c> (3 parts)
+        /// - <c>file.asm:123:error:undefined symbol</c> (4 parts)
+        /// - <c>file.asm:123:error:message part1:part2</c> (5+ parts)
+        ///
+        /// The method splits the raw standard-error text on CR/LF variations, removes empty entries,
+        /// de-duplicates lines using LINQ <c>Distinct()</c>, then splits each line on colon (<c>':'</c>)
+        /// and maps the resulting segments into <see cref="Cc65Error"/> fields:
+        /// - When there are 3 segments: filename, type, error (line number set to 0).
+        /// - When there are 4 segments: filename, line number, type, error.
+        /// - When there are 5 segments: filename, line number, type, error (last two segments concatenated).
+        /// - When there are more than 5 segments: segments 2..end are concatenated into the error text.
+        ///
+        /// Notes:
+        /// - Each parsed segment is trimmed.
+        /// - The method uses <c>int.Parse</c> to convert the line number segment; invalid integers will cause a <see cref="FormatException"/>.
+        /// - If <paramref name="executionResult"/> or its <c>StandardError</c> property is null, a <see cref="NullReferenceException"/> may occur.
+        /// </remarks>
+        /// <example>
+        /// Sample usage:
+        /// <code>
+        /// var errors = Cc65Build.ErrorsAsErrorList(result);
+        /// foreach (var e in errors) Console.WriteLine($"{e.Filename}:{e.LineNumber}:{e.Type}:{e.Error}");
+        /// </code>
+        /// </example>
+        /// <exception cref="FormatException">Thrown when a parsed line number cannot be converted to an integer.</exception>
         public static List<Cc65Error> ErrorsAsErrorList(BufferedCommandResult executionResult)
         {
             var errorList = new List<Cc65Error>();

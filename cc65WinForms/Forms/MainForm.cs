@@ -192,43 +192,64 @@ namespace cc65WinForms
             }
         }
 
-        private bool NavigateForward()
+private bool NavigateForward()
+{
+    // Track the earliest LastVisit timestamp that is still after lastNavigatedDateTime
+    DateTime min = DateTime.Now;
+
+    // Line index of the next navigation target
+    int iLine = -1;
+
+    // The text box containing that line
+    FastColoredTextBox tb = null;
+
+    // Iterate all open tabs
+    for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+    {
+        // Each tab hosts a FastColoredTextBox as its first control
+        var t = tsFiles.Items[iTab].Controls[0] as FastColoredTextBox;
+
+        // Scan all lines in this text box
+        for (int i = 0; i < t.LinesCount; i++)
         {
-            DateTime min = DateTime.Now;
-            var iLine = -1;
-            FastColoredTextBox tb = null;
-
-            for (var iTab = 0; iTab < tsFiles.Items.Count; iTab++)
+            // Find the nearest LastVisit timestamp that is:
+            //   - newer than the last navigated point
+            //   - but still the earliest among candidates
+            if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
             {
-                var t = (tsFiles.Items[iTab].Controls[0] as FastColoredTextBox);
-
-                for (var i = 0; i < t.LinesCount; i++)
-                {
-                    if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
-                    {
-                        min = t[i].LastVisit;
-                        iLine = i;
-                        tb = t;
-                    }
-                }
-            }
-
-            if (iLine >= 0)
-            {
-                tsFiles.SelectedItem = (tb.Parent as FATabStripItem);
-                tb.Navigate(iLine);
-                lastNavigatedDateTime = tb[iLine].LastVisit;
-                Console.WriteLine($"Forward: {lastNavigatedDateTime}");
-                tb.Focus();
-                tb.Invalidate();
-
-                return true;
-            }
-            else
-            {
-                return false;
+                min = t[i].LastVisit;
+                iLine = i;
+                tb = t;
             }
         }
+    }
+
+    // If a suitable line was found, navigate to it
+    if (iLine >= 0)
+    {
+        // Switch to the tab containing the target line
+        tsFiles.SelectedItem = tb.Parent as FATabStripItem;
+
+        // Move caret to the target line
+        tb.Navigate(iLine);
+
+        // Update the navigation cursor
+        lastNavigatedDateTime = tb[iLine].LastVisit;
+        Console.WriteLine($"Forward: {lastNavigatedDateTime}");
+
+        // Refresh UI focus and redraw
+        tb.Focus();
+        tb.Invalidate();
+
+        return true;
+    }
+    else
+    {
+        // No forward navigation target exists
+        return false;
+    }
+}
+
 
         /// <summary>
         /// Creates a new text editor tab and loads the contents of the specified file

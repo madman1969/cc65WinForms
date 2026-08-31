@@ -11,9 +11,14 @@ namespace cc65Wrapper.Logging
         private static ILoggerFactory? _loggerFactory;
 
         /// <summary>
-        /// Sets the global logger factory for the cc65Wrapper library
+        /// Sets the global <see cref="ILoggerFactory"/> used by the cc65Wrapper library.
         /// </summary>
-        /// <param name="loggerFactory">The logger factory to use</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> instance to use. This should be provided during application startup.</param>
+        /// <remarks>
+        /// - Replaces any previously configured factory; subsequent calls will overwrite the existing factory.
+        /// - If this method is not called, the library falls back to <see cref="NullLogger{T}.Instance"/> and <see cref="NullLogger.Instance"/> when creating loggers.
+        /// - This method does not perform synchronization; callers should ensure it is invoked in a thread-safe manner (typically once during initialization).
+        /// </remarks>
         public static void SetLoggerFactory(ILoggerFactory loggerFactory)
         {
             _loggerFactory = loggerFactory;
