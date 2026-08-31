@@ -8,13 +8,47 @@ using System.Windows.Forms;
 
 namespace cc65WinForms
 {
+    /// <summary>
+    /// Application entry point and global composition root.
+    /// </summary>
+    /// <remarks>
+    /// This static class is responsible for configuring dependency injection and logging,
+    /// creating the application <see cref="IServiceProvider"/>, and starting the WinForms
+    /// message loop. It is executed on the main STA thread.
+    /// </remarks>
     internal static class Program
     {
+        /// <summary>
+        /// The application's root <see cref="IServiceProvider"/> instance.
+        /// </summary>
+        /// <remarks>
+        /// Services are registered in <see cref="Main"/> via a <see cref="ServiceCollection"/>.
+        /// This property is populated after building the service provider and is exposed as
+        /// read-only for global access in places that need the DI container.
+        /// </remarks>
         public static IServiceProvider ServiceProvider { get; private set; }
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// <remarks>
+        /// Behavior performed in order:
+        /// - Create a <see cref="ServiceCollection"/> and register logging providers.
+        ///   * Adds debug output logging (visible in Visual Studio: View > Output > Debug).
+        ///   * Adds file logging to "logs/app.log".
+        ///   * Sets minimum log level to <see cref="LogLevel.Debug"/> in DEBUG builds,
+        ///     otherwise <see cref="LogLevel.Information"/>.
+        /// - Ensures the "logs" directory exists.
+        /// - Registers cc65Wrapper services via <c>services.AddCc65Wrapper()</c>.
+        /// - Builds the <see cref="ServiceProvider"/> and configures a static logger factory
+        ///   through <c>Cc65LoggerFactory.SetLoggerFactory</c> for backward compatibility.
+        /// - Emits a test information message to verify file logging.
+        /// - Initializes WinForms visual styles and starts the main form message loop.
+        ///
+        /// Notes:
+        /// - Marked with <see cref="STAThreadAttribute"/> because WinForms requires STA.
+        /// - Logging configuration and file path may be adjusted to meet deployment needs.
+        /// </remarks>
         [STAThread]
         static void Main()
         {

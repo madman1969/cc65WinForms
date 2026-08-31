@@ -14,10 +14,15 @@ namespace cc65WinForms
         #region Project routines
 
         /// <summary>
-        /// Displays the 'Open Project' dialog
+        /// Displays the 'Open Project' dialog and loads the selected project file.
         /// </summary>
         /// <remarks>
-        /// If a project is opened it will populate the 'Target Platform', project tree view and update the status bar
+        /// If the user selects a valid project JSON file this method:
+        /// - Reads the file contents and deserializes into a <c>CC65Project</c> instance.
+        /// - Updates the UI target platform selection to match the project.
+        /// - Clears the project's modified flag.
+        /// - Populates the project tree view and writes a message to the output pane.
+        /// If the dialog is cancelled no project is loaded; the tree view and UI are still refreshed.
         /// </remarks>
         private void OpenProject()
         {
@@ -56,8 +61,7 @@ namespace cc65WinForms
         /// <summary>
         /// Updates the status bar to show the currently loaded project.
         /// </summary>
-        /// <param name="projectName">Name of the project.</param>
-        /// <remarks>Will display 'No Project Loaded' if passed null</remarks>
+        /// <param name="projectName">Name of the project to display. If <c>null</c>, "No Project Loaded" will be shown.</param>
         private void UpdateProjectStatusLabel(string projectName)
         {
             string message;
@@ -77,7 +81,10 @@ namespace cc65WinForms
         /// <summary>
         /// Updates the status bar to show the current target platform selection.
         /// </summary>
-        /// <remarks>If passed null assumes target platform is C128</remarks>
+        /// <remarks>
+        /// If no project is loaded this method defaults the displayed platform to C128.
+        /// When a project is loaded the project's <c>TargetPlatform</c> value is displayed in upper-case.
+        /// </remarks>
         private void UpdateTargetPlatformLabel()
         {
             string message;
@@ -99,9 +106,17 @@ namespace cc65WinForms
         // TODO 5: Add emulator configuration support
 
         /// <summary>
-        /// Closes the currently open project.
+        /// Closes the currently open project and clears related UI state.
         /// </summary>
-        /// <remarks>Will close any open files and clear the project tree</remarks>
+        /// <remarks>
+        /// This method:
+        /// - Writes a message to the output pane.
+        /// - Unloads the in-memory <c>Project</c>.
+        /// - Closes all open editor files.
+        /// - Clears and repopulates the project tree view.
+        /// - Resets the target platform selection to the default (index 0).
+        /// - Updates the project status label to indicate no project is loaded.
+        /// </remarks>
         private void CloseProject()
         {
             tbOutput.AppendText($"Closed project: {ProjectFile} ...{Environment.NewLine}");
@@ -122,10 +137,10 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Helper method which returns a boolean if a project is loaded and has been modified
+        /// Determines whether the currently loaded project can be saved.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if there is a modified loaded project; otherwise, <c>false</c>.
+        ///   <c>true</c> if a project is loaded and its <c>IsModified</c> flag is <c>true</c>; otherwise, <c>false</c>.
         /// </returns>
         private bool CanSaveProject()
         {
@@ -138,8 +153,13 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Saves the current project settings
+        /// Saves the current project settings to disk in JSON format.
         /// </summary>
+        /// <remarks>
+        /// If the project has no file path (<c>ProjectFile</c>) the user will be prompted with a __SaveFileDialog__.
+        /// After a successful save the project's <c>IsModified</c> flag is cleared.
+        /// If no project is loaded or the project has no name the save is skipped.
+        /// </remarks>
         private void SaveProject()
         {
             // Bail if no project loaded or un-named ...
@@ -178,10 +198,17 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Builds the currently loaded project
+        /// Builds the currently loaded project by invoking the external cc65 toolchain.
         /// </summary>
-        /// <returns><c>true</c> if build successful; else <c>false</c></returns>
-        /// <remarks>Will save any open files first</remarks>
+        /// <returns><c>true</c> if build successful; otherwise <c>false</c>.</returns>
+        /// <remarks>
+        /// This method:
+        /// - Saves any open files prior to building.
+        /// - Invokes <c>Cc65Build.CompileAsync(Project)</c> and collects errors.
+        /// - If the build fails the error list is displayed in the errors grid and the Errors tab is selected.
+        /// - On success a success message is written to the output pane.
+        /// The method returns <c>false</c> if the build failed or if no project is set up to build.
+        /// </remarks>
         private async Task<bool> BuildProjectAsync()
         {
             SaveOpenFiles();
@@ -222,10 +249,16 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Populates the error list from the supplied list of <c>Cc65Error</c> instances
+        /// Populates the error list grid from the supplied list of <c>Cc65Error</c> instances.
         /// </summary>
-        /// <param name="errorList"></param>
-        /// <remarks>The error rows will be highlighted according to their <c>Cc65Error.Type</c> value</remarks>
+        /// <param name="errorList">List of errors returned from a cc65 compilation run.</param>
+        /// <remarks>
+        /// Each row's foreground color is updated based on the error's <c>Type</c>:
+        /// - "Warning": Purple
+        /// - "Error": Orange
+        /// - "Fatal": Red
+        /// The grid's <c>DataSource</c> is set to the provided list which binds each <c>Cc65Error</c> to a row.
+        /// </remarks>
         private void PopulateErrorsDataGridView(List<Cc65Error> errorList)
         {
             // Populate the data grid view
@@ -252,8 +285,12 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Launches the current project in WinVICE using the current target platform selection.
+        /// Builds and, on success, launches the current project in the configured emulator.
         /// </summary>
+        /// <remarks>
+        /// This method will first call <see cref="BuildProjectAsync"/>. If that build succeeds the project
+        /// is launched via <c>Cc65Emulators.LaunchEmulatorAsync(Project, emulators)</c>. A message is written to the output pane before launching.
+        /// </remarks>
         private async Task ExecuteProjectAsync()
         {
             var builtOK = await BuildProjectAsync();
@@ -269,9 +306,12 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Displays the project settings dialog.
+        /// Displays the project settings dialog and updates the active project with any changes.
         /// </summary>
-        /// <remarks>Allows the user to modified the project settings/// </remarks>
+        /// <remarks>
+        /// A <c>ProjectSettings</c> dialog is created and passed the current <c>Project</c>.
+        /// If the user accepts the dialog (<see cref="DialogResult.OK"/>) the in-memory project instance is replaced with the dialog's updated <c>Project</c>.
+        /// </remarks>
         private void DisplayProjectSettingsDialog()
         {
             var dlg = new ProjectSettings { Project = Project };

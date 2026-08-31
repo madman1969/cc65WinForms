@@ -11,45 +11,82 @@ using System.Windows.Forms;
 
 namespace cc65WinForms
 {
+    /// <summary>
+    /// Main application window for the cc65WinForms project.
+    /// Provides the primary UI surface including:
+    /// - Project tree view population and management
+    /// - Editor tab creation and management (based on <see cref="FastColoredTextBox"/>)
+    /// - Navigation through edit history (forward/back)
+    /// - UI helpers such as cursor position updates and line highlighting toggles
+    /// </summary>
     public partial class MainForm : Form
     {
         #region Constants
 
+        /// <summary>
+        /// Tree node text used for the project's header files group.
+        /// </summary>
         private const string HEADER_FILES = "Header Files";
+
+        /// <summary>
+        /// Tree node text used for the project's source files group.
+        /// </summary>
         private const string SOURCE_FILES = "Source Files";
+
+        /// <summary>
+        /// Text to display in the tree view when no project is loaded.
+        /// </summary>
         private const string NO_PROJECT_LOADED = "No Project Loaded";
 
         #endregion
 
         #region Fields and properties
+
+        /// <summary>
+        /// Style used to render invisible characters (whitespace/newlines) in editors.
+        /// </summary>
         readonly Style invisibleCharsStyle = new InvisibleCharsRenderer(Pens.Gray);
+
+        /// <summary>
+        /// Background color used to highlight the current line in editors.
+        /// </summary>
         readonly Color currentLineColor = Color.FromArgb(100, 200, 200, 255);
+
+        /// <summary>
+        /// Background color used to indicate a changed line.
+        /// </summary>
         readonly Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
 
         /// <summary>
-        /// A private <c>string</c> used internally as a shortcut to the current project name
+        /// Internal shortcut to the file path of the current project file.
+        /// Empty when no project is loaded.
         /// </summary>
         private string ProjectFile = string.Empty;
 
         /// <summary>
-        /// Gets or sets the current project.
+        /// Gets or sets the currently loaded <see cref="CC65Project"/>.
+        /// This property may be null when no project is open.
         /// </summary>
-        /// <value>A <c>Cc65Project</c> instance</value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CC65Project Project { get; set; } = null;
 
         /// <summary>
-        /// A private instance of the <c>Cc65Emulators</c> used internally
+        /// Holds the emulator configuration read from disk (emulators.json).
         /// </summary>
         readonly Cc65Emulators emulators;
+
+        /// <summary>
+        /// Style used to mark all occurrences of the currently selected word.
+        /// </summary>
         readonly Style sameWordsStyle = new MarkerStyle(
             new SolidBrush(Color.FromArgb(50, Color.Gray))
         );
 
         /// <summary>
-        /// Gets or sets the currently active <c>FastColoredTextBox</c> instance
+        /// Gets or sets the currently active editor instance.
+        /// Reading returns the <see cref="FastColoredTextBox"/> hosted in the selected tab.
+        /// Setting will switch the tab and focus the provided editor.
         /// </summary>
-        /// <value>A <c>FastColoredTextBox</c> instance</value>
         private FastColoredTextBox CurrentTB
         {
             get
@@ -67,12 +104,17 @@ namespace cc65WinForms
                 value.Focus();
             }
         }
+
+        /// <summary>
+        /// Tracks the timestamp used for incremental navigation (back/forward).
+        /// </summary>
         DateTime lastNavigatedDateTime = DateTime.Now;
 
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainForm"/> class.
+        /// Reads emulator configuration and initializes the project tree view.
         /// </summary>
         public MainForm()
         {
@@ -93,9 +135,9 @@ namespace cc65WinForms
         #region Private Methods
 
         /// <summary>
-        /// Suppresses or highlights the invisible chars.
+        /// Suppresses or highlights the invisible chars within the provided range.
         /// </summary>
-        /// <param name="range">The range.</param>
+        /// <param name="range">The <see cref="FastColoredTextBoxNS.Range"/> to apply invisible char styling to.</param>
         private void HighlightInvisibleChars(FastColoredTextBoxNS.Range range)
         {
             range.ClearStyle(invisibleCharsStyle);
@@ -107,10 +149,11 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Saves the text associated with the specified tab.
+        /// Saves the text associated with the specified tab to disk.
+        /// If the tab has no associated file path, a <see cref="SaveFileDialog"/> is shown.
         /// </summary>
         /// <param name="tab">The currently selected editor tab.</param>
-        /// <returns><c>true</c> if successful; else <c>false</c></returns>
+        /// <returns><c>true</c> if the file was successfully saved; otherwise <c>false</c>.</returns>
         private bool Save(FATabStripItem tab)
         {
             var tb = (tab.Controls[0] as FastColoredTextBox);
@@ -154,6 +197,11 @@ namespace cc65WinForms
             return true;
         }
 
+        /// <summary>
+        /// Navigates to the previous edit location across all open editor tabs.
+        /// Uses per-line <c>LastVisit</c> timestamps to determine the previous location.
+        /// </summary>
+        /// <returns><c>true</c> if navigation occurred; otherwise <c>false</c>.</returns>
         private bool NavigateBackward()
         {
             var max = new DateTime();
@@ -192,69 +240,75 @@ namespace cc65WinForms
             }
         }
 
-private bool NavigateForward()
-{
-    // Track the earliest LastVisit timestamp that is still after lastNavigatedDateTime
-    DateTime min = DateTime.Now;
-
-    // Line index of the next navigation target
-    int iLine = -1;
-
-    // The text box containing that line
-    FastColoredTextBox tb = null;
-
-    // Iterate all open tabs
-    for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
-    {
-        // Each tab hosts a FastColoredTextBox as its first control
-        var t = tsFiles.Items[iTab].Controls[0] as FastColoredTextBox;
-
-        // Scan all lines in this text box
-        for (int i = 0; i < t.LinesCount; i++)
+        /// <summary>
+        /// Navigates to the next edit location across all open editor tabs.
+        /// Finds the nearest <c>LastVisit</c> timestamp that is newer than the current navigation cursor.
+        /// </summary>
+        /// <returns><c>true</c> if navigation occurred; otherwise <c>false</c>.</returns>
+        private bool NavigateForward()
         {
-            // Find the nearest LastVisit timestamp that is:
-            //   - newer than the last navigated point
-            //   - but still the earliest among candidates
-            if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
+            // Track the earliest LastVisit timestamp that is still after lastNavigatedDateTime
+            DateTime min = DateTime.Now;
+
+            // Line index of the next navigation target
+            int iLine = -1;
+
+            // The text box containing that line
+            FastColoredTextBox tb = null;
+
+            // Iterate all open tabs
+            for (int iTab = 0; iTab < tsFiles.Items.Count; iTab++)
             {
-                min = t[i].LastVisit;
-                iLine = i;
-                tb = t;
+                // Each tab hosts a FastColoredTextBox as its first control
+                var t = tsFiles.Items[iTab].Controls[0] as FastColoredTextBox;
+
+                // Scan all lines in this text box
+                for (int i = 0; i < t.LinesCount; i++)
+                {
+                    // Find the nearest LastVisit timestamp that is:
+                    //   - newer than the last navigated point
+                    //   - but still the earliest among candidates
+                    if (t[i].LastVisit > lastNavigatedDateTime && t[i].LastVisit < min)
+                    {
+                        min = t[i].LastVisit;
+                        iLine = i;
+                        tb = t;
+                    }
+                }
+            }
+
+            // If a suitable line was found, navigate to it
+            if (iLine >= 0)
+            {
+                // Switch to the tab containing the target line
+                tsFiles.SelectedItem = tb.Parent as FATabStripItem;
+
+                // Move caret to the target line
+                tb.Navigate(iLine);
+
+                // Update the navigation cursor
+                lastNavigatedDateTime = tb[iLine].LastVisit;
+                Console.WriteLine($"Forward: {lastNavigatedDateTime}");
+
+                // Refresh UI focus and redraw
+                tb.Focus();
+                tb.Invalidate();
+
+                return true;
+            }
+            else
+            {
+                // No forward navigation target exists
+                return false;
             }
         }
-    }
-
-    // If a suitable line was found, navigate to it
-    if (iLine >= 0)
-    {
-        // Switch to the tab containing the target line
-        tsFiles.SelectedItem = tb.Parent as FATabStripItem;
-
-        // Move caret to the target line
-        tb.Navigate(iLine);
-
-        // Update the navigation cursor
-        lastNavigatedDateTime = tb[iLine].LastVisit;
-        Console.WriteLine($"Forward: {lastNavigatedDateTime}");
-
-        // Refresh UI focus and redraw
-        tb.Focus();
-        tb.Invalidate();
-
-        return true;
-    }
-    else
-    {
-        // No forward navigation target exists
-        return false;
-    }
-}
 
 
         /// <summary>
-        /// Creates a new text editor tab and loads the contents of the specified file
+        /// Creates a new text editor tab and loads the contents of the specified file.
+        /// The created editor is wired up with common event handlers and styling.
         /// </summary>
-        /// <param name="fileName">Name of the file to load into the editor tab</param>
+        /// <param name="fileName">Full path of the file to open in the new tab; if null a new empty document is created.</param>
         private void CreateTab(string fileName)
         {
             try
@@ -331,7 +385,8 @@ private bool NavigateForward()
         }
 
         /// <summary>
-        /// Changes the selected target platform for the current project
+        /// Changes the selected target platform for the current project based on the UI selection.
+        /// Updates <see cref="CC65Project.TargetPlatform"/> and marks the project as modified.
         /// </summary>
         private void ChangeSelectedPlatform()
         {
@@ -355,6 +410,7 @@ private bool NavigateForward()
 
         /// <summary>
         /// Toggles the current line highlight across all open text editor tabs.
+        /// Applies or removes the configured <see cref="currentLineColor"/> depending on the toggle state.
         /// </summary>
         private void ChangeCurrentLineHighLight()
         {
@@ -376,7 +432,7 @@ private bool NavigateForward()
         /// <summary>
         /// Updates the cursor position label in the application status bar.
         /// </summary>
-        /// <param name="place">A Place instance containing the new row/column value</param>
+        /// <param name="place">A <see cref="Place"/> instance containing the new row/column value.</param>
         private void UpdateCursorPositionLabel(Place place)
         {
             var message = $"Line {place.iLine}, Column {place.iChar}";
@@ -386,7 +442,7 @@ private bool NavigateForward()
         #region TreeView routines
 
         /// <summary>
-        /// Clears the project tree view
+        /// Clears the project tree view.
         /// </summary>
         private void ClearTreeView()
         {
@@ -394,7 +450,8 @@ private bool NavigateForward()
         }
 
         /// <summary>
-        /// Populates project tree view with the source/header files referenced by the current <c>Cc65Project</c> instance
+        /// Populates project tree view with the source/header files referenced by the current <see cref="CC65Project"/> instance.
+        /// When no project is loaded a placeholder node is displayed.
         /// </summary>
         private void PopulateTreeView()
         {

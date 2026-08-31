@@ -1,4 +1,21 @@
-﻿using cc65Wrapper;
+﻿// ProjectSettings.cs
+// Documentation:
+// This file implements the `ProjectSettings` Windows Form which provides a UI
+// for viewing and editing properties of a `CC65Project` instance.
+//
+// The `using` directives below import the namespaces required by this form:
+// - `cc65Wrapper`
+//   Contains the core project model types (for example `CC65Project`) used by
+//   the dialog to read and write project data.
+// - `cc65Wrapper.Enumerations`
+//   Defines project-related enums (for example `CC65ProjectTypes`) used to
+//   populate and parse the target platform selection.
+// - `System`
+//   Provides base types such as `Object`, `String` and `EventArgs`.
+// - `System.ComponentModel`
+//   Contains attributes used by WinForms designer and serialization features
+//   (for example `DesignerSerializationVisibility`).
+using cc65Wrapper;
 using cc65Wrapper.Enumerations;
 using System;
 using System.ComponentModel;
@@ -9,7 +26,14 @@ using System.Windows.Forms;
 namespace cc65WinForms
 {
     /// <summary>
-    ///
+    /// A dialog that displays and edits settings for a <see cref="CC65Project"/>.
+    /// 
+    /// Responsibilities:
+    /// - Bind current project values to UI controls when the dialog loads.
+    /// - Allow the user to change project name, working directory, target
+    ///   platform, output file and basic build options.
+    /// - Validate and apply changes back to the <see cref="CC65Project"/> instance,
+    ///   marking the project as modified when values change.
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
     public partial class ProjectSettings : Form
@@ -20,7 +44,7 @@ namespace cc65WinForms
         /// Gets or sets the project used by the dialog.
         /// </summary>
         /// <value>
-        /// A <c>Cc65Project</c> instance.
+        /// A <c>CC65Project</c> instance.
         /// </value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CC65Project Project { get; set; }
@@ -44,6 +68,7 @@ namespace cc65WinForms
 
         /// <summary>
         /// Handles the Click event of the ok Button control.
+        /// Commits changes from the UI to the bound <see cref="CC65Project"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>

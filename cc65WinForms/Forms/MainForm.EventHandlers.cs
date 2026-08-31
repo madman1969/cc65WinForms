@@ -13,20 +13,29 @@ namespace cc65WinForms
         #region Event Handlers
 
         /// <summary>
-        /// Creates new tool strip button_click.
+        /// Creates a new editor tab.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Invoked by the "New" tool-strip button. Uses <see cref="CreateTab(string)"/> with a null
+        /// argument to create an untitled/empty tab.
+        /// </remarks>
+        /// <param name="sender">Event source (toolbar button).</param>
+        /// <param name="e">Event arguments.</param>
         private void NewToolStripButton_Click(object sender, EventArgs e)
         {
             CreateTab(null);
         }
 
         /// <summary>
-        /// Handles the TextChangedDelayed event of the Tb control.
+        /// Delayed text-changed handler for the editor.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TextChangedEventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Called after a short delay when editor text changes. Responsible for UI-related updates
+        /// triggered by edits such as updating invisible-character highlighting. There is commented
+        /// code for rebuilding an object explorer asynchronously; that behavior is currently disabled.
+        /// </remarks>
+        /// <param name="sender">Event source (editor control).</param>
+        /// <param name="e">Text changed event data containing the changed range.</param>
         void Tb_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             //rebuild object explorer
@@ -39,10 +48,13 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the SelectionChanged event of the text box control.
+        /// Handles immediate selection changes in the editor.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Updates the UI cursor/position label to reflect the current caret position.
+        /// </remarks>
+        /// <param name="sender">Event source (editor control).</param>
+        /// <param name="e">Event arguments.</param>
         private void Tb_SelectionChanged(Object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -52,10 +64,15 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the SelectionChangedDelayed event of the tb control.
+        /// Handles delayed selection changes in the editor.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Performs lower-priority tasks that should not run on every single selection change,
+        /// such as recording the last visit timestamp for the current line and highlighting all
+        /// occurrences of the word under the caret within the visible range.
+        /// </remarks>
+        /// <param name="sender">Event source (editor control).</param>
+        /// <param name="e">Event arguments.</param>
         void Tb_SelectionChangedDelayed(object sender, EventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -75,7 +92,7 @@ namespace cc65WinForms
 
             if (!tb.Selection.IsEmpty)
             {
-                return; //user selected diapason
+                return; // user selected a range; don't highlight single-word occurrences
             }
 
             // Get fragment around caret ...
@@ -87,7 +104,7 @@ namespace cc65WinForms
                 return;
             }
 
-            // Highlight same words ...
+            // Highlight same words in visible range ...
             FastColoredTextBoxNS.Range[] ranges = tb.VisibleRange.GetRanges($"\\b{text}\\b").ToArray();
 
             if (ranges.Length > 1)
@@ -100,10 +117,17 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the KeyDown event of the text box control.
+        /// Handles key-down events in the editor to support editor shortcuts.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Supported shortcuts:
+        /// - Ctrl + OemMinus : Navigate backward
+        /// - Ctrl + Shift + OemMinus : Navigate forward
+        /// - Ctrl + K : Force-show context popup menu (ignores minimum fragment length)
+        /// Handled keys set <see cref="KeyEventArgs.Handled"/> to true to prevent further processing.
+        /// </remarks>
+        /// <param name="sender">Event source (editor control).</param>
+        /// <param name="e">Key event data.</param>
         void Tb_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.OemMinus)
@@ -120,17 +144,17 @@ namespace cc65WinForms
 
             if (e.KeyData == (Keys.K | Keys.Control))
             {
-                //forced show (MinFragmentLength will be ignored)
+                // forced show (MinFragmentLength will be ignored)
                 (CurrentTB.Tag as TbInfo).popupMenu.Show(true);
                 e.Handled = true;
             }
         }
 
         /// <summary>
-        /// Handles the MouseMove event of the tb control.
+        /// Updates the cursor/position display as the mouse moves over the editor.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (editor control).</param>
+        /// <param name="e">Mouse event data containing the mouse location.</param>
         void Tb_MouseMove(object sender, MouseEventArgs e)
         {
             var tb = sender as FastColoredTextBox;
@@ -144,10 +168,14 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the btInvisibleChars control.
+        /// Refreshes invisible-character highlighting for every open file.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Iterates through all open editor tabs and re-applies invisible-character highlighting,
+        /// then invalidates the current editor to force a repaint.
+        /// </remarks>
+        /// <param name="sender">Event source (button).</param>
+        /// <param name="e">Event arguments.</param>
         private void BtInvisibleChars_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -159,50 +187,56 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the openToolStripButton control.
+        /// Opens a file via the Open file action.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (toolbar button).</param>
+        /// <param name="e">Event arguments.</param>
         private void OpenToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFile();
         }
 
         /// <summary>
-        /// Handles the Click event of the saveToolStripButton control.
+        /// Saves the current file.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (toolbar button).</param>
+        /// <param name="e">Event arguments.</param>
         private void SaveToolStripButton_Click(object sender, EventArgs e)
         {
             SaveFile();
         }
 
         /// <summary>
-        /// Handles the Click event of the saveAsToolStripMenuItem control.
+        /// Shows the Save As dialog for the current file.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileAs();
         }
 
         /// <summary>
-        /// Handles the Click event of the quitToolStripMenuItem control.
+        /// Quits the application by closing the main form.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void QuitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
         /// <summary>
-        /// Handles the Tick event of the tmUpdateInterface control.
+        /// Periodic timer tick that updates the enabled/disabled state of UI commands.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Keeps the toolbar/menu state consistent with the editor and project state: e.g. enables
+        /// Save when the current editor has unsaved changes, enables project actions when a project
+        /// is loaded, and updates project-save availability via <see cref="CanSaveProject"/>.
+        /// Exceptions are caught and written to the console to avoid timer termination.
+        /// </remarks>
+        /// <param name="sender">Event source (timer).</param>
+        /// <param name="e">Event arguments.</param>
         private void TmUpdateInterface_Tick(object sender, EventArgs e)
         {
             try
@@ -250,20 +284,29 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the btHighlightCurrentLine control.
+        /// Toggles current-line highlighting mode.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Calls <see cref="ChangeCurrentLineHighLight"/> to change the highlight state and update
+        /// the editor visuals accordingly.
+        /// </remarks>
+        /// <param name="sender">Event source (button).</param>
+        /// <param name="e">Event arguments.</param>
         private void BtHighlightCurrentLine_Click(object sender, EventArgs e)
         {
             ChangeCurrentLineHighLight();
         }
 
         /// <summary>
-        /// Handles the Click event of the btShowFoldingLines control.
+        /// Toggles display of folding guide lines for all open editors.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Iterates open tabs and applies the state of <see cref="btShowFoldingLines"/> to each
+        /// editor's <see cref="FastColoredTextBox.ShowFoldingLines"/> property, then invalidates
+        /// the current editor to force a repaint.
+        /// </remarks>
+        /// <param name="sender">Event source (button).</param>
+        /// <param name="e">Event arguments.</param>
         private void BtShowFoldingLines_Click(object sender, EventArgs e)
         {
             foreach (FATabStripItem tab in tsFiles.Items)
@@ -276,20 +319,28 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the cbTargetPlatform control.
+        /// Handles change of the selected build target platform.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Calls <see cref="ChangeSelectedPlatform"/> to apply the newly selected platform to the
+        /// project / build settings.
+        /// </remarks>
+        /// <param name="sender">Event source (combo box).</param>
+        /// <param name="e">Event arguments.</param>
         private void CbTargetPlatform_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeSelectedPlatform();
         }
 
         /// <summary>
-        /// Handles the Click event of the btBuildProject control.
+        /// Begins an asynchronous project build.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Async event handler that triggers <see cref="BuildProjectAsync"/> and intentionally
+        /// ignores the returned result.
+        /// </remarks>
+        /// <param name="sender">Event source (build button).</param>
+        /// <param name="e">Event arguments.</param>
         private async void BtBuildProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Building Project{Environment.NewLine}");
@@ -297,10 +348,13 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the btExecuteProject control.
+        /// Executes the current project asynchronously.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Async event handler that triggers <see cref="ExecuteProjectAsync"/>.
+        /// </remarks>
+        /// <param name="sender">Event source (execute button).</param>
+        /// <param name="e">Event arguments.</param>
         private async void BtExecuteProject_ClickAsync(object sender, EventArgs e)
         {
             // tbOutput.AppendText($"Executing Project{Environment.NewLine}");
@@ -308,20 +362,25 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the openProjectToolStripMenuItem control.
+        /// Opens an existing project.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void OpenProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenProject();
         }
 
         /// <summary>
-        /// Handles the NodeMouseClick event of the tvProjectFiles control.
+        /// Handles node clicks in the project files tree view.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="TreeNodeMouseClickEventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Left-clicking on a file node will focus an existing tab if open, or open a new tab for
+        /// that file. Clicking non-file nodes (root / groups) is currently ignored or reserved for
+        /// future behavior.
+        /// </remarks>
+        /// <param name="sender">Event source (tree view).</param>
+        /// <param name="e">Tree node mouse click event data.</param>
         private void TvProjectFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             FATabStripItem matchingItem = null;
@@ -379,6 +438,16 @@ namespace cc65WinForms
             //}
         }
 
+        /// <summary>
+        /// Shows a context menu for project-file nodes (right-click).
+        /// </summary>
+        /// <remarks>
+        /// When the user right-clicks on the "Header Files" or "Source Files" group nodes a small
+        /// context menu is shown with options to add or remove files. Implementation contains TODOs
+        /// for completing add/remove behavior.
+        /// </remarks>
+        /// <param name="sender">Event source (tree view).</param>
+        /// <param name="e">Mouse event data.</param>
         private void TvProjectFiles_MouseUp(Object sender, MouseEventArgs e)
         {
             // Bail if not right mouse button up ...
@@ -425,46 +494,58 @@ namespace cc65WinForms
             menu.Show(tvProjectFiles, e.Location);
         }
 
+        /// <summary>
+        /// Handler for context-menu item clicks created in <see cref="TvProjectFiles_MouseUp"/>.
+        /// </summary>
+        /// <remarks>
+        /// Placeholder handler. Concrete add/remove logic should be implemented here.
+        /// </remarks>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         void Item_Click(object sender, EventArgs e)
         {
             ;
         }
 
         /// <summary>
-        /// Handles the Click event of the closeFileToolStripMenuItem control.
+        /// Closes the current file tab.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void CloseFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseFile();
         }
 
         /// <summary>
-        /// Handles the Click event of the closeProjectToolStripMenuItem control.
+        /// Closes the currently open project.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void CloseProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseProject();
         }
 
         /// <summary>
-        /// Handles the Click event of the saveProjectToolStripButton control.
+        /// Saves the current project to disk.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (toolbar button).</param>
+        /// <param name="e">Event arguments.</param>
         private void SaveProjectToolStripButton_Click(object sender, EventArgs e)
         {
             SaveProject();
         }
 
         /// <summary>
-        /// Handles the SelectionChanged event of the errorsDataGridView control.
+        /// When selection in the errors grid changes, open the related file and navigate to the error line.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <remarks>
+        /// Filters supported file types (.c/.h), ensures an editor tab is open for the file (creates
+        /// one if necessary), and navigates the editor caret to the error line number.
+        /// </remarks>
+        /// <param name="sender">Event source (errors DataGridView).</param>
+        /// <param name="e">Event arguments.</param>
         private void ErrorsDataGridView_SelectionChanged(Object sender, EventArgs e)
         {
             // Bail if no errorList selected ...
@@ -519,10 +600,10 @@ namespace cc65WinForms
         }
 
         /// <summary>
-        /// Handles the Click event of the projectSettingsToolStripMenuItem control.
+        /// Opens the project settings dialog.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
         private void ProjectSettingsToolStripMenuItem_Click(Object sender, EventArgs e)
         {
             DisplayProjectSettingsDialog();
