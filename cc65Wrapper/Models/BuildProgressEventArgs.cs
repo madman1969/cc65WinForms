@@ -34,37 +34,45 @@ namespace cc65Wrapper.Models
     }
 
     /// <summary>
-    /// Represents the phases of a build operation
+    /// Represents the logical phases of a build operation reported via <see cref="BuildProgressEventArgs"/>.
+    /// Handlers receiving progress updates can use these values to determine which part of the pipeline
+    /// the message relates to (initialization, validation, argument construction, compilation, parsing, or completion).
     /// </summary>
+    /// <remarks>
+    /// The phases describe a typical build pipeline but do not strictly enforce ordering — implementations
+    /// may report phases in a different sequence or repeat phases as needed. Do not assume a phase implies
+    /// success; check other status indicators or messages for build result details.
+    /// </remarks>
     public enum BuildPhase
     {
         /// <summary>
-        /// Initializing the build
+        /// Preparing the build environment: loading configuration, allocating resources and performing initial setup.
         /// </summary>
         Initializing,
 
         /// <summary>
-        /// Validating the project
+        /// Validating project inputs, paths and dependencies. Validation errors or missing files are typically reported here.
         /// </summary>
         ValidatingProject,
 
         /// <summary>
-        /// Building command-line arguments
+        /// Assembling command-line arguments and invocation parameters for the underlying tools (compiler/assembler/linker).
         /// </summary>
         BuildingArguments,
 
         /// <summary>
-        /// Compiling the project
+        /// Executing the compiler/assembler. Multiple progress updates can be reported while compiling.
         /// </summary>
         Compiling,
 
         /// <summary>
-        /// Parsing errors
+        /// Parsing tool output for errors, warnings and diagnostics; used to surface parsed issues to the UI or logs.
         /// </summary>
         ParsingErrors,
 
         /// <summary>
-        /// Build completed
+        /// Build operation has completed. Typically paired with <see cref="BuildProgressEventArgs.PercentComplete"/> == 100,
+        /// and the <see cref="BuildProgressEventArgs.Message"/> may indicate success or failure.
         /// </summary>
         Completed
     }

@@ -13,47 +13,61 @@ using System.Threading.Tasks;
 namespace cc65Wrapper
 {
     /// <summary>
-    /// Configuration for CC65 emulators
+    /// Holds emulator executable paths for supported platforms and provides
+    /// legacy helpers to launch a compiled binary in the selected emulator.
     /// </summary>
     /// <remarks>
-    /// Static methods provide backward compatibility. For new code, use IEmulatorLauncher with dependency injection.
+    /// This class exists primarily for backward compatibility with older code.
+    /// Newer code should use an implementation of <c>IEmulatorLauncher</c>
+    /// and resolve it via dependency injection.
     /// </remarks>
     public class Cc65Emulators
     {
         #region Fields and properties
 
         /// <summary>
-        /// Gets or sets the path for the C64 emulator.
+        /// Gets or sets the path to the C64 emulator executable.
         /// </summary>
         /// <value>
-        /// The C64 path.
+        /// Full filesystem path to the C64 emulator (WinVICE) executable.
+        /// May be empty if not configured.
         /// </value>
         public string C64Path { get; set; }
 
         /// <summary>
-        /// Gets or sets the path for the C128 emulator.
+        /// Gets or sets the path to the C128 emulator executable.
         /// </summary>
         /// <value>
-        /// The C128 path.
+        /// Full filesystem path to the C128 emulator (WinVICE) executable.
+        /// May be empty if not configured.
         /// </value>
         public string C128Path { get; set; }
 
         /// <summary>
-        /// Gets or sets the path for the CBM PET emulator.
+        /// Gets or sets the path to the CBM PET emulator executable.
         /// </summary>
         /// <value>
-        /// The pet path.
+        /// Full filesystem path to the PET emulator (WinVICE) executable.
+        /// May be empty if not configured.
         /// </value>
         public string PetPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the path for the VIC 20 emulator
+        /// Gets or sets the path to the VIC-20 emulator executable.
         /// </summary>
+        /// <value>
+        /// Full filesystem path to the VIC-20 emulator (WinVICE) executable.
+        /// May be empty if not configured.
+        /// </value>
         public string Vic20Path { get; set; }
 
         /// <summary>
-        /// Gets or sets the path for the Plus4 emulator
+        /// Gets or sets the path to the Plus/4 (and C16) emulator executable.
         /// </summary>
+        /// <value>
+        /// Full filesystem path to the Plus/4 (or C16) emulator (WinVICE) executable.
+        /// May be empty if not configured.
+        /// </value>
         public string Plus4Path { get; set; }
 
         #endregion
@@ -61,7 +75,7 @@ namespace cc65Wrapper
         #region Class Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Cc65Emulators"/> class.
+        /// Initializes a new instance of <see cref="Cc65Emulators"/> with empty paths.
         /// </summary>
         public Cc65Emulators()
         {
@@ -77,38 +91,43 @@ namespace cc65Wrapper
         #region Public Methods
 
         /// <summary>
-        /// Retrieves JSON representation of a project
+        /// Serializes this instance to a JSON string.
         /// </summary>
-        /// <returns>A JSON <c>string</c> of the supplied <c>Cc65Emulators</c> instance</returns>
+        /// <returns>A JSON <c>string</c> representing this <see cref="Cc65Emulators"/> instance.</returns>
         public string AsJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         /// <summary>
-        /// Converts JSON <c>string</c> into a populated <c>Cc65Emulators</c> instance
+        /// Deserializes a JSON string into a new <see cref="Cc65Emulators"/> instance.
         /// </summary>
-        /// <param name="Json">A JSOM <c>string</c> representation of a <c>Cc65Emulators</c> instance</param>
-        /// <returns>A populated <c>Cc65Emulators</c> instance</returns>
+        /// <param name="Json">A JSON-formatted <c>string</c> to deserialize.</param>
+        /// <returns>A populated <see cref="Cc65Emulators"/> instance, or <c>null</c> if deserialization fails.</returns>
         public static Cc65Emulators FromJson(string Json)
         {
             return JsonConvert.DeserializeObject<Cc65Emulators>(Json);
         }
 
         /// <summary>
-        /// Attempts to launch the associated binary in the appropriate WinVice emulator for the supplied project
+        /// Attempts to launch the compiled project binary in the appropriate WinVICE emulator.
         /// </summary>
-        /// <param name="project">A <c>Cc65Project</c> instance</param>
-        /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
-        /// <param name="cancellationToken">Optional cancellation token</param>
-        /// <returns>A <c>BufferedCommandResult</c> instance containing the result of the attempt to launch the emulator</returns>
+        /// <param name="project">The <see cref="CC65Project"/> describing the built output and working directory.</param>
+        /// <param name="emulators">The <see cref="Cc65Emulators"/> instance containing emulator executable paths.</param>
+        /// <param name="cancellationToken">Optional cancellation token used to cancel the launched process.</param>
+        /// <returns>
+        /// A <see cref="BufferedCommandResult"/> containing the exit code, standard output and error streams
+        /// from the emulator process started by this method.
+        /// </returns>
         /// <remarks>
-        /// This is a legacy method maintained for backward compatibility.
-        /// For new code, use IEmulatorLauncher with dependency injection.
+        /// - This is a legacy, static helper retained for backward compatibility.
+        /// - For new code prefer using an <c>IEmulatorLauncher</c> implementation.
+        /// - The method temporarily changes the process current directory to the project's
+        ///   working directory and restores it before returning.
         /// </remarks>
-        /// <exception cref="System.ArgumentNullException">Thrown when project or emulators is null</exception>
-        /// <exception cref="System.ArgumentException">Thrown when working directory is empty</exception>
-        /// <exception cref="DirectoryNotFoundException">Thrown when working directory does not exist</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="project"/> or <paramref name="emulators"/> is <c>null</c>.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when <c>project.WorkingDirectory</c> is null, empty or whitespace.</exception>
+        /// <exception cref="DirectoryNotFoundException">Thrown when the project's working directory does not exist.</exception>
         public static async Task<BufferedCommandResult> LaunchEmulatorAsync(
             CC65Project project,
             Cc65Emulators emulators,
@@ -135,15 +154,15 @@ namespace cc65Wrapper
 
             try
             {
-                // Switch to projects working directory ...
+                // Switch to project's working directory ...
                 Directory.SetCurrentDirectory(project.WorkingDirectory);
 
-                // Build an arguments list from the project settings to pass to CL65 ...
+                // Build an arguments list from the project settings to pass to the emulator ...
                 List<string> argumentList = BuildArgumentsList(project);
 
                 var selectedEmulator = GetSelectedEmulator(project, emulators);
 
-                // Call CL65 with project settings ...
+                // Run the configured emulator with arguments and capture output.
                 result = await Cli.Wrap(selectedEmulator)
                     .WithArguments(argumentList)
                     .WithValidation(CommandResultValidation.None)
@@ -164,14 +183,16 @@ namespace cc65Wrapper
         #region Private Methods
 
         /// <summary>
-        /// Builds the cmd-line options required to build the project binary
+        /// Builds the command-line argument list used to instruct the emulator to autostart the built binary.
         /// </summary>
-        /// <param name="project">A <c>Cc65Project</c> instance which lists the binary to run</param>
-        /// <returns>A list of <c>string</c> arguments to pass to the 'cl65' compiler</returns>
-        /// <remarks>The return value is passed as an argument list to the 'cl65' compiler</remarks>
+        /// <param name="project">A <see cref="CC65Project"/> instance which lists the binary to run.</param>
+        /// <returns>
+        /// A list of <see cref="string"/> arguments suitable for passing to the emulator executable.
+        /// The current implementation returns an <c>-autostart</c> option followed by the full path to the output file.
+        /// </returns>
         private static List<string> BuildArgumentsList(CC65Project project)
         {
-            // Add the target platform ...
+            // Add the autostart flag and the full path to the output binary
             var result = new List<string>
             {
                 $"-autostart",
@@ -182,11 +203,14 @@ namespace cc65Wrapper
         }
 
         /// <summary>
-        /// Retrieves the WinVICE emulator file path currently selected for the project
+        /// Retrieves the emulator executable path selected for the project's target platform.
         /// </summary>
-        /// <param name="project">A <c>Cc65Project</c> instance</param>
-        /// <param name="emulators">A <c>Cc65Emulators</c> instance</param>
-        /// <returns>The file path to the appropriate WinVICE emulator for the project</returns>
+        /// <param name="project">A <see cref="CC65Project"/> instance whose <c>TargetPlatform</c> is used to select the emulator.</param>
+        /// <param name="emulators">A <see cref="Cc65Emulators"/> instance that maps platforms to executable paths.</param>
+        /// <returns>The file path to the appropriate WinVICE emulator for the project's target platform.</returns>
+        /// <remarks>
+        /// If the project's <c>TargetPlatform</c> is not recognized, the method falls back to the configured C64 emulator path.
+        /// </remarks>
         private static string GetSelectedEmulator(CC65Project project, Cc65Emulators emulators)
         {
             return project.TargetPlatform switch

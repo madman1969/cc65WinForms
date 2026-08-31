@@ -28,687 +28,644 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ProjectLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.PlatformTargetLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.CursorPositionLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.projectSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.saveProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.lbTargetPlatform = new System.Windows.Forms.ToolStripLabel();
-            this.cbTargetPlatform = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btBuildProject = new System.Windows.Forms.ToolStripButton();
-            this.btExecuteProject = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.btInvisibleChars = new System.Windows.Forms.ToolStripButton();
-            this.btHighlightCurrentLine = new System.Windows.Forms.ToolStripButton();
-            this.btShowFoldingLines = new System.Windows.Forms.ToolStripButton();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tvProjectFiles = new System.Windows.Forms.TreeView();
-            this.tsFiles = new FarsiLibrary.Win.FATabStrip();
-            this.ofdMain = new System.Windows.Forms.OpenFileDialog();
-            this.sfdMain = new System.Windows.Forms.SaveFileDialog();
-            this.tmUpdateInterface = new System.Windows.Forms.Timer(this.components);
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.tsOutput = new FarsiLibrary.Win.FATabStrip();
-            this.outputTSI = new FarsiLibrary.Win.FATabStripItem();
-            this.tbOutput = new System.Windows.Forms.TextBox();
-            this.errorsTSI = new FarsiLibrary.Win.FATabStripItem();
-            this.errorsDataGridView = new System.Windows.Forms.DataGridView();
-            this.filenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lineNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.errorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cc65ErrorBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.statusStrip1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tsOutput)).BeginInit();
-            this.tsOutput.SuspendLayout();
-            this.outputTSI.SuspendLayout();
-            this.errorsTSI.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorsDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cc65ErrorBindingSource)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            statusStrip1 = new System.Windows.Forms.StatusStrip();
+            ProjectLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            PlatformTargetLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            CursorPositionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            newFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            saveProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            closeFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            projectSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStrip1 = new System.Windows.Forms.ToolStrip();
+            newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            saveProjectToolStripButton = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            lbTargetPlatform = new System.Windows.Forms.ToolStripLabel();
+            cbTargetPlatform = new System.Windows.Forms.ToolStripComboBox();
+            toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            btBuildProject = new System.Windows.Forms.ToolStripButton();
+            btExecuteProject = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            btInvisibleChars = new System.Windows.Forms.ToolStripButton();
+            btHighlightCurrentLine = new System.Windows.Forms.ToolStripButton();
+            btShowFoldingLines = new System.Windows.Forms.ToolStripButton();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            tvProjectFiles = new System.Windows.Forms.TreeView();
+            tsFiles = new FarsiLibrary.Win.FATabStrip();
+            ofdMain = new System.Windows.Forms.OpenFileDialog();
+            sfdMain = new System.Windows.Forms.SaveFileDialog();
+            tmUpdateInterface = new System.Windows.Forms.Timer(components);
+            splitContainer2 = new System.Windows.Forms.SplitContainer();
+            tsOutput = new FarsiLibrary.Win.FATabStrip();
+            outputTSI = new FarsiLibrary.Win.FATabStripItem();
+            tbOutput = new System.Windows.Forms.TextBox();
+            errorsTSI = new FarsiLibrary.Win.FATabStripItem();
+            errorsDataGridView = new System.Windows.Forms.DataGridView();
+            filenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            lineNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            errorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            cc65ErrorBindingSource = new System.Windows.Forms.BindingSource(components);
+            statusStrip1.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tsFiles).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tsOutput).BeginInit();
+            tsOutput.SuspendLayout();
+            outputTSI.SuspendLayout();
+            errorsTSI.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorsDataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cc65ErrorBindingSource).BeginInit();
+            SuspendLayout();
             // 
             // statusStrip1
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ProjectLabel,
-            this.PlatformTargetLabel,
-            this.CursorPositionLabel});
-            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1294);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1466, 36);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { ProjectLabel, PlatformTargetLabel, CursorPositionLabel });
+            statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            statusStrip1.Location = new System.Drawing.Point(0, 974);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
+            statusStrip1.Size = new System.Drawing.Size(1140, 24);
+            statusStrip1.TabIndex = 0;
+            statusStrip1.Text = "statusStrip1";
             // 
             // ProjectLabel
             // 
-            this.ProjectLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.ProjectLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.ProjectLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.ProjectLabel.Name = "ProjectLabel";
-            this.ProjectLabel.Size = new System.Drawing.Size(173, 29);
-            this.ProjectLabel.Text = "No Project Loaded";
+            ProjectLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
+            ProjectLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            ProjectLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            ProjectLabel.Name = "ProjectLabel";
+            ProjectLabel.Size = new System.Drawing.Size(113, 19);
+            ProjectLabel.Text = "No Project Loaded";
             // 
             // PlatformTargetLabel
             // 
-            this.PlatformTargetLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.PlatformTargetLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.PlatformTargetLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.PlatformTargetLabel.Name = "PlatformTargetLabel";
-            this.PlatformTargetLabel.Size = new System.Drawing.Size(132, 29);
-            this.PlatformTargetLabel.Text = "Target: NONE";
+            PlatformTargetLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
+            PlatformTargetLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            PlatformTargetLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            PlatformTargetLabel.Name = "PlatformTargetLabel";
+            PlatformTargetLabel.Size = new System.Drawing.Size(86, 19);
+            PlatformTargetLabel.Text = "Target: NONE";
             // 
             // CursorPositionLabel
             // 
-            this.CursorPositionLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.CursorPositionLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.CursorPositionLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.CursorPositionLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.CursorPositionLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.CursorPositionLabel.Name = "CursorPositionLabel";
-            this.CursorPositionLabel.Size = new System.Drawing.Size(176, 29);
-            this.CursorPositionLabel.Text = "Line 00, Column 00";
+            CursorPositionLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            CursorPositionLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
+            CursorPositionLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            CursorPositionLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            CursorPositionLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            CursorPositionLabel.Name = "CursorPositionLabel";
+            CursorPositionLabel.Size = new System.Drawing.Size(116, 19);
+            CursorPositionLabel.Text = "Line 00, Column 00";
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.settingsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1466, 33);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { fileToolStripMenuItem, settingsToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            menuStrip1.Size = new System.Drawing.Size(1140, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.toolStripSeparator6,
-            this.saveProjectToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.toolStripSeparator7,
-            this.closeFileToolStripMenuItem,
-            this.closeProjectToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.quitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
-            this.fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, toolStripSeparator6, saveProjectToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, toolStripSeparator7, closeFileToolStripMenuItem, closeProjectToolStripMenuItem, toolStripSeparator1, quitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
             // 
-            this.newToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newProjectToolStripMenuItem,
-            this.newFileToolStripMenuItem});
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.newToolStripMenuItem.Text = "New";
+            newToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { newProjectToolStripMenuItem, newFileToolStripMenuItem });
+            newToolStripMenuItem.Name = "newToolStripMenuItem";
+            newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            newToolStripMenuItem.Text = "New";
             // 
             // newProjectToolStripMenuItem
             // 
-            this.newProjectToolStripMenuItem.Image = global::cc65WinForms.Properties.Resources._1541;
-            this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(208, 34);
-            this.newProjectToolStripMenuItem.Text = "New Project";
+            newProjectToolStripMenuItem.Image = Properties.Resources._1541;
+            newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
+            newProjectToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            newProjectToolStripMenuItem.Text = "New Project";
             // 
             // newFileToolStripMenuItem
             // 
-            this.newFileToolStripMenuItem.Image = global::cc65WinForms.Properties.Resources.Disk;
-            this.newFileToolStripMenuItem.Name = "newFileToolStripMenuItem";
-            this.newFileToolStripMenuItem.Size = new System.Drawing.Size(208, 34);
-            this.newFileToolStripMenuItem.Text = "New File";
-            this.newFileToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripButton_Click);
+            newFileToolStripMenuItem.Image = Properties.Resources.Disk;
+            newFileToolStripMenuItem.Name = "newFileToolStripMenuItem";
+            newFileToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            newFileToolStripMenuItem.Text = "New File";
+            newFileToolStripMenuItem.Click += NewToolStripButton_Click;
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openProjectToolStripMenuItem,
-            this.openFileToolStripMenuItem});
-            this.openToolStripMenuItem.Image = global::cc65WinForms.Properties.Resources.openToolStripButton1;
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.openToolStripMenuItem.Text = "Open";
+            openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { openProjectToolStripMenuItem, openFileToolStripMenuItem });
+            openToolStripMenuItem.Image = Properties.Resources.openToolStripButton1;
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            openToolStripMenuItem.Text = "Open";
             // 
             // openProjectToolStripMenuItem
             // 
-            this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
-            this.openProjectToolStripMenuItem.Text = "Open Project";
-            this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.OpenProjectToolStripMenuItem_Click);
+            openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
+            openProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            openProjectToolStripMenuItem.Text = "Open Project";
+            openProjectToolStripMenuItem.Click += OpenProjectToolStripMenuItem_Click;
             // 
             // openFileToolStripMenuItem
             // 
-            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
-            this.openFileToolStripMenuItem.Text = "Open File";
-            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripButton_Click);
+            openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
+            openFileToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            openFileToolStripMenuItem.Text = "Open File";
+            openFileToolStripMenuItem.Click += OpenToolStripButton_Click;
             // 
             // toolStripSeparator6
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(213, 6);
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new System.Drawing.Size(140, 6);
             // 
             // saveProjectToolStripMenuItem
             // 
-            this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.saveProjectToolStripMenuItem.Text = "Save Project";
-            this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.SaveProjectToolStripButton_Click);
+            saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
+            saveProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            saveProjectToolStripMenuItem.Text = "Save Project";
+            saveProjectToolStripMenuItem.Click += SaveProjectToolStripButton_Click;
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.saveToolStripMenuItem.Text = "Save File";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripButton_Click);
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            saveToolStripMenuItem.Text = "Save File";
+            saveToolStripMenuItem.Click += SaveToolStripButton_Click;
             // 
             // saveAsToolStripMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.saveAsToolStripMenuItem.Text = "Save As";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
+            saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            saveAsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            saveAsToolStripMenuItem.Text = "Save As";
+            saveAsToolStripMenuItem.Click += SaveAsToolStripMenuItem_Click;
             // 
             // toolStripSeparator7
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(213, 6);
+            toolStripSeparator7.Name = "toolStripSeparator7";
+            toolStripSeparator7.Size = new System.Drawing.Size(140, 6);
             // 
             // closeFileToolStripMenuItem
             // 
-            this.closeFileToolStripMenuItem.Name = "closeFileToolStripMenuItem";
-            this.closeFileToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.closeFileToolStripMenuItem.Text = "Close File";
-            this.closeFileToolStripMenuItem.Click += new System.EventHandler(this.CloseFileToolStripMenuItem_Click);
+            closeFileToolStripMenuItem.Name = "closeFileToolStripMenuItem";
+            closeFileToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            closeFileToolStripMenuItem.Text = "Close File";
+            closeFileToolStripMenuItem.Click += CloseFileToolStripMenuItem_Click;
             // 
             // closeProjectToolStripMenuItem
             // 
-            this.closeProjectToolStripMenuItem.Name = "closeProjectToolStripMenuItem";
-            this.closeProjectToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.closeProjectToolStripMenuItem.Text = "Close Project";
-            this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.CloseProjectToolStripMenuItem_Click);
+            closeProjectToolStripMenuItem.Name = "closeProjectToolStripMenuItem";
+            closeProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            closeProjectToolStripMenuItem.Text = "Close Project";
+            closeProjectToolStripMenuItem.Click += CloseProjectToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(140, 6);
             // 
             // quitToolStripMenuItem
             // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
+            quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            quitToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            quitToolStripMenuItem.Text = "Quit";
+            quitToolStripMenuItem.Click += QuitToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.projectSettingsToolStripMenuItem});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { projectSettingsToolStripMenuItem });
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            settingsToolStripMenuItem.Text = "Settings";
             // 
             // projectSettingsToolStripMenuItem
             // 
-            this.projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
-            this.projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(237, 34);
-            this.projectSettingsToolStripMenuItem.Text = "Project Settings";
-            this.projectSettingsToolStripMenuItem.Click += new System.EventHandler(this.ProjectSettingsToolStripMenuItem_Click);
+            projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
+            projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            projectSettingsToolStripMenuItem.Text = "Project Settings";
+            projectSettingsToolStripMenuItem.Click += ProjectSettingsToolStripMenuItem_Click;
             // 
             // toolStrip1
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripButton,
-            this.openToolStripButton,
-            this.toolStripSeparator3,
-            this.saveToolStripButton,
-            this.saveProjectToolStripButton,
-            this.toolStripSeparator2,
-            this.lbTargetPlatform,
-            this.cbTargetPlatform,
-            this.toolStripSeparator4,
-            this.btBuildProject,
-            this.btExecuteProject,
-            this.toolStripSeparator5,
-            this.btInvisibleChars,
-            this.btHighlightCurrentLine,
-            this.btShowFoldingLines});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 33);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1466, 33);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
+            toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { newToolStripButton, openToolStripButton, toolStripSeparator3, saveToolStripButton, saveProjectToolStripButton, toolStripSeparator2, lbTargetPlatform, cbTargetPlatform, toolStripSeparator4, btBuildProject, btExecuteProject, toolStripSeparator5, btInvisibleChars, btHighlightCurrentLine, btShowFoldingLines });
+            toolStrip1.Location = new System.Drawing.Point(0, 24);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new System.Drawing.Size(1140, 27);
+            toolStrip1.TabIndex = 2;
+            toolStrip1.Text = "toolStrip1";
             // 
             // newToolStripButton
             // 
-            this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newToolStripButton.Image = global::cc65WinForms.Properties.Resources.newToolStripButton_Image;
-            this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(34, 28);
-            this.newToolStripButton.Text = "newToolStripButton";
-            this.newToolStripButton.ToolTipText = "New File";
-            this.newToolStripButton.Click += new System.EventHandler(this.NewToolStripButton_Click);
+            newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            newToolStripButton.Image = Properties.Resources.newToolStripButton_Image;
+            newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            newToolStripButton.Name = "newToolStripButton";
+            newToolStripButton.Size = new System.Drawing.Size(24, 24);
+            newToolStripButton.Text = "newToolStripButton";
+            newToolStripButton.ToolTipText = "New File";
+            newToolStripButton.Click += NewToolStripButton_Click;
             // 
             // openToolStripButton
             // 
-            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openToolStripButton.Image = global::cc65WinForms.Properties.Resources.openToolStripButton_Image;
-            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(34, 28);
-            this.openToolStripButton.Text = "toolStripButton1";
-            this.openToolStripButton.ToolTipText = "Open File";
-            this.openToolStripButton.Click += new System.EventHandler(this.OpenToolStripButton_Click);
+            openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            openToolStripButton.Image = Properties.Resources.openToolStripButton_Image;
+            openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            openToolStripButton.Name = "openToolStripButton";
+            openToolStripButton.Size = new System.Drawing.Size(24, 24);
+            openToolStripButton.Text = "toolStripButton1";
+            openToolStripButton.ToolTipText = "Open File";
+            openToolStripButton.Click += OpenToolStripButton_Click;
             // 
             // toolStripSeparator3
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
             // 
             // saveToolStripButton
             // 
-            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveToolStripButton.Image = global::cc65WinForms.Properties.Resources.Disk1;
-            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(34, 28);
-            this.saveToolStripButton.Text = "toolStripButton1";
-            this.saveToolStripButton.ToolTipText = "Save File";
-            this.saveToolStripButton.Click += new System.EventHandler(this.SaveToolStripButton_Click);
+            saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            saveToolStripButton.Image = Properties.Resources.Disk1;
+            saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            saveToolStripButton.Name = "saveToolStripButton";
+            saveToolStripButton.Size = new System.Drawing.Size(24, 24);
+            saveToolStripButton.Text = "toolStripButton1";
+            saveToolStripButton.ToolTipText = "Save File";
+            saveToolStripButton.Click += SaveToolStripButton_Click;
             // 
             // saveProjectToolStripButton
             // 
-            this.saveProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveProjectToolStripButton.Image = global::cc65WinForms.Properties.Resources._15411;
-            this.saveProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveProjectToolStripButton.Name = "saveProjectToolStripButton";
-            this.saveProjectToolStripButton.Size = new System.Drawing.Size(34, 28);
-            this.saveProjectToolStripButton.Text = "toolStripButton1";
-            this.saveProjectToolStripButton.ToolTipText = "Save Project";
-            this.saveProjectToolStripButton.Click += new System.EventHandler(this.SaveProjectToolStripButton_Click);
+            saveProjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            saveProjectToolStripButton.Image = Properties.Resources._15411;
+            saveProjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            saveProjectToolStripButton.Name = "saveProjectToolStripButton";
+            saveProjectToolStripButton.Size = new System.Drawing.Size(24, 24);
+            saveProjectToolStripButton.Text = "toolStripButton1";
+            saveProjectToolStripButton.ToolTipText = "Save Project";
+            saveProjectToolStripButton.Click += SaveProjectToolStripButton_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
             // 
             // lbTargetPlatform
             // 
-            this.lbTargetPlatform.Name = "lbTargetPlatform";
-            this.lbTargetPlatform.Size = new System.Drawing.Size(133, 28);
-            this.lbTargetPlatform.Text = "Target Platform";
+            lbTargetPlatform.Name = "lbTargetPlatform";
+            lbTargetPlatform.Size = new System.Drawing.Size(89, 24);
+            lbTargetPlatform.Text = "Target Platform";
             // 
             // cbTargetPlatform
             // 
-            this.cbTargetPlatform.Items.AddRange(new object[] {
-            "C128",
-            "C16",
-            "C64",
-            "PET",
-            "Plus4",
-            "VIC20"});
-            this.cbTargetPlatform.Name = "cbTargetPlatform";
-            this.cbTargetPlatform.Size = new System.Drawing.Size(136, 33);
-            this.cbTargetPlatform.Sorted = true;
-            this.cbTargetPlatform.SelectedIndexChanged += new System.EventHandler(this.CbTargetPlatform_SelectedIndexChanged);
+            cbTargetPlatform.Items.AddRange(new object[] { "C128", "C16", "C64", "PET", "Plus4", "VIC20" });
+            cbTargetPlatform.Name = "cbTargetPlatform";
+            cbTargetPlatform.Size = new System.Drawing.Size(107, 27);
+            cbTargetPlatform.Sorted = true;
+            cbTargetPlatform.SelectedIndexChanged += CbTargetPlatform_SelectedIndexChanged;
             // 
             // toolStripSeparator4
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 33);
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
             // 
             // btBuildProject
             // 
-            this.btBuildProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btBuildProject.Image = global::cc65WinForms.Properties.Resources.work_process;
-            this.btBuildProject.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btBuildProject.Name = "btBuildProject";
-            this.btBuildProject.Size = new System.Drawing.Size(34, 28);
-            this.btBuildProject.Text = "Build Project";
-            this.btBuildProject.Click += new System.EventHandler(this.BtBuildProject_ClickAsync);
+            btBuildProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btBuildProject.Image = Properties.Resources.work_process;
+            btBuildProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btBuildProject.Name = "btBuildProject";
+            btBuildProject.Size = new System.Drawing.Size(24, 24);
+            btBuildProject.Text = "Build Project";
+            btBuildProject.Click += BtBuildProject_ClickAsync;
             // 
             // btExecuteProject
             // 
-            this.btExecuteProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btExecuteProject.Image = global::cc65WinForms.Properties.Resources.C64_icon;
-            this.btExecuteProject.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btExecuteProject.Name = "btExecuteProject";
-            this.btExecuteProject.Size = new System.Drawing.Size(34, 28);
-            this.btExecuteProject.Text = "Execute Project";
-            this.btExecuteProject.Click += new System.EventHandler(this.BtExecuteProject_ClickAsync);
+            btExecuteProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btExecuteProject.Image = Properties.Resources.C64_icon;
+            btExecuteProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btExecuteProject.Name = "btExecuteProject";
+            btExecuteProject.Size = new System.Drawing.Size(24, 24);
+            btExecuteProject.Text = "Execute Project";
+            btExecuteProject.Click += BtExecuteProject_ClickAsync;
             // 
             // toolStripSeparator5
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 33);
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
             // 
             // btInvisibleChars
             // 
-            this.btInvisibleChars.CheckOnClick = true;
-            this.btInvisibleChars.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btInvisibleChars.Image = global::cc65WinForms.Properties.Resources.paragraph_16x16;
-            this.btInvisibleChars.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btInvisibleChars.Name = "btInvisibleChars";
-            this.btInvisibleChars.Size = new System.Drawing.Size(34, 28);
-            this.btInvisibleChars.Text = "toolStripButton1";
-            this.btInvisibleChars.ToolTipText = "Show invisible chars";
-            this.btInvisibleChars.Click += new System.EventHandler(this.BtInvisibleChars_Click);
+            btInvisibleChars.CheckOnClick = true;
+            btInvisibleChars.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btInvisibleChars.Image = Properties.Resources.paragraph_16x16;
+            btInvisibleChars.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btInvisibleChars.Name = "btInvisibleChars";
+            btInvisibleChars.Size = new System.Drawing.Size(24, 24);
+            btInvisibleChars.Text = "toolStripButton1";
+            btInvisibleChars.ToolTipText = "Show invisible chars";
+            btInvisibleChars.Click += BtInvisibleChars_Click;
             // 
             // btHighlightCurrentLine
             // 
-            this.btHighlightCurrentLine.Checked = true;
-            this.btHighlightCurrentLine.CheckOnClick = true;
-            this.btHighlightCurrentLine.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.btHighlightCurrentLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btHighlightCurrentLine.Image = global::cc65WinForms.Properties.Resources.edit_padding_top;
-            this.btHighlightCurrentLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btHighlightCurrentLine.Name = "btHighlightCurrentLine";
-            this.btHighlightCurrentLine.Size = new System.Drawing.Size(34, 28);
-            this.btHighlightCurrentLine.Text = "toolStripButton1";
-            this.btHighlightCurrentLine.ToolTipText = "Highlight current line";
-            this.btHighlightCurrentLine.Click += new System.EventHandler(this.BtHighlightCurrentLine_Click);
+            btHighlightCurrentLine.Checked = true;
+            btHighlightCurrentLine.CheckOnClick = true;
+            btHighlightCurrentLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            btHighlightCurrentLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btHighlightCurrentLine.Image = Properties.Resources.edit_padding_top;
+            btHighlightCurrentLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btHighlightCurrentLine.Name = "btHighlightCurrentLine";
+            btHighlightCurrentLine.Size = new System.Drawing.Size(24, 24);
+            btHighlightCurrentLine.Text = "toolStripButton1";
+            btHighlightCurrentLine.ToolTipText = "Highlight current line";
+            btHighlightCurrentLine.Click += BtHighlightCurrentLine_Click;
             // 
             // btShowFoldingLines
             // 
-            this.btShowFoldingLines.Checked = true;
-            this.btShowFoldingLines.CheckOnClick = true;
-            this.btShowFoldingLines.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.btShowFoldingLines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btShowFoldingLines.Image = global::cc65WinForms.Properties.Resources.btShowFoldingLines_Image;
-            this.btShowFoldingLines.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btShowFoldingLines.Name = "btShowFoldingLines";
-            this.btShowFoldingLines.Size = new System.Drawing.Size(34, 28);
-            this.btShowFoldingLines.Text = "toolStripButton1";
-            this.btShowFoldingLines.ToolTipText = "Show folding lines";
-            this.btShowFoldingLines.Click += new System.EventHandler(this.BtShowFoldingLines_Click);
+            btShowFoldingLines.Checked = true;
+            btShowFoldingLines.CheckOnClick = true;
+            btShowFoldingLines.CheckState = System.Windows.Forms.CheckState.Checked;
+            btShowFoldingLines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btShowFoldingLines.Image = Properties.Resources.btShowFoldingLines_Image;
+            btShowFoldingLines.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btShowFoldingLines.Name = "btShowFoldingLines";
+            btShowFoldingLines.Size = new System.Drawing.Size(24, 24);
+            btShowFoldingLines.Text = "toolStripButton1";
+            btShowFoldingLines.ToolTipText = "Show folding lines";
+            btShowFoldingLines.Click += BtShowFoldingLines_Click;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(1, 1);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(1, 1);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tvProjectFiles);
+            splitContainer1.Panel1.Controls.Add(tvProjectFiles);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tsFiles);
-            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer1.Size = new System.Drawing.Size(1464, 862);
-            this.splitContainer1.SplitterDistance = 279;
-            this.splitContainer1.TabIndex = 3;
+            splitContainer1.Panel2.Controls.Add(tsFiles);
+            splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(1);
+            splitContainer1.Size = new System.Drawing.Size(1138, 647);
+            splitContainer1.SplitterDistance = 200;
+            splitContainer1.SplitterWidth = 3;
+            splitContainer1.TabIndex = 3;
             // 
             // tvProjectFiles
             // 
-            this.tvProjectFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvProjectFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tvProjectFiles.Location = new System.Drawing.Point(0, 0);
-            this.tvProjectFiles.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tvProjectFiles.Name = "tvProjectFiles";
-            this.tvProjectFiles.Size = new System.Drawing.Size(279, 862);
-            this.tvProjectFiles.TabIndex = 0;
-            this.tvProjectFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TvProjectFiles_NodeMouseClick);
-            this.tvProjectFiles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TvProjectFiles_MouseUp);
+            tvProjectFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            tvProjectFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            tvProjectFiles.Location = new System.Drawing.Point(0, 0);
+            tvProjectFiles.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            tvProjectFiles.Name = "tvProjectFiles";
+            tvProjectFiles.Size = new System.Drawing.Size(198, 645);
+            tvProjectFiles.TabIndex = 0;
+            tvProjectFiles.NodeMouseClick += TvProjectFiles_NodeMouseClick;
+            tvProjectFiles.MouseUp += TvProjectFiles_MouseUp;
             // 
             // tsFiles
             // 
-            this.tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tsFiles.Location = new System.Drawing.Point(1, 1);
-            this.tsFiles.Name = "tsFiles";
-            this.tsFiles.Size = new System.Drawing.Size(1179, 860);
-            this.tsFiles.TabIndex = 0;
-            this.tsFiles.Text = "faTabStrip1";
+            tsFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            tsFiles.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            tsFiles.Location = new System.Drawing.Point(1, 1);
+            tsFiles.Margin = new System.Windows.Forms.Padding(2);
+            tsFiles.Name = "tsFiles";
+            tsFiles.Padding = new System.Windows.Forms.Padding(1, 20, 1, 1);
+            tsFiles.Size = new System.Drawing.Size(931, 643);
+            tsFiles.TabIndex = 0;
+            tsFiles.Text = "faTabStrip1";
             // 
             // ofdMain
             // 
-            this.ofdMain.DefaultExt = "c";
-            this.ofdMain.Filter = "Source Files|*.c|Header Files|*.h";
+            ofdMain.DefaultExt = "c";
+            ofdMain.Filter = "Source Files|*.c|Header Files|*.h";
             // 
             // sfdMain
             // 
-            this.sfdMain.DefaultExt = "c";
-            this.sfdMain.Filter = "Source Files|*.c|Header Files|*.h";
+            sfdMain.DefaultExt = "c";
+            sfdMain.Filter = "Source Files|*.c|Header Files|*.h";
             // 
             // tmUpdateInterface
             // 
-            this.tmUpdateInterface.Enabled = true;
-            this.tmUpdateInterface.Interval = 400;
-            this.tmUpdateInterface.Tick += new System.EventHandler(this.TmUpdateInterface_Tick);
+            tmUpdateInterface.Enabled = true;
+            tmUpdateInterface.Interval = 400;
+            tmUpdateInterface.Tick += TmUpdateInterface_Tick;
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 66);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer2.Location = new System.Drawing.Point(0, 51);
+            splitContainer2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer1);
-            this.splitContainer2.Panel1.Padding = new System.Windows.Forms.Padding(1);
+            splitContainer2.Panel1.Controls.Add(splitContainer1);
+            splitContainer2.Panel1.Padding = new System.Windows.Forms.Padding(1);
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.tsOutput);
-            this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(1);
-            this.splitContainer2.Size = new System.Drawing.Size(1466, 1228);
-            this.splitContainer2.SplitterDistance = 864;
-            this.splitContainer2.SplitterWidth = 5;
-            this.splitContainer2.TabIndex = 4;
+            splitContainer2.Panel2.Controls.Add(tsOutput);
+            splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(1);
+            splitContainer2.Size = new System.Drawing.Size(1140, 923);
+            splitContainer2.SplitterDistance = 649;
+            splitContainer2.TabIndex = 4;
             // 
             // tsOutput
             // 
-            this.tsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tsOutput.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tsOutput.Items.AddRange(new FarsiLibrary.Win.FATabStripItem[] {
-            this.outputTSI,
-            this.errorsTSI});
-            this.tsOutput.Location = new System.Drawing.Point(1, 1);
-            this.tsOutput.Name = "tsOutput";
-            this.tsOutput.SelectedItem = this.outputTSI;
-            this.tsOutput.Size = new System.Drawing.Size(1464, 357);
-            this.tsOutput.TabIndex = 1;
-            this.tsOutput.Text = "faTabStrip1";
+            tsOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            tsOutput.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            tsOutput.Items.AddRange(new FarsiLibrary.Win.FATabStripItem[] { outputTSI, errorsTSI });
+            tsOutput.Location = new System.Drawing.Point(1, 1);
+            tsOutput.Margin = new System.Windows.Forms.Padding(2);
+            tsOutput.Name = "tsOutput";
+            tsOutput.Padding = new System.Windows.Forms.Padding(1, 20, 1, 1);
+            tsOutput.SelectedItem = outputTSI;
+            tsOutput.Size = new System.Drawing.Size(1138, 268);
+            tsOutput.TabIndex = 1;
+            tsOutput.Text = "faTabStrip1";
             // 
             // outputTSI
             // 
-            this.outputTSI.CanClose = false;
-            this.outputTSI.Controls.Add(this.tbOutput);
-            this.outputTSI.IsDrawn = true;
-            this.outputTSI.Name = "outputTSI";
-            this.outputTSI.Selected = true;
-            this.outputTSI.Size = new System.Drawing.Size(1462, 336);
-            this.outputTSI.TabIndex = 0;
-            this.outputTSI.Title = "Output";
+            outputTSI.CanClose = false;
+            outputTSI.Controls.Add(tbOutput);
+            outputTSI.Dock = System.Windows.Forms.DockStyle.Fill;
+            outputTSI.IsDrawn = true;
+            outputTSI.Location = new System.Drawing.Point(1, 20);
+            outputTSI.Margin = new System.Windows.Forms.Padding(2);
+            outputTSI.Name = "outputTSI";
+            outputTSI.Selected = true;
+            outputTSI.Size = new System.Drawing.Size(1136, 247);
+            outputTSI.TabIndex = 0;
+            outputTSI.Title = "Output";
             // 
             // tbOutput
             // 
-            this.tbOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbOutput.Location = new System.Drawing.Point(0, 0);
-            this.tbOutput.Margin = new System.Windows.Forms.Padding(6);
-            this.tbOutput.Multiline = true;
-            this.tbOutput.Name = "tbOutput";
-            this.tbOutput.ReadOnly = true;
-            this.tbOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbOutput.Size = new System.Drawing.Size(1462, 336);
-            this.tbOutput.TabIndex = 0;
+            tbOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            tbOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            tbOutput.Location = new System.Drawing.Point(0, 0);
+            tbOutput.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            tbOutput.Multiline = true;
+            tbOutput.Name = "tbOutput";
+            tbOutput.ReadOnly = true;
+            tbOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            tbOutput.Size = new System.Drawing.Size(1136, 247);
+            tbOutput.TabIndex = 0;
             // 
             // errorsTSI
             // 
-            this.errorsTSI.CanClose = false;
-            this.errorsTSI.Controls.Add(this.errorsDataGridView);
-            this.errorsTSI.IsDrawn = true;
-            this.errorsTSI.Name = "errorsTSI";
-            this.errorsTSI.Size = new System.Drawing.Size(1461, 329);
-            this.errorsTSI.TabIndex = 1;
-            this.errorsTSI.Title = "Error List";
+            errorsTSI.CanClose = false;
+            errorsTSI.Controls.Add(errorsDataGridView);
+            errorsTSI.Dock = System.Windows.Forms.DockStyle.Fill;
+            errorsTSI.IsDrawn = true;
+            errorsTSI.Location = new System.Drawing.Point(0, 0);
+            errorsTSI.Margin = new System.Windows.Forms.Padding(2);
+            errorsTSI.Name = "errorsTSI";
+            errorsTSI.Size = new System.Drawing.Size(1136, 247);
+            errorsTSI.TabIndex = 1;
+            errorsTSI.Title = "Error List";
             // 
             // errorsDataGridView
             // 
-            this.errorsDataGridView.AllowUserToAddRows = false;
-            this.errorsDataGridView.AllowUserToDeleteRows = false;
-            this.errorsDataGridView.AllowUserToResizeRows = false;
-            this.errorsDataGridView.AutoGenerateColumns = false;
-            this.errorsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.errorsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.filenameDataGridViewTextBoxColumn,
-            this.lineNumberDataGridViewTextBoxColumn,
-            this.Type,
-            this.errorDataGridViewTextBoxColumn});
-            this.errorsDataGridView.DataSource = this.cc65ErrorBindingSource;
-            this.errorsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.errorsDataGridView.Location = new System.Drawing.Point(0, 0);
-            this.errorsDataGridView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.errorsDataGridView.MultiSelect = false;
-            this.errorsDataGridView.Name = "errorsDataGridView";
-            this.errorsDataGridView.ReadOnly = true;
-            this.errorsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            this.errorsDataGridView.RowTemplate.Height = 24;
-            this.errorsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.errorsDataGridView.Size = new System.Drawing.Size(1461, 329);
-            this.errorsDataGridView.TabIndex = 1;
-            this.errorsDataGridView.SelectionChanged += new System.EventHandler(this.ErrorsDataGridView_SelectionChanged);
+            errorsDataGridView.AllowUserToAddRows = false;
+            errorsDataGridView.AllowUserToDeleteRows = false;
+            errorsDataGridView.AllowUserToResizeRows = false;
+            errorsDataGridView.AutoGenerateColumns = false;
+            errorsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            errorsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { filenameDataGridViewTextBoxColumn, lineNumberDataGridViewTextBoxColumn, Type, errorDataGridViewTextBoxColumn });
+            errorsDataGridView.DataSource = cc65ErrorBindingSource;
+            errorsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            errorsDataGridView.Location = new System.Drawing.Point(0, 0);
+            errorsDataGridView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            errorsDataGridView.MultiSelect = false;
+            errorsDataGridView.Name = "errorsDataGridView";
+            errorsDataGridView.ReadOnly = true;
+            errorsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            errorsDataGridView.RowTemplate.Height = 24;
+            errorsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            errorsDataGridView.Size = new System.Drawing.Size(1136, 247);
+            errorsDataGridView.TabIndex = 1;
+            errorsDataGridView.SelectionChanged += ErrorsDataGridView_SelectionChanged;
             // 
             // filenameDataGridViewTextBoxColumn
             // 
-            this.filenameDataGridViewTextBoxColumn.DataPropertyName = "Filename";
-            this.filenameDataGridViewTextBoxColumn.HeaderText = "Filename";
-            this.filenameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.filenameDataGridViewTextBoxColumn.Name = "filenameDataGridViewTextBoxColumn";
-            this.filenameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.filenameDataGridViewTextBoxColumn.Width = 115;
+            filenameDataGridViewTextBoxColumn.DataPropertyName = "Filename";
+            filenameDataGridViewTextBoxColumn.HeaderText = "Filename";
+            filenameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            filenameDataGridViewTextBoxColumn.Name = "filenameDataGridViewTextBoxColumn";
+            filenameDataGridViewTextBoxColumn.ReadOnly = true;
+            filenameDataGridViewTextBoxColumn.Width = 115;
             // 
             // lineNumberDataGridViewTextBoxColumn
             // 
-            this.lineNumberDataGridViewTextBoxColumn.DataPropertyName = "LineNumber";
-            this.lineNumberDataGridViewTextBoxColumn.HeaderText = "LineNumber";
-            this.lineNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.lineNumberDataGridViewTextBoxColumn.Name = "lineNumberDataGridViewTextBoxColumn";
-            this.lineNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            this.lineNumberDataGridViewTextBoxColumn.Width = 70;
+            lineNumberDataGridViewTextBoxColumn.DataPropertyName = "LineNumber";
+            lineNumberDataGridViewTextBoxColumn.HeaderText = "LineNumber";
+            lineNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
+            lineNumberDataGridViewTextBoxColumn.Name = "lineNumberDataGridViewTextBoxColumn";
+            lineNumberDataGridViewTextBoxColumn.ReadOnly = true;
+            lineNumberDataGridViewTextBoxColumn.Width = 70;
             // 
             // Type
             // 
-            this.Type.DataPropertyName = "Type";
-            this.Type.HeaderText = "Type";
-            this.Type.MinimumWidth = 6;
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            this.Type.Width = 75;
+            Type.DataPropertyName = "Type";
+            Type.HeaderText = "Type";
+            Type.MinimumWidth = 6;
+            Type.Name = "Type";
+            Type.ReadOnly = true;
+            Type.Width = 75;
             // 
             // errorDataGridViewTextBoxColumn
             // 
-            this.errorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.errorDataGridViewTextBoxColumn.DataPropertyName = "Error";
-            this.errorDataGridViewTextBoxColumn.HeaderText = "Error";
-            this.errorDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.errorDataGridViewTextBoxColumn.Name = "errorDataGridViewTextBoxColumn";
-            this.errorDataGridViewTextBoxColumn.ReadOnly = true;
+            errorDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            errorDataGridViewTextBoxColumn.DataPropertyName = "Error";
+            errorDataGridViewTextBoxColumn.HeaderText = "Error";
+            errorDataGridViewTextBoxColumn.MinimumWidth = 6;
+            errorDataGridViewTextBoxColumn.Name = "errorDataGridViewTextBoxColumn";
+            errorDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // cc65ErrorBindingSource
             // 
-            this.cc65ErrorBindingSource.DataSource = typeof(cc65Wrapper.Cc65Error);
+            cc65ErrorBindingSource.DataSource = typeof(cc65Wrapper.Cc65Error);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1466, 1330);
-            this.Controls.Add(this.splitContainer2);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "cc65IDE";
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tsFiles)).EndInit();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tsOutput)).EndInit();
-            this.tsOutput.ResumeLayout(false);
-            this.outputTSI.ResumeLayout(false);
-            this.outputTSI.PerformLayout();
-            this.errorsTSI.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.errorsDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cc65ErrorBindingSource)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1140, 998);
+            Controls.Add(splitContainer2);
+            Controls.Add(toolStrip1);
+            Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
+            Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            Name = "MainForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "cc65IDE";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)tsFiles).EndInit();
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)tsOutput).EndInit();
+            tsOutput.ResumeLayout(false);
+            outputTSI.ResumeLayout(false);
+            outputTSI.PerformLayout();
+            errorsTSI.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorsDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cc65ErrorBindingSource).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
