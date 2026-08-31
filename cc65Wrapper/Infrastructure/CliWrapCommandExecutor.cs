@@ -8,6 +8,7 @@ using cc65Wrapper.Abstractions;
 using cc65Wrapper.Models;
 using Microsoft.Extensions.Logging;
 using cc65Wrapper.Logging;
+using System;
 
 namespace cc65Wrapper.Infrastructure
 {

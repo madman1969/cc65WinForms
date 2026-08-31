@@ -4,6 +4,8 @@ using cc65Wrapper.Abstractions;
 
 namespace cc65Wrapper.Infrastructure
 {
+
+#pragma warning disable CS1734 // XML comment has a paramref tag, but there is no parameter by that name
     /// <summary>
     /// Provides a disposable context for temporarily changing the process working directory.
     /// </summary>
@@ -33,6 +35,7 @@ namespace cc65Wrapper.Infrastructure
     /// Not thread-safe. Do not share a single instance across threads while it is active.
     /// </threadsafety>
     public sealed class WorkingDirectoryContext : IDisposable
+#pragma warning restore CS1734 // XML comment has a paramref tag, but there is no parameter by that name
     {
         private readonly string _originalDirectory;
         private readonly IFileSystem _fileSystem;

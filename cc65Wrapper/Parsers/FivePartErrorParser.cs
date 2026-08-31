@@ -5,6 +5,7 @@ namespace cc65Wrapper.Parsers
     /// </summary>
     public class FivePartErrorParser : IErrorLineParser
     {
+        /// <inheritdoc/>
         public int Priority => 75;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace cc65Wrapper.Parsers
             return parts.Length == 5 && int.TryParse(parts[1].Trim(), out _);
         }
 
+        /// <inheritdoc/>
         public Cc65Error Parse(string errorLine)
         {
             var parts = errorLine.Split(':');

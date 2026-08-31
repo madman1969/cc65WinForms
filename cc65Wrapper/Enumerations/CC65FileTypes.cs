@@ -9,15 +9,25 @@ namespace cc65Wrapper.Enumerations
     /// Each member is defined as a bitmask so multiple file types can be combined using bitwise
     /// operations (for example <c>CC65FileTypes.SourceFile | CC65FileTypes.IncludeFile</c>).
     /// Typical usages:
-    /// - <c>SourceFile</c> for source code files (C, assembly, etc.)
-    /// - <c>IncludeFile</c> for header/include files
-    /// - <c>None</c> indicates no file type selected
+    /// <list type="bullet">
+    ///   <item>
+    ///     <description><c>SourceFile</c> for source code files (C, assembly, etc.)</description>
+    ///   </item>
+    ///   <item>
+    ///     <description><c>IncludeFile</c> for header/include files</description>
+    ///   </item>
+    ///   <item>
+    ///     <description><c>None</c> indicates no file type selected</description>
+    ///   </item>
+    /// </list>
     /// </remarks>
     /// <example>
     /// Example: check whether a combined value includes <c>SourceFile</c>:
     /// <code>
     /// var combined = CC65FileTypes.SourceFile | CC65FileTypes.IncludeFile;
-    /// bool hasSource = (combined & CC65FileTypes.SourceFile) == CC65FileTypes.SourceFile;
+    /// bool hasSource = (combined &amp; CC65FileTypes.SourceFile) != 0; // For single-bit flags, '!= 0' is sufficient.
+    /// // For multi-bit combinations, use: (combined &amp; flag) == flag
+    /// // Alternatively, you can use: combined.HasFlag(CC65FileTypes.SourceFile) (slower, but more readable)
     /// </code>
     /// </example>
     [Flags]
