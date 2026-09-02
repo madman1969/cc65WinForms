@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.9.12120.119 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65WinForms", "cc65WinForms\cc65WinForms.csproj", "{5118A877-5D27-48E1-AB82-25089EC5E4DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65WinForms", "src\cc65WinForms\cc65WinForms.csproj", "{5118A877-5D27-48E1-AB82-25089EC5E4DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65Wrapper", "cc65Wrapper\cc65Wrapper.csproj", "{0437D8F5-CA2A-4178-8F91-A04F43F060DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cc65Wrapper", "src\cc65Wrapper\cc65Wrapper.csproj", "{0437D8F5-CA2A-4178-8F91-A04F43F060DD}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "cc65WinFormsDocs", "cc65WinFormsDocs\cc65WinFormsDocs.shfbproj", "{99904B9F-FB8E-400D-9329-9FE84546396A}"
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "cc65WinFormsDocs", "src\cc65WinFormsDocs\cc65WinFormsDocs.shfbproj", "{99904B9F-FB8E-400D-9329-9FE84546396A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0437D8F5-CA2A-4178-8F91-A04F43F060DD} = {0437D8F5-CA2A-4178-8F91-A04F43F060DD}
 		{5118A877-5D27-48E1-AB82-25089EC5E4DD} = {5118A877-5D27-48E1-AB82-25089EC5E4DD}

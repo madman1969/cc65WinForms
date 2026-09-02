@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/cc65WinForms/bin/Debug/net10.0-windows/cc65WinForms.exe",
+            "program": "${workspaceFolder}/src/cc65WinForms/bin/Debug/net10.0-windows/cc65WinForms.exe",
             "args": [],
-            "cwd": "${workspaceFolder}/cc65WinForms/bin/Debug/net10.0-windows",
+            "cwd": "${workspaceFolder}/src/cc65WinForms/bin/Debug/net10.0-windows",
             "console": "internalConsole",
             "stopAtEntry": false
         }

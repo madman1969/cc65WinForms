@@ -40,7 +40,7 @@
         {
             "label": "clean-docs",
             "type": "shell",
-            "command": "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue '${workspaceFolder}/cc65WinFormsDocs/Help'",
+            "command": "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue '${workspaceFolder}/docs'",
             "options": {
                 "shell": {
                     "executable": "powershell.exe",
@@ -55,7 +55,7 @@
             "type": "process",
             "command": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
             "args": [
-                "${workspaceFolder}/cc65WinFormsDocs/cc65WinFormsDocs.shfbproj",
+                "${workspaceFolder}/src/cc65WinFormsDocs/cc65WinFormsDocs.shfbproj",
                 "-v:minimal",
                 "-nologo"
             ],
@@ -66,7 +66,7 @@
         {
             "label": "serve-docs",
             "type": "shell",
-            "command": "Start-Process 'http://localhost:8080'; python -m http.server 8080 --directory '${workspaceFolder}/cc65WinFormsDocs/Help'",
+            "command": "Start-Process 'http://localhost:8080'; python -m http.server 8080 --directory '${workspaceFolder}/docs'",
             "options": {
                 "shell": {
                     "executable": "powershell.exe",
