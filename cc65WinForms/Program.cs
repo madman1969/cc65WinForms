@@ -35,15 +35,21 @@ namespace cc65WinForms
         /// Behavior performed in order:
         /// - Create a <see cref="ServiceCollection"/> and register logging providers.
         ///   * Adds debug output logging (visible in Visual Studio: View > Output > Debug).
-        ///   * Adds file logging to "logs/app.log".
+        ///   * Adds file logging to "logs/app.log", resolved relative to the executable's
+        ///     directory (<see cref="AppContext.BaseDirectory"/>) rather than the process's
+        ///     current working directory.
         ///   * Sets minimum log level to <see cref="LogLevel.Debug"/> in DEBUG builds,
         ///     otherwise <see cref="LogLevel.Information"/>.
-        /// - Ensures the "logs" directory exists.
+        /// - Ensures the log directory exists.
         /// - Registers cc65Wrapper services via <c>services.AddCc65Wrapper()</c>.
         /// - Builds the <see cref="ServiceProvider"/> and configures a static logger factory
         ///   through <c>Cc65LoggerFactory.SetLoggerFactory</c> for backward compatibility.
-        /// - Emits a test information message to verify file logging.
+        /// - Wires <see cref="Application.ThreadException"/> and
+        ///   <see cref="AppDomain.UnhandledException"/> to the startup logger so exceptions
+        ///   that would otherwise be lost are recorded.
         /// - Initializes WinForms visual styles and starts the main form message loop.
+        /// - Disposes the service provider (flushing the file logger) once the message loop
+        ///   exits, even if an exception propagates out of <see cref="Application.Run(Form)"/>.
         ///
         /// Notes:
         /// - Marked with <see cref="STAThreadAttribute"/> because WinForms requires STA.
@@ -52,14 +58,18 @@ namespace cc65WinForms
         [STAThread]
         static void Main()
         {
+            // Resolve log paths relative to the executable, not the process's current directory
+            var logDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
+            var logFilePath = Path.Combine(logDirectory, "app.log");
+
             // Configure services and logging
             var services = new ServiceCollection();
 
             // Add logging - outputs to Debug window (View > Output > Debug)
             services.AddLogging(builder =>
             {
-                builder.AddDebug();                 // Logs to Visual Studio Debug Output                
-                builder.AddFile("logs/app.log");    // Log to a file (creates logs/app.log by default)
+                builder.AddDebug();               // Logs to Visual Studio Debug Output
+                builder.AddFile(logFilePath);     // Log to a file (creates logs/app.log by default)
 
 #if DEBUG
                 builder.SetMinimumLevel(LogLevel.Debug); // Show all logs in debug mode
@@ -68,25 +78,41 @@ namespace cc65WinForms
 #endif
             });
 
-            Directory.CreateDirectory("logs");
+            Directory.CreateDirectory(logDirectory);
 
             // Add cc65Wrapper services with logging enabled
             services.AddCc65Wrapper();
 
             // Build service provider
-            ServiceProvider = services.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = serviceProvider;
 
             // Configure the static logger factory for backward compatibility
-            var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             Cc65LoggerFactory.SetLoggerFactory(loggerFactory);
 
-            // Test logging ...
             var logger = loggerFactory.CreateLogger("Startup");
-            logger.LogInformation("File logging is working");
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            // Route otherwise-unhandled exceptions to the log instead of losing them
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += (sender, e) =>
+                logger.LogError(e.Exception, "Unhandled exception on the UI thread");
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+                logger.LogCritical(e.ExceptionObject as Exception, "Unhandled exception outside the UI thread (IsTerminating: {IsTerminating})", e.IsTerminating);
+
+            logger.LogInformation("Application starting");
+
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+            }
+            finally
+            {
+                logger.LogInformation("Application exiting");
+                serviceProvider.Dispose();
+            }
         }
     }
 }
