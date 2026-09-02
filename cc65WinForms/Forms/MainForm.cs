@@ -1,4 +1,5 @@
 ﻿using cc65Wrapper;
+using cc65Wrapper.Abstractions;
 using cc65Wrapper.Enumerations;
 using FarsiLibrary.Win;
 using FastColoredTextBoxNS;
@@ -76,6 +77,16 @@ namespace cc65WinForms
         readonly Cc65Emulators emulators;
 
         /// <summary>
+        /// Compiler service used to build the currently loaded project.
+        /// </summary>
+        readonly ICompiler compiler;
+
+        /// <summary>
+        /// Emulator launcher service used to run the currently loaded project's build output.
+        /// </summary>
+        readonly IEmulatorLauncher emulatorLauncher;
+
+        /// <summary>
         /// Style used to mark all occurrences of the currently selected word.
         /// </summary>
         readonly Style sameWordsStyle = new MarkerStyle(
@@ -116,8 +127,13 @@ namespace cc65WinForms
         /// Initializes a new instance of the <see cref="MainForm"/> class.
         /// Reads emulator configuration and initializes the project tree view.
         /// </summary>
-        public MainForm()
+        /// <param name="compiler">Compiler service used to build the loaded project.</param>
+        /// <param name="emulatorLauncher">Emulator launcher service used to run the built project.</param>
+        public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher)
         {
+            this.compiler = compiler ?? throw new ArgumentNullException(nameof(compiler));
+            this.emulatorLauncher = emulatorLauncher ?? throw new ArgumentNullException(nameof(emulatorLauncher));
+
             InitializeComponent();
 
             cbTargetPlatform.SelectedIndex = 0;

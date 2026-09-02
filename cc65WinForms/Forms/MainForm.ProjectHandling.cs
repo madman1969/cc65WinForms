@@ -1,9 +1,11 @@
 ﻿using cc65Wrapper;
+using cc65Wrapper.Abstractions;
 using cc65Wrapper.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -204,7 +206,7 @@ namespace cc65WinForms
         /// <remarks>
         /// This method:
         /// - Saves any open files prior to building.
-        /// - Invokes <c>Cc65Build.CompileAsync(Project)</c> and collects errors.
+        /// - Invokes the injected <see cref="ICompiler"/> and collects errors.
         /// - If the build fails the error list is displayed in the errors grid and the Errors tab is selected.
         /// - On success a success message is written to the output pane.
         /// The method returns <c>false</c> if the build failed or if no project is set up to build.
@@ -219,15 +221,13 @@ namespace cc65WinForms
                 $"Building {Project.InputFiles.Count} files for project [{Project.ProjectName}] targeting [{Project.TargetPlatform}]...{Environment.NewLine}"
             );
 
-            // CompileAsync the project ...
-            var result = await Cc65Build.CompileAsync(Project);
+            // Compile the project ...
+            var result = await compiler.CompileAsync(Project);
 
-            List<Cc65Error> errorList = new List<Cc65Error>();
+            var errorList = result.Errors.ToList();
 
-            if (result.ExitCode != 0)
+            if (!result.Success)
             {
-                errorList = Cc65Build.ErrorsAsErrorList(result);
-
                 // Force the 'Errors List' to be selected ...
                 tsOutput.SelectedItem = tsOutput.Items[1];
 
@@ -289,7 +289,7 @@ namespace cc65WinForms
         /// </summary>
         /// <remarks>
         /// This method will first call <see cref="BuildProjectAsync"/>. If that build succeeds the project
-        /// is launched via <c>Cc65Emulators.LaunchEmulatorAsync(Project, emulators)</c>. A message is written to the output pane before launching.
+        /// is launched via the injected <see cref="IEmulatorLauncher"/>. A message is written to the output pane before launching.
         /// </remarks>
         private async Task ExecuteProjectAsync()
         {
@@ -301,7 +301,7 @@ namespace cc65WinForms
                     $"Launching {Project.ProjectName} in emulator ...{Environment.NewLine}"
                 );
 
-                _ = await Cc65Emulators.LaunchEmulatorAsync(Project, emulators);
+                _ = await emulatorLauncher.LaunchAsync(Project, emulators);
             }
         }
 

@@ -41,13 +41,16 @@ namespace cc65WinForms
         ///   * Sets minimum log level to <see cref="LogLevel.Debug"/> in DEBUG builds,
         ///     otherwise <see cref="LogLevel.Information"/>.
         /// - Ensures the log directory exists.
-        /// - Registers cc65Wrapper services via <c>services.AddCc65Wrapper()</c>.
+        /// - Registers cc65Wrapper services via <c>services.AddCc65Wrapper()</c>, plus
+        ///   <see cref="MainForm"/> itself so its dependencies are supplied through
+        ///   constructor injection rather than resolved ad hoc from the container.
         /// - Builds the <see cref="ServiceProvider"/> and configures a static logger factory
         ///   through <c>Cc65LoggerFactory.SetLoggerFactory</c> for backward compatibility.
         /// - Wires <see cref="Application.ThreadException"/> and
         ///   <see cref="AppDomain.UnhandledException"/> to the startup logger so exceptions
         ///   that would otherwise be lost are recorded.
-        /// - Initializes WinForms visual styles and starts the main form message loop.
+        /// - Resolves <see cref="MainForm"/> from the <see cref="ServiceProvider"/> and starts
+        ///   its message loop.
         /// - Disposes the service provider (flushing the file logger) once the message loop
         ///   exits, even if an exception propagates out of <see cref="Application.Run(Form)"/>.
         ///
@@ -83,6 +86,10 @@ namespace cc65WinForms
             // Add cc65Wrapper services with logging enabled
             services.AddCc65Wrapper();
 
+            // Register the main form so its dependencies (ICompiler, IEmulatorLauncher, ...)
+            // are resolved via constructor injection instead of a service locator
+            services.AddSingleton<MainForm>();
+
             // Build service provider
             var serviceProvider = services.BuildServiceProvider();
             ServiceProvider = serviceProvider;
@@ -106,7 +113,7 @@ namespace cc65WinForms
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
+                Application.Run(serviceProvider.GetRequiredService<MainForm>());
             }
             finally
             {
