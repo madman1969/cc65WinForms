@@ -2,6 +2,7 @@
 using cc65Wrapper.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -29,18 +30,24 @@ namespace cc65WinForms
         public static IServiceProvider ServiceProvider { get; private set; }
 
         /// <summary>
+        /// The full path of the current session's log file (see <see cref="Main"/>).
+        /// </summary>
+        public static string LogFilePath { get; private set; }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// <remarks>
         /// Behavior performed in order:
+        /// - Resolves "logs/app.log" relative to the executable's directory
+        ///   (<see cref="AppContext.BaseDirectory"/>) rather than the process's current
+        ///   working directory, and ensures the log directory exists.
         /// - Create a <see cref="ServiceCollection"/> and register logging providers.
         ///   * Adds debug output logging (visible in Visual Studio: View > Output > Debug).
-        ///   * Adds file logging to "logs/app.log", resolved relative to the executable's
-        ///     directory (<see cref="AppContext.BaseDirectory"/>) rather than the process's
-        ///     current working directory.
+        ///   * Adds a plain Serilog file sink (no rolling interval) so every run appends
+        ///     to the same "app.log" file instead of a date-stamped one.
         ///   * Sets minimum log level to <see cref="LogLevel.Debug"/> in DEBUG builds,
         ///     otherwise <see cref="LogLevel.Information"/>.
-        /// - Ensures the log directory exists.
         /// - Registers cc65Wrapper services via <c>services.AddCc65Wrapper()</c>, plus
         ///   <see cref="MainForm"/> itself so its dependencies are supplied through
         ///   constructor injection rather than resolved ad hoc from the container.
@@ -64,6 +71,20 @@ namespace cc65WinForms
             // Resolve log paths relative to the executable, not the process's current directory
             var logDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
             var logFilePath = Path.Combine(logDirectory, "app.log");
+            Directory.CreateDirectory(logDirectory);
+            LogFilePath = logFilePath;
+
+            // Plain Serilog file sink with no time-based rolling, so the active file is
+            // always "app.log" (Serilog.Extensions.Logging.File's AddFile() always rolls
+            // daily). Once it reaches 5MB it rolls by size instead: the full file is
+            // renamed to app_001.log, app_002.log, etc., and "app.log" starts fresh.
+            var fileLogger = new LoggerConfiguration()
+                .WriteTo.File(
+                    logFilePath,
+                    shared: true,
+                    fileSizeLimitBytes: 5 * 1024 * 1024,
+                    rollOnFileSizeLimit: true)
+                .CreateLogger();
 
             // Configure services and logging
             var services = new ServiceCollection();
@@ -71,8 +92,8 @@ namespace cc65WinForms
             // Add logging - outputs to Debug window (View > Output > Debug)
             services.AddLogging(builder =>
             {
-                builder.AddDebug();               // Logs to Visual Studio Debug Output
-                builder.AddFile(logFilePath);     // Log to a file (creates logs/app.log by default)
+                builder.AddDebug();                          // Logs to Visual Studio Debug Output
+                builder.AddSerilog(fileLogger, dispose: true); // Log to logs/app.log
 
 #if DEBUG
                 builder.SetMinimumLevel(LogLevel.Debug); // Show all logs in debug mode
@@ -80,8 +101,6 @@ namespace cc65WinForms
                 builder.SetMinimumLevel(LogLevel.Information); // Only important logs in release
 #endif
             });
-
-            Directory.CreateDirectory(logDirectory);
 
             // Add cc65Wrapper services with logging enabled
             services.AddCc65Wrapper();

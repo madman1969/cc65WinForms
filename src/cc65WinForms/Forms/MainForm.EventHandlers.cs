@@ -608,6 +608,17 @@ namespace cc65WinForms
         {
             DisplayProjectSettingsDialog();
         }
+
+        /// <summary>
+        /// Opens the About dialog.
+        /// </summary>
+        /// <param name="sender">Event source (menu item).</param>
+        /// <param name="e">Event arguments.</param>
+        private void AboutToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            using var dlg = new AboutForm();
+            dlg.ShowDialog(this);
+        }
         #endregion
     }
 }

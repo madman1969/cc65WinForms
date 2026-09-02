@@ -97,13 +97,23 @@ builder.SetMinimumLevel(LogLevel.Error);
 
 No setup needed — `Program.cs` already writes to `logs/app.log` (resolved via
 `AppContext.BaseDirectory`, so the path doesn't depend on the working
-directory the app was launched from):
+directory the app was launched from). There's no time-based rolling, so the
+active file is always `app.log` — it rolls by size instead once it reaches
+5MB, renaming the full file to `app_001.log`, `app_002.log`, etc.:
 
 ```csharp
+var fileLogger = new LoggerConfiguration()
+	.WriteTo.File(
+		logFilePath, // logs/app.log next to the executable
+		shared: true,
+		fileSizeLimitBytes: 5 * 1024 * 1024,
+		rollOnFileSizeLimit: true)
+	.CreateLogger();
+
 services.AddLogging(builder =>
 {
 	builder.AddDebug();
-	builder.AddFile(logFilePath); // logs/app.log next to the executable
+	builder.AddSerilog(fileLogger, dispose: true);
 	builder.SetMinimumLevel(LogLevel.Debug);
 });
 ```

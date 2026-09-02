@@ -134,10 +134,18 @@ public partial class MainForm : Form
 `Program.cs` already logs to a file — no setup needed:
 
 ```csharp
+var fileLogger = new LoggerConfiguration()
+	.WriteTo.File(
+		logFilePath,
+		shared: true,
+		fileSizeLimitBytes: 5 * 1024 * 1024,
+		rollOnFileSizeLimit: true)
+	.CreateLogger();
+
 services.AddLogging(builder =>
 {
-	builder.AddDebug();               // Visual Studio Output
-	builder.AddFile(logFilePath);     // File logging
+	builder.AddDebug();                           // Visual Studio Output
+	builder.AddSerilog(fileLogger, dispose: true); // File logging
 
 #if DEBUG
 	builder.SetMinimumLevel(LogLevel.Debug);
@@ -147,11 +155,14 @@ services.AddLogging(builder =>
 });
 ```
 
-Logs are written to `logs/app.log`, resolved via `AppContext.BaseDirectory` so
-the path is always relative to the executable rather than whatever directory
-the process happens to be launched from (this matters because Visual Studio,
+Logs are always written to `logs/app.log`, resolved via `AppContext.BaseDirectory`
+so the path is relative to the executable rather than whatever directory the
+process happens to be launched from (this matters because Visual Studio,
 VS Code, and a desktop shortcut can each default to a different working
-directory).
+directory). There's no time-based rolling, so the active file is always
+`app.log` — but once it reaches 5MB it rolls by size, renaming the full file
+to `app_001.log`, `app_002.log`, etc. and starting a fresh `app.log` (up to
+Serilog's default retention of 31 files).
 
 ## 📊 What Gets Logged
 
