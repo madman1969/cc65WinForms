@@ -302,7 +302,7 @@ namespace cc65WinForms
         /// </summary>
         /// <remarks>
         /// Iterates open tabs and applies the state of <see cref="btShowFoldingLines"/> to each
-        /// editor's <see cref="FastColoredTextBox.ShowFoldingLines"/> property, then invalidates
+        /// editor's <c>FastColoredTextBox.ShowFoldingLines</c> property, then invalidates
         /// the current editor to force a repaint.
         /// </remarks>
         /// <param name="sender">Event source (button).</param>

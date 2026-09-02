@@ -25,6 +25,9 @@ namespace cc65Wrapper.Models
         /// <summary>
         /// Initializes a new instance of the BuildProgressEventArgs class
         /// </summary>
+        /// <param name="message">A human-readable message describing the current state.</param>
+        /// <param name="percentComplete">Progress percentage (0-100).</param>
+        /// <param name="phase">The logical build phase this update relates to.</param>
         public BuildProgressEventArgs(string message, double percentComplete, BuildPhase phase)
         {
             Message = message;

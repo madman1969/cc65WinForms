@@ -16,7 +16,7 @@ namespace cc65WinForms
     /// Main application window for the cc65WinForms project.
     /// Provides the primary UI surface including:
     /// - Project tree view population and management
-    /// - Editor tab creation and management (based on <see cref="FastColoredTextBox"/>)
+    /// - Editor tab creation and management (based on <c>FastColoredTextBox</c>)
     /// - Navigation through edit history (forward/back)
     /// - UI helpers such as cursor position updates and line highlighting toggles
     /// </summary>
@@ -87,6 +87,11 @@ namespace cc65WinForms
         readonly IEmulatorLauncher emulatorLauncher;
 
         /// <summary>
+        /// Service used to load and save the currently loaded <see cref="CC65Project"/> as JSON.
+        /// </summary>
+        readonly IProjectService projectService;
+
+        /// <summary>
         /// Style used to mark all occurrences of the currently selected word.
         /// </summary>
         readonly Style sameWordsStyle = new MarkerStyle(
@@ -95,7 +100,7 @@ namespace cc65WinForms
 
         /// <summary>
         /// Gets or sets the currently active editor instance.
-        /// Reading returns the <see cref="FastColoredTextBox"/> hosted in the selected tab.
+        /// Reading returns the <c>FastColoredTextBox</c> hosted in the selected tab.
         /// Setting will switch the tab and focus the provided editor.
         /// </summary>
         private FastColoredTextBox CurrentTB
@@ -129,10 +134,12 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="compiler">Compiler service used to build the loaded project.</param>
         /// <param name="emulatorLauncher">Emulator launcher service used to run the built project.</param>
-        public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher)
+        /// <param name="projectService">Service used to load and save the loaded project as JSON.</param>
+        public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, IProjectService projectService)
         {
             this.compiler = compiler ?? throw new ArgumentNullException(nameof(compiler));
             this.emulatorLauncher = emulatorLauncher ?? throw new ArgumentNullException(nameof(emulatorLauncher));
+            this.projectService = projectService ?? throw new ArgumentNullException(nameof(projectService));
 
             InitializeComponent();
 
@@ -233,7 +240,7 @@ namespace cc65WinForms
         /// <summary>
         /// Suppresses or highlights the invisible chars within the provided range.
         /// </summary>
-        /// <param name="range">The <see cref="FastColoredTextBoxNS.Range"/> to apply invisible char styling to.</param>
+        /// <param name="range">The <c>FastColoredTextBoxNS.Range</c> to apply invisible char styling to.</param>
         private void HighlightInvisibleChars(FastColoredTextBoxNS.Range range)
         {
             range.ClearStyle(invisibleCharsStyle);

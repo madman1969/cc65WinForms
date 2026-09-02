@@ -4,7 +4,6 @@ using cc65Wrapper.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,7 +19,7 @@ namespace cc65WinForms
         /// </summary>
         /// <remarks>
         /// If the user selects a valid project JSON file this method:
-        /// - Reads the file contents and deserializes into a <c>CC65Project</c> instance.
+        /// - Loads it into a <c>CC65Project</c> instance via the injected <see cref="IProjectService"/>.
         /// - Updates the UI target platform selection to match the project.
         /// - Clears the project's modified flag.
         /// - Populates the project tree view and writes a message to the output pane.
@@ -36,10 +35,9 @@ namespace cc65WinForms
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                // Load the project JSON ...
+                // Load the project ...
                 ProjectFile = dlg.FileNames[0];
-                var json = File.ReadAllText(ProjectFile);
-                Project = CC65Project.FromJson(json);
+                Project = projectService.Load(ProjectFile);
 
                 // Select the correct target for the project ...
                 cbTargetPlatform.SelectedIndex = (int)Project.TargetPlatform;
@@ -170,9 +168,6 @@ namespace cc65WinForms
                 return;
             }
 
-            // Convert project to JSON ...
-            var asJSON = Project.AsJson();
-
             // Do we have a project file path ? ...
             if (string.IsNullOrEmpty(ProjectFile))
             {
@@ -193,7 +188,7 @@ namespace cc65WinForms
             }
 
             // Write project details to file ...
-            File.WriteAllText(ProjectFile, asJSON);
+            projectService.Save(Project, ProjectFile);
 
             // Clear the modified flag ...
             Project.IsModified = false;

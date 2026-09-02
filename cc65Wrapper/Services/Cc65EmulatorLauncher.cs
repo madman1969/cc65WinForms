@@ -58,7 +58,7 @@ namespace cc65Wrapper.Services
         /// <exception cref="System.IO.DirectoryNotFoundException">If <see cref="CC65Project.WorkingDirectory"/> does not exist.</exception>
         /// <remarks>
         /// - Validates inputs before attempting to resolve the emulator path.
-        /// - Uses <see cref="GetEmulatorPath"/> to choose the appropriate emulator executable based on the project's target platform.
+        /// - Uses <c>GetEmulatorPath</c> to choose the appropriate emulator executable based on the project's target platform.
         /// - Builds arguments via the injected <see cref="IArgumentBuilder{EmulatorLaunchOptions}"/>.
         /// - Executes the emulator via the injected <see cref="ICommandExecutor"/> and logs progress.
         /// - Any exceptions are caught and converted into an <see cref="EmulatorLaunchResult"/> with Success=false.

@@ -116,7 +116,7 @@ namespace cc65Wrapper
         /// <param name="emulators">The <see cref="Cc65Emulators"/> instance containing emulator executable paths.</param>
         /// <param name="cancellationToken">Optional cancellation token used to cancel the launched process.</param>
         /// <returns>
-        /// A <see cref="BufferedCommandResult"/> containing the exit code, standard output and error streams
+        /// A <c>BufferedCommandResult</c> containing the exit code, standard output and error streams
         /// from the emulator process started by this method.
         /// </returns>
         /// <remarks>

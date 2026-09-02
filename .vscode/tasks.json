@@ -36,6 +36,53 @@
             ],
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "clean-docs",
+            "type": "shell",
+            "command": "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue '${workspaceFolder}/cc65WinFormsDocs/Help'",
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe",
+                    "args": ["-NoProfile", "-Command"]
+                }
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "generate-docs",
+            "type": "process",
+            "command": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
+            "args": [
+                "${workspaceFolder}/cc65WinFormsDocs/cc65WinFormsDocs.shfbproj",
+                "-v:minimal",
+                "-nologo"
+            ],
+            "dependsOn": ["build"],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "serve-docs",
+            "type": "shell",
+            "command": "Start-Process 'http://localhost:8080'; python -m http.server 8080 --directory '${workspaceFolder}/cc65WinFormsDocs/Help'",
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe",
+                    "args": ["-NoProfile", "-Command"]
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "dependsOn": ["generate-docs"]
+        },
+        {
+            "label": "docs",
+            "dependsOrder": "sequence",
+            "dependsOn": ["generate-docs", "serve-docs"],
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }

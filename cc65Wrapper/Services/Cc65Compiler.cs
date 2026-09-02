@@ -77,7 +77,7 @@ namespace cc65Wrapper.Services
         /// <summary>
         /// Compiles the supplied <see cref="CC65Project"/> using the CC65 toolchain.
         /// </summary>
-        /// <param name="project">The project to compile. Must be non-null and valid (see <see cref="ValidateProject"/>).</param>
+        /// <param name="project">The project to compile. Must be non-null and valid (see <c>ValidateProject</c>).</param>
         /// <param name="progress">
         /// Optional progress reporter that will receive <see cref="BuildProgressEventArgs"/>
         /// updates as the compilation proceeds.
@@ -90,7 +90,7 @@ namespace cc65Wrapper.Services
         /// <remarks>
         /// Behavior notes:
         /// - The method logs the invocation and lifecycle of the compilation.
-        /// - It sets the environment variable named by <see cref="CC65_TARGET"/> to the
+        /// - It sets the environment variable named by <c>CC65_TARGET</c> to the
         ///   project's target platform string before invoking <c>cl65</c>.
         /// - Progress is reported at several named phases: Initializing, ValidatingProject,
         ///   BuildingArguments, Compiling, ParsingErrors and Completed.

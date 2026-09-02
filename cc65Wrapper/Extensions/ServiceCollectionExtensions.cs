@@ -36,7 +36,7 @@ namespace cc65Wrapper.Extensions
         /// - Core abstractions: <see cref="ICommandExecutor"/>, <see cref="IFileSystem"/>.
         /// - Argument builders for domain models (e.g. <see cref="CC65Project"/>, <see cref="EmulatorLaunchOptions"/>).
         /// - Error line parsers (registered in priority order) and a composite <see cref="IErrorParser"/>.
-        /// - Main services: <see cref="ICompiler"/> and <see cref="IEmulatorLauncher"/>.
+        /// - Main services: <see cref="ICompiler"/>, <see cref="IEmulatorLauncher"/> and <see cref="IProjectService"/>.
         ///
         /// Note on error parsers: multiple implementations of <see cref="IErrorLineParser"/>
         /// are registered. They are expected to be consumed in the registered order so that
@@ -62,6 +62,7 @@ namespace cc65Wrapper.Extensions
             // Main services
             services.AddSingleton<ICompiler, Cc65Compiler>();
             services.AddSingleton<IEmulatorLauncher, Cc65EmulatorLauncher>();
+            services.AddSingleton<IProjectService, ProjectService>();
 
             return services;
         }

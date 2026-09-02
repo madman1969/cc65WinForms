@@ -5,7 +5,7 @@ namespace cc65WinForms
 {
     /// <summary>
     /// Renders visible markers for normally invisible characters inside a
-    /// <see cref="FastColoredTextBoxNS.FastColoredTextBox"/> text range.
+    /// <c>FastColoredTextBoxNS.FastColoredTextBox</c> text range.
     /// Currently draws:
     /// - a small dot for space characters,
     /// - a pilcrow "¶" at end-of-line positions.
@@ -33,7 +33,7 @@ namespace cc65WinForms
         /// </summary>
         /// <param name="gr">Graphics surface to draw on.</param>
         /// <param name="position">Top-left position of the visible area (provided by the caller).</param>
-        /// <param name="range">The text range for which to render markers. The range's <see cref="FastColoredTextBox"/>
+        /// <param name="range">The text range for which to render markers. The range's <c>FastColoredTextBox</c>
         /// instance is used to translate text places to pixel coordinates and to obtain font/metrics.</param>
         public override void Draw(Graphics gr, Point position, Range range)
         {

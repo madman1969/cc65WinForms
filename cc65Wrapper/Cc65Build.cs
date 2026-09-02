@@ -102,6 +102,7 @@ namespace cc65Wrapper
         /// <summary>
         /// Parses the <c>ExecutionResult</c> from a build command into a list of <c>string</c> instances
         /// </summary>
+        /// <param name="executionResult">The buffered command result whose <c>BufferedCommandResult.StandardError</c> text contains one or more cc65 error lines.</param>
         /// <returns>A List of <c>string</c> values representing the individual errors</returns>
         /// <remarks>It also de-duplicates the errors</remarks>
         public static List<string> ErrorsAsStringList(BufferedCommandResult executionResult)
@@ -120,7 +121,7 @@ namespace cc65Wrapper
         /// <summary>
         /// Parses the <c>ExecutionResult</c> from a cc65 build command and returns a list of structured <see cref="Cc65Error"/> entries.
         /// </summary>
-        /// <param name="executionResult">The buffered command result whose <see cref="BufferedCommandResult.StandardError"/> text contains one or more cc65 error lines.</param>
+        /// <param name="executionResult">The buffered command result whose <c>BufferedCommandResult.StandardError</c> text contains one or more cc65 error lines.</param>
         /// <returns>
         /// A <see cref="List{Cc65Error}"/> containing one entry for each parsed error line.
         /// If the standard error output contains duplicate lines those are removed before parsing.
