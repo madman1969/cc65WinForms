@@ -123,8 +123,7 @@ namespace cc65WinForms
             cbTargetPlatform.SelectedIndex = 0;
 
             // Load emulator settings ...
-            var filepath = Path.Combine(Directory.GetCurrentDirectory(), @"Test Files");
-            filepath = Path.Combine(filepath, "emulators.json");
+            var filepath = Path.Combine(AppContext.BaseDirectory, "Test Files", "emulators.json");
             var json = File.ReadAllText(filepath);
             emulators = Cc65Emulators.FromJson(json);
 

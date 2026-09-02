@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cc65WinForms",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/cc65WinForms/bin/Debug/net10.0-windows/cc65WinForms.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/cc65WinForms/bin/Debug/net10.0-windows",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
