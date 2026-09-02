@@ -9,17 +9,17 @@ Just run your app in **Debug mode (F5)** and check:
 
 ## 🚀 Quick Start Examples
 
-### Example 1: Use New Service-Based Compiler
+### Example 1: Use the Injected Compiler Service
+
+`MainForm` receives `ICompiler` via constructor injection (see `Program.cs` /
+`MainForm.cs`) rather than resolving it from a locator:
 
 ```csharp
-using cc65WinForms.Services;
-
 private async void btnCompile_Click(object sender, EventArgs e)
 {
-	var compiler = ServiceHelper.GetCompiler(); // Logging enabled!
-	var result = await compiler.CompileAsync(project);
+	var result = await compiler.CompileAsync(project); // 'compiler' is the injected field
 
-	// Check Debug Output window to see logs
+	// Check Debug Output window (or logs/app.log) to see logs
 }
 ```
 
@@ -32,18 +32,23 @@ var result = await Cc65Build.CompileAsync(project);
 
 ### Example 3: Add Logging to Your Form
 
+Add `ILogger<T>` as another constructor parameter — it's resolved
+automatically by the DI container once `services.AddLogging(...)` has run:
+
 ```csharp
 using Microsoft.Extensions.Logging;
-using cc65WinForms.Services;
+using cc65Wrapper.Abstractions;
 
 public partial class MainForm : Form
 {
 	private readonly ILogger<MainForm> _logger;
 
-	public MainForm()
+	public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, ILogger<MainForm> logger)
 	{
+		this.compiler = compiler;
+		this.emulatorLauncher = emulatorLauncher;
+		_logger = logger;
 		InitializeComponent();
-		_logger = ServiceHelper.GetLogger<MainForm>();
 	}
 
 	private void SomeMethod()
@@ -71,7 +76,7 @@ public partial class MainForm : Form
 
 ## 🎛️ Change Log Verbosity
 
-Edit `Program.cs`, line ~27:
+Edit the `#if DEBUG` / `#else` block inside `services.AddLogging(...)` in `Program.cs`:
 
 ```csharp
 // More logs
@@ -86,24 +91,17 @@ builder.SetMinimumLevel(LogLevel.Error);
 
 ---
 
-## 📁 Add File Logging (Optional)
+## 📁 File Logging (Already Configured)
 
-### 1. Add to `Directory.Packages.props`:
-```xml
-<PackageVersion Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
-```
+No setup needed — `Program.cs` already writes to `logs/app.log` (resolved via
+`AppContext.BaseDirectory`, so the path doesn't depend on the working
+directory the app was launched from):
 
-### 2. Add to `cc65WinForms/cc65WinForms.csproj`:
-```xml
-<PackageReference Include="Serilog.Extensions.Logging.File" />
-```
-
-### 3. Update `Program.cs`:
 ```csharp
 services.AddLogging(builder =>
 {
 	builder.AddDebug();
-	builder.AddFile("logs/cc65-{Date}.txt"); // Logs to file!
+	builder.AddFile(logFilePath); // logs/app.log next to the executable
 	builder.SetMinimumLevel(LogLevel.Debug);
 });
 ```
@@ -112,20 +110,17 @@ services.AddLogging(builder =>
 
 ## 🔍 Common Services
 
+`MainForm` receives these via constructor injection rather than a locator —
+add the parameter and the container supplies it:
+
 ```csharp
-using cc65WinForms.Services;
+using cc65Wrapper.Abstractions;
+using Microsoft.Extensions.Logging;
 
-// Compiler
-var compiler = ServiceHelper.GetCompiler();
-
-// Emulator Launcher
-var emulator = ServiceHelper.GetEmulatorLauncher();
-
-// Logger
-var logger = ServiceHelper.GetLogger<YourClass>();
-
-// Any service
-var service = ServiceHelper.GetService<IYourService>();
+public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, ILogger<MainForm> logger)
+{
+	// ...
+}
 ```
 
 ---

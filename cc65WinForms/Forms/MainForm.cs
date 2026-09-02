@@ -147,6 +147,87 @@ namespace cc65WinForms
             PopulateTreeView();
         }
 
+        /// <inheritdoc />
+        /// <remarks>
+        /// Restores the window's size, position and state as they were when the
+        /// application was last closed.
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            RestoreWindowBounds();
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Persists the window's size, position and state so they can be restored
+        /// the next time the application starts.
+        /// </remarks>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            SaveWindowBounds();
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Applies the previously saved window size, position and state, falling
+        /// back to the designer defaults when no saved position is on-screen
+        /// (for example, after a monitor has been disconnected).
+        /// </summary>
+        private void RestoreWindowBounds()
+        {
+            var settings = Properties.Settings.Default;
+
+            WindowState = FormWindowState.Normal;
+
+            if (settings.WindowSize.Width > 0 && settings.WindowSize.Height > 0)
+            {
+                Size = settings.WindowSize;
+            }
+
+            var savedLocation = settings.WindowLocation;
+            var isOnScreen = savedLocation.X >= 0 && savedLocation.Y >= 0 &&
+                Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(new Rectangle(savedLocation, Size)));
+
+            if (isOnScreen)
+            {
+                StartPosition = FormStartPosition.Manual;
+                Location = savedLocation;
+            }
+
+            WindowState = settings.WindowState;
+        }
+
+        /// <summary>
+        /// Saves the window's restored (non-maximized/minimized) size and position,
+        /// plus its current state, so they can be reapplied on the next launch.
+        /// </summary>
+        /// <remarks>
+        /// When closing while minimized, <see cref="Form.RestoreBounds"/> reflects the
+        /// bounds immediately before minimizing rather than the true normal-state
+        /// bounds, so size/position are left untouched in that case and only the
+        /// previously saved normal/maximized bounds are kept.
+        /// </remarks>
+        private void SaveWindowBounds()
+        {
+            var settings = Properties.Settings.Default;
+
+            settings.WindowState = WindowState;
+
+            if (WindowState == FormWindowState.Normal)
+            {
+                settings.WindowLocation = Location;
+                settings.WindowSize = Size;
+            }
+            else if (WindowState == FormWindowState.Maximized)
+            {
+                settings.WindowLocation = RestoreBounds.Location;
+                settings.WindowSize = RestoreBounds.Size;
+            }
+
+            settings.Save();
+        }
+
         #region Private Methods
 
         /// <summary>

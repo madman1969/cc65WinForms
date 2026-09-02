@@ -25,36 +25,49 @@ The logging infrastructure has been configured to output to the **Visual Studio 
 
 ## 💻 Using Logging in Your Code
 
-### Option 1: Use the New Service-Based API (Recommended)
+### Option 1: Use the Service-Based API via Constructor Injection (Recommended)
+
+`MainForm` takes `ICompiler` and `IEmulatorLauncher` as constructor parameters,
+resolved by the DI container in `Program.cs` (`services.AddSingleton<MainForm>()` /
+`serviceProvider.GetRequiredService<MainForm>()`) instead of `new MainForm()`:
 
 ```csharp
-using cc65WinForms.Services;
 using cc65Wrapper;
+using cc65Wrapper.Abstractions;
 
-// In your form code
-private async void btnCompile_Click(object sender, EventArgs e)
+public partial class MainForm : Form
 {
-	// Get the compiler service (with logging automatically enabled)
-	var compiler = ServiceHelper.GetCompiler();
+	private readonly ICompiler compiler;
+	private readonly IEmulatorLauncher emulatorLauncher;
 
-	var project = new CC65Project
+	public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher)
 	{
-		ProjectName = "MyGame",
-		WorkingDirectory = @"C:\Projects\MyGame",
-		InputFiles = new[] { "main.c" },
-		TargetPlatform = CC65ProjectTypes.c64
-	};
-
-	// Compile - all steps will be logged automatically
-	var result = await compiler.CompileAsync(project);
-
-	if (result.Success)
-	{
-		MessageBox.Show("Compilation succeeded!");
+		this.compiler = compiler;
+		this.emulatorLauncher = emulatorLauncher;
+		InitializeComponent();
 	}
-	else
+
+	private async void btnCompile_Click(object sender, EventArgs e)
 	{
-		MessageBox.Show($"Compilation failed with {result.Errors.Count} errors");
+		var project = new CC65Project
+		{
+			ProjectName = "MyGame",
+			WorkingDirectory = @"C:\Projects\MyGame",
+			InputFiles = new[] { "main.c" },
+			TargetPlatform = CC65ProjectTypes.c64
+		};
+
+		// Compile - all steps will be logged automatically
+		var result = await compiler.CompileAsync(project);
+
+		if (result.Success)
+		{
+			MessageBox.Show("Compilation succeeded!");
+		}
+		else
+		{
+			MessageBox.Show($"Compilation failed with {result.Errors.Count} errors");
+		}
 	}
 }
 ```
@@ -75,18 +88,25 @@ var result = await Cc65Build.CompileAsync(project);
 
 ### Option 3: Add Custom Logging to Your Forms
 
+Add an `ILogger<T>` constructor parameter alongside your other injected
+dependencies — `Microsoft.Extensions.Logging` registers `ILogger<T>`
+automatically once `services.AddLogging(...)` has been called, so no extra
+registration is needed:
+
 ```csharp
 using Microsoft.Extensions.Logging;
-using cc65WinForms.Services;
+using cc65Wrapper.Abstractions;
 
 public partial class MainForm : Form
 {
 	private readonly ILogger<MainForm> _logger;
 
-	public MainForm()
+	public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, ILogger<MainForm> logger)
 	{
+		this.compiler = compiler;
+		this.emulatorLauncher = emulatorLauncher;
+		_logger = logger;
 		InitializeComponent();
-		_logger = ServiceHelper.GetLogger<MainForm>();
 	}
 
 	private void btnCompile_Click(object sender, EventArgs e)
@@ -107,29 +127,15 @@ public partial class MainForm : Form
 }
 ```
 
-## 🔧 Advanced: Adding File Logging
+## 🔧 File Logging (Already Configured)
 
-If you want logs saved to a file instead of just Debug Output:
-
-### 1. Add Serilog package to Directory.Packages.props:
-
-```xml
-<PackageVersion Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
-```
-
-### 2. Update cc65WinForms.csproj:
-
-```xml
-<PackageReference Include="Serilog.Extensions.Logging.File" />
-```
-
-### 3. Update Program.cs:
+`Program.cs` already logs to a file — no setup needed:
 
 ```csharp
 services.AddLogging(builder =>
 {
-	builder.AddDebug(); // Visual Studio Output
-	builder.AddFile("logs/cc65winforms-{Date}.txt"); // File logging
+	builder.AddDebug();               // Visual Studio Output
+	builder.AddFile(logFilePath);     // File logging
 
 #if DEBUG
 	builder.SetMinimumLevel(LogLevel.Debug);
@@ -139,7 +145,11 @@ services.AddLogging(builder =>
 });
 ```
 
-Then logs will be written to `logs/cc65winforms-2024-01-15.txt` in your app directory.
+Logs are written to `logs/app.log`, resolved via `AppContext.BaseDirectory` so
+the path is always relative to the executable rather than whatever directory
+the process happens to be launched from (this matters because Visual Studio,
+VS Code, and a desktop shortcut can each default to a different working
+directory).
 
 ## 📊 What Gets Logged
 
@@ -289,9 +299,10 @@ private static extern bool AllocConsole();
 ## 📝 Summary
 
 ✅ **Logging is enabled and configured**  
-✅ **Outputs to Visual Studio Debug window**  
+✅ **Outputs to both the Visual Studio Debug window and `logs/app.log`**  
 ✅ **Works with both new and legacy APIs**  
 ✅ **No code changes required to existing functionality**  
 ✅ **Logs compilation, emulator launch, and errors automatically**  
+✅ **Unhandled exceptions on the UI thread or elsewhere are logged instead of lost** (see `Program.cs`)  
 
 **Start your app in Debug mode and check View > Output > Debug to see logs!** 🎉

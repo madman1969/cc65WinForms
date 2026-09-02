@@ -61,68 +61,20 @@ ulation and thread safety
 - Added documentation marking them as legacy
 - New code should use `ICompiler` and `IEmulatorLauncher` with DI
 
-## ⚠️ Known Issues Requiring Fixes
+### Phase 2: cc65WinForms Adoption (Completed)
 
-### Build Errors to Fix:
-
-1. **Namespace ambiguity in `CliWrapCommandExecutor.cs`**
-   - Issue: `CommandResult` is ambiguous between `cc65Wrapper.Models.CommandResult` and `CliWrap.CommandResult`
-   - Fix: Use fully qualified names (`Models.CommandResult`)
-
-2. **Environment variables type mismatch**
-   - Issue: CliWrap expects `IReadOnlyDictionary<string, string?>` but we pass `IDictionary<string, string>`
-   - Fix: Convert dictionary or adjust interface
-
-3. **Old error creation in `Cc65Build.cs`**
-   - Issue: Lines 153, 165, 177, 194 still use old Cc65Error syntax (property initialization)
-   - Fix: Update to use record constructor: `new Cc65Error("filename", 0, "type", "error")`
-
-## 🔧 Quick Fix Guide
-
-### Fix 1: Update CliWrapCommandExecutor.cs
-
-```csharp
-public async Task<Models.CommandResult> ExecuteAsync(...)
-{
-	// ... existing code ...
-
-	if (environmentVariables != null && environmentVariables.Any())
-	{
-		var readOnlyDict = environmentVariables.ToDictionary(k => k.Key, v => (string?)v.Value);
-		command = command.WithEnvironmentVariables(readOnlyDict);
-	}
-
-	var result = await command.ExecuteBufferedAsync(cancellationToken).ConfigureAwait(false);
-
-	return new Models.CommandResult(
-		result.ExitCode,
-		result.StandardOutput,
-		result.StandardError);
-}
-```
-
-### Fix 2: Update Cc65Build.cs Error Creation
-
-Replace all instances like:
-```csharp
-new Cc65Error
-{
-	Filename = parts[0].Trim(),
-	LineNumber = 0,
-	Type = parts[1].Trim(),
-	Error = parts[2].Trim()
-}
-```
-
-With:
-```csharp
-new Cc65Error(
-	Filename: parts[0].Trim(),
-	LineNumber: 0,
-	Type: parts[1].Trim(),
-	Error: parts[2].Trim()
-)
-```
+`cc65WinForms.MainForm` now consumes `ICompiler` and `IEmulatorLauncher` via
+constructor injection instead of the legacy static `Cc65Build`/`Cc65Emulators`
+API:
+- `Program.cs` registers `MainForm` itself with the container
+  (`services.AddSingleton<MainForm>()`) and resolves it via
+  `serviceProvider.GetRequiredService<MainForm>()` instead of `new MainForm()`.
+- `MainForm`'s constructor takes `ICompiler compiler, IEmulatorLauncher emulatorLauncher`
+  and uses them directly in `BuildProjectAsync()` / `ExecuteProjectAsync()`
+  (see `MainForm.ProjectHandling.cs`).
+- The `ServiceHelper` static locator that previously exposed these services
+  has been removed — it was never actually wired into `MainForm` and would
+  have duplicated the constructor-injection path above.
 
 ## 🎯 Benefits Achieved
 
@@ -202,15 +154,18 @@ else
 
 ## 🚀 Next Steps
 
-### To Complete This Refactoring:
+### Completed Since the Initial Refactor
 
-1. **Fix build errors** (see Quick Fix Guide above)
-2. **Add unit tests** for all new components
-3. **Update cc65WinForms** to use new API (optional, old API works)
-4. **Add logging** infrastructure (ILogger support)
-5. **Create extension method** for DI registration (ServiceCollectionExtensions)
-6. **Add Options pattern** for configuration
-7. **Performance testing** to ensure no regression
+- ~~Fix build errors~~ — resolved.
+- ~~Update cc65WinForms to use new API~~ — `MainForm` now takes `ICompiler`/`IEmulatorLauncher` via constructor injection (see Phase 2 above).
+- ~~Add logging infrastructure (ILogger support)~~ — see `LOGGING_INFRASTRUCTURE.md`.
+- ~~Create extension method for DI registration~~ — `ServiceCollectionExtensions.AddCc65Wrapper()`.
+
+### Still To Do
+
+1. **Add unit tests** for all new components
+2. **Add Options pattern** for configuration
+3. **Performance testing** to ensure no regression
 
 ### Future Enhancements:
 
@@ -279,5 +234,5 @@ All NEW code should use the DI-based architecture. LEGACY code is preserved for 
 
 **Created**: [Date]
 **Author**: GitHub Copilot with architectural guidance
-**Status**: In Progress - Build Errors Need Fixing
+**Status**: Builds cleanly; `cc65WinForms` fully adopted onto the DI-based API
 **Branch**: feature/architectural-improvements
