@@ -4,4 +4,10 @@
   <Topic id="VersionHistory" visible="True" isExpanded="true">
     <Topic id="v1-0-0-0" visible="True" />
   </Topic>
+  <Topic id="DeveloperNotes" visible="True" isExpanded="true">
+    <Topic id="ArchitecturalImprovements" visible="True" />
+    <Topic id="LoggingInfrastructure" visible="True" />
+    <Topic id="HowToUseLogging" visible="True" />
+    <Topic id="LoggingQuickReference" visible="True" />
+  </Topic>
 </Topics>

@@ -30,4 +30,5 @@ See the **Conceptual Content** topics in the Sandcastle Help File Builder's help
 
 ## See Also
 **Other Resources**  
-[](@VersionHistory)
+[](@VersionHistory)  
+[](@DeveloperNotes)

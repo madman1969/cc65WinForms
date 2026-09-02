@@ -1,5 +1,7 @@
-# Architectural Improvements for cc65Wrapper
-
+---
+uid: ArchitecturalImprovements
+title: Architectural Improvements for cc65Wrapper
+---
 ## Branch: feature/architectural-improvements
 
 This branch implements a comprehensive architectural refactoring of the cc65Wrapper project following SOLID principles and modern .NET best practices.

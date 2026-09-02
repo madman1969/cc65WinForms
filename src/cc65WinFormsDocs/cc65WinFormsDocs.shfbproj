@@ -110,12 +110,20 @@
     <None Include="Content\VersionHistory\v1.0.0.0.md" />
     <None Include="Content\VersionHistory\VersionHistory.md" />
     <None Include="Content\Welcome.md" />
+    <None Include="Content\DeveloperNotes.md" />
+    <None Include="..\..\docs-notes\ARCHITECTURAL_IMPROVEMENTS.md" />
+    <None Include="..\..\docs-notes\HOW_TO_USE_LOGGING.md" />
+    <None Include="..\..\docs-notes\LOGGING_INFRASTRUCTURE.md" />
+    <None Include="..\..\docs-notes\LOGGING_QUICK_REFERENCE.md" />
   </ItemGroup>
   <ItemGroup>
     <ContentLayout Include="ContentLayout.content" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\Help.png" />
+    <!-- Overrides the stock Themed2026 file of the same name/path so first-time visitors
+         default to dark mode instead of light. See scripts\themeSwitcher.js for details. -->
+    <Content Include="scripts\themeSwitcher.js" />
   </ItemGroup>
   <!-- Import the common build targets during NuGet restore because before the packages are being installed, $(SHFBROOT) is not set yet -->
   <ItemGroup>

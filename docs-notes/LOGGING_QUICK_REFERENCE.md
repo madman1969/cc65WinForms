@@ -1,5 +1,7 @@
-# 🎯 Quick Reference: Logging in cc65WinForms
-
+---
+uid: LoggingQuickReference
+title: "🎯 Quick Reference: Logging in cc65WinForms"
+---
 ## ✅ Logging is Already Enabled!
 
 Just run your app in **Debug mode (F5)** and check:

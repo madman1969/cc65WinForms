@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html ><html lang="en-US" data-theme="light"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" href="../css/bulma.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/fontawesome.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/solid.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/regular.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/brands.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/presentationStyle.css?v=6C2B6DC8" /><script src="../scripts/jquery-3.7.1.min.js"></script><script src="../scripts/clipboard.min.js?v=6C2B6DC8"></script><script src="../scripts/highlight.min.js?v=6C2B6DC8"></script><script src="../scripts/themeSwitcher.js?v=6C2B6DC8"></script><script src="../scripts/presentationStyle.js?v=6C2B6DC8"></script><title>Logging Infrastructure for cc65Wrapper</title><meta name="Title" content="Logging Infrastructure for cc65Wrapper" /><meta name="Help.Id" content="LoggingInfrastructure" /><meta name="Help.ContentType" content="Concepts" /><meta name="guid" content="LoggingInfrastructure" /><meta name="Description" content="The cc65Wrapper now includes comprehensive logging infrastructure using Microsoft.Extensions." /><meta name="tocParentId" content="2" /></head><body><header class="pageHeader" id="Header"><div class="level mb-0 py-2 px-4"><div id="TitleContainer" class="level-left"><div class="level-item"><img src="../icons/Help.png" /></div><div id="DocumentationTitle" class="level-item">A Sandcastle Documented Class Library</div></div><div id="LangFilterSearchContainer" class="level-right"><div id="ThemeSwitcher" class="level-item" title="Toggle theme" aria-label="Toggle theme"><span class="icon"><i class="fa fa-regular fa-moon theme-icon-dark"></i><i class="fa fa-sun theme-icon-light"></i></span></div><div class="level-item"><div class="dropdown is-hoverable"><div class="dropdown-trigger"><button class="button" aria-haspopup="true" aria-controls="dropdown-menu"><span id="CurrentLanguage"></span><span class="icon is-small"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button></div><div class="dropdown-menu" role="menu"><div id="LanguageSelections" class="dropdown-content"><a class="dropdown-item languageFilterItem" data-languageId="cs">C#</a><a class="dropdown-item languageFilterItem" data-languageId="vb">VB</a><a class="dropdown-item languageFilterItem" data-languageId="cpp">C++</a><a class="dropdown-item languageFilterItem" data-languageId="fs">F#</a></div></div></div></div><div class="level-item"><form id="SearchForm" action="#" onsubmit="TransferToSearchPage(); return false;"><div class="field"><div class="control has-icons-left"><input id="SearchTerms" class="input" type="text" maxlength="200" placeholder="Search" /><span class="icon is-small is-left"><i class="fa fa-search"></i></span><button id="SearchButton" type="submit" class="is-hidden"></button></div></div></form></div></div></div></header><main><article><div id="HeaderPrelimContainer" class="level my-1 px-2"><div id="PreliminaryContainer" class="level-left"><div class="level-item"><span class="tag is-warning is-medium">This is preliminary documentation and is subject to change.</span></div></div></div><nav class="breadcrumb my-1 px-2 border-bottom" role="navigation"><ul id="TopicBreadcrumbs" /></nav><div id="ContentContainer" class="columns pl-5 pr-5"><div id="ShowHideTOCColumn" class="column is-hidden-tablet"><a id="ShowHideTOC">Show/Hide TOC</a></div><div id="TOCColumn" class="column is-hidden-mobile"><nav class="toc"><ul id="TableOfContents" class="toc-menu"><li>Loading...</li></ul></nav></div><div id="Resizer" class="is-hidden"></div><div id="TopicContent" class="column content is-7"><h1>Logging Infrastructure for cc65Wrapper</h1><h2 id="overview" class="quickLinkHeader">Overview</h2><div id="IDAABSection"><p>The cc65Wrapper now includes comprehensive logging infrastructure using <strong>Microsoft.Extensions.Logging</strong>, providing:</p><ul><li>✅ <strong>Structured logging</strong> with semantic log messages</li><li>✅ <strong>High-performance logging</strong> using source generators (LoggerMessage pattern)</li><li>✅ <strong>Automatic fallback</strong> to NullLogger when logging is not configured</li><li>✅ <strong>Full integration</strong> with all major services (Compiler, Emulator, Parser, CommandExecutor)</li><li>✅ <strong>Event-based logging</strong> with unique event IDs for easy filtering</li><li>✅ <strong>Multiple log levels</strong> (Debug, Information, Warning, Error)</li></ul></div><h2 id="quick-start" class="quickLinkHeader">Quick Start</h2><div id="IDBABSection"> </div><h3 id="basic-usage-without-logging" class="quickLinkHeader">1. Basic Usage (Without Logging)</h3><div id="IDCABSection"><p>The library works <strong>without any logging configuration</strong> using automatic NullLogger fallback:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">var services = new ServiceCollection();
+services.AddCc65Wrapper();
+var serviceProvider = services.BuildServiceProvider();
+
+var compiler = serviceProvider.GetRequiredService&lt;ICompiler&gt;();
+var result = await compiler.CompileAsync(project);</code></pre></div></div></div><h3 id="with-console-logging" class="quickLinkHeader">2. With Console Logging</h3><div id="IDDABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">var services = new ServiceCollection();
+
+// Add logging
+services.AddLogging(builder =&gt;
+{
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Information);
+});
+
+// Add cc65Wrapper services
+services.AddCc65Wrapper();
+
+var serviceProvider = services.BuildServiceProvider();
+var compiler = serviceProvider.GetRequiredService&lt;ICompiler&gt;();</code></pre></div></div></div><h3 id="with-multiple-providers" class="quickLinkHeader">3. With Multiple Providers</h3><div id="IDEABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+{
+    builder.AddConsole();
+    builder.AddDebug();
+    builder.AddFile("logs/cc65wrapper.log"); // Requires Serilog or NLog
+    builder.SetMinimumLevel(LogLevel.Debug);
+});</code></pre></div></div></div><h3 id="compact-registration" class="quickLinkHeader">4. Compact Registration</h3><div id="IDFABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddCc65Wrapper(builder =&gt;
+{
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Information);
+});</code></pre></div></div></div><h3 id="legacy-static-api-backward-compatible" class="quickLinkHeader">5. Legacy Static API (Backward Compatible)</h3><div id="IDGABSection"><p>For existing code using static methods, configure logging globally:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">using cc65Wrapper.Logging;
+using Microsoft.Extensions.Logging;
+
+// Create logger factory
+var loggerFactory = LoggerFactory.Create(builder =&gt;
+{
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Information);
+});
+
+// Set global factory for static API usage
+Cc65LoggerFactory.SetLoggerFactory(loggerFactory);
+
+// Now legacy code automatically logs
+var result = await Cc65Build.CompileAsync(project);</code></pre></div></div></div><h2 id="log-categories" class="quickLinkHeader">Log Categories</h2><div id="IDHABSection"><p>The library uses the following logger categories:</p><table class="table is-hoverable"><thead><tr><th>Category</th><th>Description</th></tr></thead><tbody><tr><td><span class="code">cc65Wrapper.Services.Cc65Compiler</span></td><td>Compilation operations</td></tr><tr><td><span class="code">cc65Wrapper.Services.Cc65EmulatorLauncher</span></td><td>Emulator launching</td></tr><tr><td><span class="code">cc65Wrapper.Infrastructure.CliWrapCommandExecutor</span></td><td>Command execution</td></tr><tr><td><span class="code">cc65Wrapper.Parsers.ErrorParser</span></td><td>Error parsing</td></tr></tbody></table></div><h2 id="event-ids" class="quickLinkHeader">Event IDs</h2><div id="IDIABSection"><p>All log messages include unique event IDs for easy filtering:</p><table class="table is-hoverable"><thead><tr><th>Range</th><th>Category</th><th>Examples</th></tr></thead><tbody><tr><td>1000-1999</td><td>Compilation</td><td>1000: Started, 1001: Succeeded, 1002: Failed</td></tr><tr><td>2000-2999</td><td>Emulator</td><td>2000: Started, 2001: Launched, 2002: Failed</td></tr><tr><td>3000-3999</td><td>Command Execution</td><td>3000: Executing, 3001: Completed, 3002: Failed</td></tr><tr><td>4000-4999</td><td>Error Parsing</td><td>4000: Started, 4001: Line Parsed, 4003: Completed</td></tr><tr><td>5000-5999</td><td>Validation</td><td>5000: Failed, 5001: Warning</td></tr><tr><td>6000-6999</td><td>Configuration</td><td>6000: Loaded, 6001: Missing, 6002: Saved</td></tr><tr><td>7000-7999</td><td>File System</td><td>7000: Directory Changed, 7002: File Not Found</td></tr></tbody></table></div><h2 id="filtering-examples" class="quickLinkHeader">Filtering Examples</h2><div id="IDJABSection"> </div><h3 id="filter-by-event-id-console" class="quickLinkHeader">Filter by Event ID (Console)</h3><div id="IDKABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+{
+    builder.AddConsole(options =&gt;
+    {
+        options.LogToStandardErrorThreshold = LogLevel.Warning;
+    });
+    builder.AddFilter("cc65Wrapper.Services.Cc65Compiler", LogLevel.Debug);
+    builder.AddFilter("cc65Wrapper.Services.Cc65EmulatorLauncher", LogLevel.Information);
+});</code></pre></div></div></div><h3 id="filter-by-event-id-range-serilog" class="quickLinkHeader">Filter by Event ID Range (Serilog)</h3><div id="IDLABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .Filter.ByIncludingOnly(evt =&gt; 
+        evt.Properties.TryGetValue("EventId", out var eventId) &amp;&amp;
+        eventId.ToString().StartsWith("1")) // Only compilation events
+    .WriteTo.Console()
+    .WriteTo.File("logs/compilation.log")
+    .CreateLogger();</code></pre></div></div></div><h2 id="sample-log-output" class="quickLinkHeader">Sample Log Output</h2><div id="IDMABSection"> </div><h3 id="compilation" class="quickLinkHeader">Compilation</h3><div id="IDNABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">[12:34:56 INF] Starting compilation for project 'MyGame' targeting platform 'c64' (EventId: 1000)
+[12:34:56 DBG] Compiler command: cl65 -t c64 main.c -O -o build/mygame.prg (EventId: 1003)
+[12:34:56 DBG] Build phase changed: Compiling - Compiling... (EventId: 1006)
+[12:34:56 DBG] Executing command: cl65 -t c64 main.c -O -o build/mygame.prg (EventId: 3000)
+[12:34:57 DBG] Command completed with exit code 0 (EventId: 3001)
+[12:34:57 DBG] Parsing 0 error lines using 4 parser(s) (EventId: 4000)
+[12:34:57 INF] Compilation completed successfully in 1243ms (EventId: 1001)</code></pre></div></div></div><h3 id="compilation-with-errors" class="quickLinkHeader">Compilation with Errors</h3><div id="IDOABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">[12:35:10 INF] Starting compilation for project 'MyGame' targeting platform 'c64' (EventId: 1000)
+[12:35:10 DBG] Compiler command: cl65 -t c64 main.c -O -o build/mygame.prg (EventId: 1003)
+[12:35:11 DBG] Parsing 3 error lines using 4 parser(s) (EventId: 4000)
+[12:35:11 DBG] Parser 'FourPartErrorParser' handled error line: main.c:42:Error:Syntax error (EventId: 4001)
+[12:35:11 ERR] Compilation error at main.c:42 - Syntax error (EventId: 1005)
+[12:35:11 DBG] Error parsing completed: found 2 error(s), 1 warning(s) (EventId: 4003)
+[12:35:11 ERR] Compilation failed with 2 error(s) in 987ms (EventId: 1002)</code></pre></div></div></div><h3 id="emulator-launch" class="quickLinkHeader">Emulator Launch</h3><div id="IDPABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">[12:36:00 INF] Starting emulator 'C:\Emulators\VICE\x64sc.exe' for platform 'c64' (EventId: 2000)
+[12:36:00 DBG] Emulator command: C:\Emulators\VICE\x64sc.exe -autostart build/mygame.prg (EventId: 2003)
+[12:36:01 DBG] Command completed with exit code 0 (EventId: 3001)
+[12:36:01 INF] Emulator launched successfully with PID 0 (EventId: 2001)</code></pre></div></div></div><h2 id="advanced-scenarios" class="quickLinkHeader">Advanced Scenarios</h2><div id="IDQABSection"> </div><h3 id="custom-logger-implementation" class="quickLinkHeader">Custom Logger Implementation</h3><div id="IDRABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">public class CustomCompilerLogger : ILogger&lt;Cc65Compiler&gt;
+{
+    public IDisposable BeginScope&lt;TState&gt;(TState state) =&gt; null;
+
+    public bool IsEnabled(LogLevel logLevel) =&gt; logLevel &gt;= LogLevel.Information;
+
+    public void Log&lt;TState&gt;(
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception exception,
+        Func&lt;TState, Exception, string&gt; formatter)
+    {
+        // Custom logging logic
+        Console.WriteLine($"[{eventId.Id}] {formatter(state, exception)}");
+    }
+}
+
+services.AddSingleton&lt;ILogger&lt;Cc65Compiler&gt;, CustomCompilerLogger&gt;();</code></pre></div></div></div><h3 id="progress-tracking-with-logging" class="quickLinkHeader">Progress Tracking with Logging</h3><div id="IDSABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">var progress = new Progress&lt;BuildProgressEventArgs&gt;(e =&gt;
+{
+    // Progress reports are also logged automatically
+    Console.WriteLine($"{e.Phase}: {e.Message} ({e.PercentComplete}%)");
+});
+
+var result = await compiler.CompileAsync(project, progress);</code></pre></div></div></div><h3 id="structured-logging-with-serilog" class="quickLinkHeader">Structured Logging with Serilog</h3><div id="IDTABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+{
+    var logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .Enrich.FromLogContext()
+        .WriteTo.Console(outputTemplate: 
+            "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} " +
+            "(EventId: {EventId:0000}) {NewLine}{Exception}")
+        .WriteTo.File(
+            "logs/cc65wrapper.json",
+            rollingInterval: RollingInterval.Day,
+            formatter: new JsonFormatter())
+        .CreateLogger();
+
+    builder.AddSerilog(logger);
+});</code></pre></div></div></div><h2 id="performance" class="quickLinkHeader">Performance</h2><div id="IDUABSection"><p>The logging infrastructure uses:</p><ul><li><strong>Source generators</strong> (LoggerMessage pattern) for zero-allocation logging</li><li><strong>Lazy evaluation</strong> - arguments only computed if log level is enabled</li><li><strong>NullLogger fallback</strong> - zero overhead when logging is not configured</li><li><strong>Minimal string allocations</strong> - structured logging with parameters</li></ul></div><h2 id="migration-guide" class="quickLinkHeader">Migration Guide</h2><div id="IDVABSection"> </div><h3 id="from-old-code-no-logging" class="quickLinkHeader">From Old Code (No Logging)</h3><div id="IDWABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Old code - still works!
+var result = await Cc65Build.CompileAsync(project);
+
+// Add logging if desired
+LoggerFactory.SetLoggerFactory(myLoggerFactory);</code></pre></div></div></div><h3 id="new-service-based-code" class="quickLinkHeader">New Service-Based Code</h3><div id="IDXABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Inject logger via DI
+public class MyCompilerService
+{
+    private readonly ICompiler _compiler;
+
+    public MyCompilerService(ICompiler compiler)
+    {
+        _compiler = compiler; // Logging already configured!
+    }
+
+    public async Task CompileAsync(CC65Project project)
+    {
+        // All logging happens automatically
+        var result = await _compiler.CompileAsync(project);
+    }
+}</code></pre></div></div></div><h2 id="troubleshooting" class="quickLinkHeader">Troubleshooting</h2><div id="IDYABSection"> </div><h3 id="no-logs-appearing" class="quickLinkHeader">No Logs Appearing</h3><div id="IDZABSection"><ol><li>Check minimum log level: <span class="code">builder.SetMinimumLevel(LogLevel.Debug)</span></li><li>Ensure logger provider is added: <span class="code">builder.AddConsole()</span></li><li>Verify category filter allows cc65Wrapper logs</li></ol></div><h3 id="too-many-logs" class="quickLinkHeader">Too Many Logs</h3><div id="ID1ABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Reduce verbosity
+builder.SetMinimumLevel(LogLevel.Warning);
+
+// Or filter specific categories
+builder.AddFilter("cc65Wrapper.Infrastructure", LogLevel.Warning);
+builder.AddFilter("cc65Wrapper.Parsers", LogLevel.Error);</code></pre></div></div></div><h3 id="static-api-not-logging" class="quickLinkHeader">Static API Not Logging</h3><div id="ID2ABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Must set global factory for static methods
+Cc65LoggerFactory.SetLoggerFactory(myLoggerFactory);</code></pre></div></div></div><h2 id="configuration-examples" class="quickLinkHeader">Configuration Examples</h2><div id="ID3ABSection"> </div><h3 id="appsettings.json-asp.net-core-generic-host" class="quickLinkHeader">appsettings.json (ASP.NET Core / Generic Host)</h3><div id="ID4ABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">json</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-json">{
+  "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "cc65Wrapper": "Debug",
+          "cc65Wrapper.Services": "Information",
+          "cc65Wrapper.Infrastructure": "Warning"
+        }
+  }
+}</code></pre></div></div></div><h3 id="programmatic-configuration" class="quickLinkHeader">Programmatic Configuration</h3><div id="ID5ABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+{
+    builder.AddConfiguration(configuration.GetSection("Logging"));
+    builder.AddConsole();
+    builder.AddDebug();
+
+    // Override for specific categories
+    builder.AddFilter("cc65Wrapper.Services.Cc65Compiler", LogLevel.Trace);
+});</code></pre></div></div><hr /></div><h2 id="summary" class="quickLinkHeader">Summary</h2><div id="ID6ABSection"><p>The logging infrastructure provides comprehensive observability into the cc65Wrapper operations while maintaining backward compatibility and zero overhead when logging is not configured. All logs use structured logging for easy querying and filtering in log aggregation systems like Seq, Splunk, or Azure Application Insights.</p><p><strong>Key Benefits:</strong></p><ul><li>✅ Zero-configuration default (NullLogger)</li><li>✅ High-performance source-generated logging</li><li>✅ Full backward compatibility</li><li>✅ Rich structured logging with event IDs</li><li>✅ Easy integration with any logging provider</li></ul></div></div><div id="InThisArticleColumn" class="column is-hidden-mobile"><nav class="menu sticky is-hidden"><p class="menu-label"><strong>In This Article</strong></p><ul id="InThisArticleMenu" class="menu-list"><li><a class="quickLink">Overview</a></li><li><a class="quickLink">Quick Start</a></li><li><a class="quickLink">1. Basic Usage (Without Logging)</a></li><li><a class="quickLink">2. With Console Logging</a></li><li><a class="quickLink">3. With Multiple Providers</a></li><li><a class="quickLink">4. Compact Registration</a></li><li><a class="quickLink">5. Legacy Static API (Backward Compatible)</a></li><li><a class="quickLink">Log Categories</a></li><li><a class="quickLink">Event IDs</a></li><li><a class="quickLink">Filtering Examples</a></li><li><a class="quickLink">Filter by Event ID (Console)</a></li><li><a class="quickLink">Filter by Event ID Range (Serilog)</a></li><li><a class="quickLink">Sample Log Output</a></li><li><a class="quickLink">Compilation</a></li><li><a class="quickLink">Compilation with Errors</a></li><li><a class="quickLink">Emulator Launch</a></li><li><a class="quickLink">Advanced Scenarios</a></li><li><a class="quickLink">Custom Logger Implementation</a></li><li><a class="quickLink">Progress Tracking with Logging</a></li><li><a class="quickLink">Structured Logging with Serilog</a></li><li><a class="quickLink">Performance</a></li><li><a class="quickLink">Migration Guide</a></li><li><a class="quickLink">From Old Code (No Logging)</a></li><li><a class="quickLink">New Service-Based Code</a></li><li><a class="quickLink">Troubleshooting</a></li><li><a class="quickLink">No Logs Appearing</a></li><li><a class="quickLink">Too Many Logs</a></li><li><a class="quickLink">Static API Not Logging</a></li><li><a class="quickLink">Configuration Examples</a></li><li><a class="quickLink">appsettings.json (ASP.NET Core / Generic Host)</a></li><li><a class="quickLink">Programmatic Configuration</a></li><li><a class="quickLink">Summary</a></li></ul></nav></div></div></article></main><script>$(function(){
+SetDefaultLanguage("cs");
+LoadToc();
+InitializeQuickLinks();
+hljs.highlightAll();
+});</script></body></html>

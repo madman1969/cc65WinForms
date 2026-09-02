@@ -1,5 +1,7 @@
-# How to Use Logging in cc65WinForms
-
+---
+uid: HowToUseLogging
+title: How to Use Logging in cc65WinForms
+---
 ## ✅ Logging is Now Enabled!
 
 The logging infrastructure has been configured to output to the **Visual Studio Debug Output** window.

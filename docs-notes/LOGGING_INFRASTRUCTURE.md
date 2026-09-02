@@ -1,5 +1,7 @@
-# Logging Infrastructure for cc65Wrapper
-
+---
+uid: LoggingInfrastructure
+title: Logging Infrastructure for cc65Wrapper
+---
 ## Overview
 
 The cc65Wrapper now includes comprehensive logging infrastructure using **Microsoft.Extensions.Logging**, providing:

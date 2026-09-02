@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html ><html lang="en-US" data-theme="light"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" href="../css/bulma.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/fontawesome.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/solid.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/regular.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/brands.min.css?v=6C2B6DC8" /><link rel="stylesheet" href="../css/presentationStyle.css?v=6C2B6DC8" /><script src="../scripts/jquery-3.7.1.min.js"></script><script src="../scripts/clipboard.min.js?v=6C2B6DC8"></script><script src="../scripts/highlight.min.js?v=6C2B6DC8"></script><script src="../scripts/themeSwitcher.js?v=6C2B6DC8"></script><script src="../scripts/presentationStyle.js?v=6C2B6DC8"></script><title>🎯 Quick Reference: Logging in cc65WinForms</title><meta name="Title" content="🎯 Quick Reference: Logging in cc65WinForms" /><meta name="Help.Id" content="LoggingQuickReference" /><meta name="Help.ContentType" content="Concepts" /><meta name="guid" content="LoggingQuickReference" /><meta name="Description" content="Just run your app in Debug mode (F5) and check: View → Output (or Ctrl+Alt+O) → Select Debug in dropdown" /><meta name="tocParentId" content="2" /></head><body><header class="pageHeader" id="Header"><div class="level mb-0 py-2 px-4"><div id="TitleContainer" class="level-left"><div class="level-item"><img src="../icons/Help.png" /></div><div id="DocumentationTitle" class="level-item">A Sandcastle Documented Class Library</div></div><div id="LangFilterSearchContainer" class="level-right"><div id="ThemeSwitcher" class="level-item" title="Toggle theme" aria-label="Toggle theme"><span class="icon"><i class="fa fa-regular fa-moon theme-icon-dark"></i><i class="fa fa-sun theme-icon-light"></i></span></div><div class="level-item"><div class="dropdown is-hoverable"><div class="dropdown-trigger"><button class="button" aria-haspopup="true" aria-controls="dropdown-menu"><span id="CurrentLanguage"></span><span class="icon is-small"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button></div><div class="dropdown-menu" role="menu"><div id="LanguageSelections" class="dropdown-content"><a class="dropdown-item languageFilterItem" data-languageId="cs">C#</a><a class="dropdown-item languageFilterItem" data-languageId="vb">VB</a><a class="dropdown-item languageFilterItem" data-languageId="cpp">C++</a><a class="dropdown-item languageFilterItem" data-languageId="fs">F#</a></div></div></div></div><div class="level-item"><form id="SearchForm" action="#" onsubmit="TransferToSearchPage(); return false;"><div class="field"><div class="control has-icons-left"><input id="SearchTerms" class="input" type="text" maxlength="200" placeholder="Search" /><span class="icon is-small is-left"><i class="fa fa-search"></i></span><button id="SearchButton" type="submit" class="is-hidden"></button></div></div></form></div></div></div></header><main><article><div id="HeaderPrelimContainer" class="level my-1 px-2"><div id="PreliminaryContainer" class="level-left"><div class="level-item"><span class="tag is-warning is-medium">This is preliminary documentation and is subject to change.</span></div></div></div><nav class="breadcrumb my-1 px-2 border-bottom" role="navigation"><ul id="TopicBreadcrumbs" /></nav><div id="ContentContainer" class="columns pl-5 pr-5"><div id="ShowHideTOCColumn" class="column is-hidden-tablet"><a id="ShowHideTOC">Show/Hide TOC</a></div><div id="TOCColumn" class="column is-hidden-mobile"><nav class="toc"><ul id="TableOfContents" class="toc-menu"><li>Loading...</li></ul></nav></div><div id="Resizer" class="is-hidden"></div><div id="TopicContent" class="column content is-7"><h1>🎯 Quick Reference: Logging in cc65WinForms</h1><h2 id="logging-is-already-enabled" class="quickLinkHeader">✅ Logging is Already Enabled!</h2><div id="IDAABSection"><p>Just run your app in <strong>Debug mode (F5)</strong> and check:
+<strong>View → Output</strong> (or <span class="code">Ctrl+Alt+O</span>) → Select <strong>Debug</strong> in dropdown</p><hr /></div><h2 id="quick-start-examples" class="quickLinkHeader">🚀 Quick Start Examples</h2><div id="IDBABSection"> </div><h3 id="example-1-use-the-injected-compiler-service" class="quickLinkHeader">Example 1: Use the Injected Compiler Service</h3><div id="IDCABSection"><p><span class="code">MainForm</span> receives <span class="code">ICompiler</span> via constructor injection (see <span class="code">Program.cs</span> /
+<span class="code">MainForm.cs</span>) rather than resolving it from a locator:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">private async void btnCompile_Click(object sender, EventArgs e)
+{
+    var result = await compiler.CompileAsync(project); // 'compiler' is the injected field
+
+    // Check Debug Output window (or logs/app.log) to see logs
+}</code></pre></div></div></div><h3 id="example-2-existing-code-still-works" class="quickLinkHeader">Example 2: Existing Code Still Works</h3><div id="IDDABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Your old code - now logs automatically!
+var result = await Cc65Build.CompileAsync(project);</code></pre></div></div></div><h3 id="example-3-add-logging-to-your-form" class="quickLinkHeader">Example 3: Add Logging to Your Form</h3><div id="IDEABSection"><p>Add <span class="code">ILogger&lt;T&gt;</span> as another constructor parameter — it's resolved
+automatically by the DI container once <span class="code">services.AddLogging(...)</span> has run:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">using Microsoft.Extensions.Logging;
+using cc65Wrapper.Abstractions;
+
+public partial class MainForm : Form
+{
+    private readonly ILogger&lt;MainForm&gt; _logger;
+
+    public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, ILogger&lt;MainForm&gt; logger)
+    {
+        this.compiler = compiler;
+        this.emulatorLauncher = emulatorLauncher;
+        _logger = logger;
+        InitializeComponent();
+    }
+
+    private void SomeMethod()
+    {
+        _logger.LogInformation("Something happened");
+        _logger.LogWarning("Something unusual happened");
+        _logger.LogError("Something bad happened");
+    }
+}</code></pre></div></div><hr /></div><h2 id="what-youll-see-in-debug-output" class="quickLinkHeader">📺 What You'll See in Debug Output</h2><div id="IDFABSection"><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-cs">[Debug] Starting compilation for project 'MyGame' targeting platform 'c64'
+[Debug] Compiler command: cl65 -t c64 main.c -O -o output.prg
+[Debug] Build phase changed: Compiling - Compiling...
+[Debug] Command completed with exit code 0
+[Information] Compilation completed successfully in 1234ms</code></pre></div></div><hr /></div><h2 id="change-log-verbosity" class="quickLinkHeader">🎛️ Change Log Verbosity</h2><div id="IDGABSection"><p>Edit the <span class="code">#if DEBUG</span> / <span class="code">#else</span> block inside <span class="code">services.AddLogging(...)</span> in <span class="code">Program.cs</span>:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// More logs
+builder.SetMinimumLevel(LogLevel.Debug);
+
+// Fewer logs
+builder.SetMinimumLevel(LogLevel.Information);
+
+// Only errors
+builder.SetMinimumLevel(LogLevel.Error);</code></pre></div></div><hr /></div><h2 id="file-logging-already-configured" class="quickLinkHeader">📁 File Logging (Already Configured)</h2><div id="IDHABSection"><p>No setup needed — <span class="code">Program.cs</span> already writes to <span class="code">logs/app.log</span> (resolved via
+<span class="code">AppContext.BaseDirectory</span>, so the path doesn't depend on the working
+directory the app was launched from):</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+{
+    builder.AddDebug();
+    builder.AddFile(logFilePath); // logs/app.log next to the executable
+    builder.SetMinimumLevel(LogLevel.Debug);
+});</code></pre></div></div><hr /></div><h2 id="common-services" class="quickLinkHeader">🔍 Common Services</h2><div id="IDIABSection"><p><span class="code">MainForm</span> receives these via constructor injection rather than a locator —
+add the parameter and the container supplies it:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">using cc65Wrapper.Abstractions;
+using Microsoft.Extensions.Logging;
+
+public MainForm(ICompiler compiler, IEmulatorLauncher emulatorLauncher, ILogger&lt;MainForm&gt; logger)
+{
+    // ...
+}</code></pre></div></div><hr /></div><h2 id="pro-tips" class="quickLinkHeader">💡 Pro Tips</h2><div id="IDJABSection"><p>✅ <strong>Debug Output</strong> shows logs immediately<br />
+✅ <strong>Log levels</strong> work: Debug &lt; Information &lt; Warning &lt; Error<br />
+✅ <strong>Old code</strong> logs automatically (backward compatible)<br />
+✅ <strong>Progress events</strong> are also logged<br />
+✅ <strong>All errors</strong> include file name and line number</p><hr /></div><h2 id="troubleshooting" class="quickLinkHeader">🐛 Troubleshooting</h2><div id="IDKABSection"><p><strong>Not seeing logs?</strong></p><ol><li>✅ Debug mode? (F5, not Ctrl+F5)</li><li>✅ Output window set to "Debug"?</li><li>✅ MinimumLevel not too high?</li></ol><p><strong>Too many logs?</strong></p><ul><li>Change <span class="code">SetMinimumLevel(LogLevel.Information)</span></li></ul><p><strong>Want timestamps?</strong></p><ul><li>Debug output includes them automatically</li></ul><hr /></div><h2 id="full-documentation" class="quickLinkHeader">📖 Full Documentation</h2><div id="IDLABSection"><ul><li>See <span class="code">HOW_TO_USE_LOGGING.md</span> for detailed examples</li><li>See <span class="code">LOGGING_INFRASTRUCTURE.md</span> for architecture details</li></ul><hr /><p><strong>That's it! Run your app and check the Debug Output window! 🚀</strong></p></div></div><div id="InThisArticleColumn" class="column is-hidden-mobile"><nav class="menu sticky is-hidden"><p class="menu-label"><strong>In This Article</strong></p><ul id="InThisArticleMenu" class="menu-list"><li><a class="quickLink">✅ Logging is Already Enabled!</a></li><li><a class="quickLink">🚀 Quick Start Examples</a></li><li><a class="quickLink">Example 1: Use the Injected Compiler Service</a></li><li><a class="quickLink">Example 2: Existing Code Still Works</a></li><li><a class="quickLink">Example 3: Add Logging to Your Form</a></li><li><a class="quickLink">📺 What You'll See in Debug Output</a></li><li><a class="quickLink">🎛️ Change Log Verbosity</a></li><li><a class="quickLink">📁 File Logging (Already Configured)</a></li><li><a class="quickLink">🔍 Common Services</a></li><li><a class="quickLink">💡 Pro Tips</a></li><li><a class="quickLink">🐛 Troubleshooting</a></li><li><a class="quickLink">📖 Full Documentation</a></li></ul></nav></div></div></article></main><script>$(function(){
+SetDefaultLanguage("cs");
+LoadToc();
+InitializeQuickLinks();
+hljs.highlightAll();
+});</script></body></html>
