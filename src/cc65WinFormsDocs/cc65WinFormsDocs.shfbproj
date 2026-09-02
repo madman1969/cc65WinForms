@@ -101,10 +101,14 @@
     <PackageReference Include="EWSoftware.SHFB.NET" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="..\" />
+    <Folder Include="..\..\" />
+    <Folder Include="..\..\docs-notes\" />
     <Folder Include="Content" />
     <Folder Include="Content\VersionHistory" />
     <Folder Include="icons" />
     <Folder Include="media" />
+    <Folder Include="scripts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\VersionHistory\v1.0.0.0.md" />
