@@ -78,21 +78,32 @@ public partial class MainForm : Form
             MessageBox.Show($"Error: {ex.Message}");
         }
     }
-}</code></pre></div></div></div><h2 id="file-logging-already-configured" class="quickLinkHeader">🔧 File Logging (Already Configured)</h2><div id="IDIABSection"><p><span class="code">Program.cs</span> already logs to a file — no setup needed:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+}</code></pre></div></div></div><h2 id="file-logging-already-configured" class="quickLinkHeader">🔧 File Logging (Already Configured)</h2><div id="IDIABSection"><p><span class="code">Program.cs</span> already logs to a file — no setup needed:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">var fileLogger = new LoggerConfiguration()
+    .WriteTo.File(
+        logFilePath,
+        shared: true,
+        fileSizeLimitBytes: 5 * 1024 * 1024,
+        rollOnFileSizeLimit: true)
+    .CreateLogger();
+
+services.AddLogging(builder =&gt;
 {
-    builder.AddDebug();               // Visual Studio Output
-    builder.AddFile(logFilePath);     // File logging
+    builder.AddDebug();                           // Visual Studio Output
+    builder.AddSerilog(fileLogger, dispose: true); // File logging
 
 #if DEBUG
     builder.SetMinimumLevel(LogLevel.Debug);
 #else
     builder.SetMinimumLevel(LogLevel.Information);
 #endif
-});</code></pre></div></div><p>Logs are written to <span class="code">logs/app.log</span>, resolved via <span class="code">AppContext.BaseDirectory</span> so
-the path is always relative to the executable rather than whatever directory
-the process happens to be launched from (this matters because Visual Studio,
+});</code></pre></div></div><p>Logs are always written to <span class="code">logs/app.log</span>, resolved via <span class="code">AppContext.BaseDirectory</span>
+so the path is relative to the executable rather than whatever directory the
+process happens to be launched from (this matters because Visual Studio,
 VS Code, and a desktop shortcut can each default to a different working
-directory).</p></div><h2 id="what-gets-logged" class="quickLinkHeader">📊 What Gets Logged</h2><div id="IDJABSection"> </div><h3 id="compilation-operations" class="quickLinkHeader">Compilation Operations:</h3><div id="IDKABSection"><ul><li>✅ Project validation</li><li>✅ Command-line arguments</li><li>✅ Compilation progress (0%, 10%, 30%, 70%, 100%)</li><li>✅ Each compiler error/warning with file and line number</li><li>✅ Compilation duration</li><li>✅ Success/failure status</li></ul></div><h3 id="emulator-operations" class="quickLinkHeader">Emulator Operations:</h3><div id="IDLABSection"><ul><li>✅ Emulator path selection</li><li>✅ Launch arguments</li><li>✅ Launch success/failure</li><li>✅ Exit codes</li></ul></div><h3 id="error-parsing" class="quickLinkHeader">Error Parsing:</h3><div id="IDMABSection"><ul><li>✅ Number of errors found</li><li>✅ Number of warnings found</li><li>✅ Which parser handled each error line</li></ul></div><h2 id="custom-log-viewer-optional" class="quickLinkHeader">🎨 Custom Log Viewer (Optional)</h2><div id="IDNABSection"><p>You can add a log viewer to your WinForms app:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Add a TextBox named txtLogViewer to your form
+directory). There's no time-based rolling, so the active file is always
+<span class="code">app.log</span> — but once it reaches 5MB it rolls by size, renaming the full file
+to <span class="code">app_001.log</span>, <span class="code">app_002.log</span>, etc. and starting a fresh <span class="code">app.log</span> (up to
+Serilog's default retention of 31 files).</p></div><h2 id="what-gets-logged" class="quickLinkHeader">📊 What Gets Logged</h2><div id="IDJABSection"> </div><h3 id="compilation-operations" class="quickLinkHeader">Compilation Operations:</h3><div id="IDKABSection"><ul><li>✅ Project validation</li><li>✅ Command-line arguments</li><li>✅ Compilation progress (0%, 10%, 30%, 70%, 100%)</li><li>✅ Each compiler error/warning with file and line number</li><li>✅ Compilation duration</li><li>✅ Success/failure status</li></ul></div><h3 id="emulator-operations" class="quickLinkHeader">Emulator Operations:</h3><div id="IDLABSection"><ul><li>✅ Emulator path selection</li><li>✅ Launch arguments</li><li>✅ Launch success/failure</li><li>✅ Exit codes</li></ul></div><h3 id="error-parsing" class="quickLinkHeader">Error Parsing:</h3><div id="IDMABSection"><ul><li>✅ Number of errors found</li><li>✅ Number of warnings found</li><li>✅ Which parser handled each error line</li></ul></div><h2 id="custom-log-viewer-optional" class="quickLinkHeader">🎨 Custom Log Viewer (Optional)</h2><div id="IDNABSection"><p>You can add a log viewer to your WinForms app:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">// Add a TextBox named txtLogViewer to your form
 
 using Microsoft.Extensions.Logging;
 

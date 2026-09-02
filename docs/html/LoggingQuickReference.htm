@@ -41,10 +41,20 @@ builder.SetMinimumLevel(LogLevel.Information);
 // Only errors
 builder.SetMinimumLevel(LogLevel.Error);</code></pre></div></div><hr /></div><h2 id="file-logging-already-configured" class="quickLinkHeader">📁 File Logging (Already Configured)</h2><div id="IDHABSection"><p>No setup needed — <span class="code">Program.cs</span> already writes to <span class="code">logs/app.log</span> (resolved via
 <span class="code">AppContext.BaseDirectory</span>, so the path doesn't depend on the working
-directory the app was launched from):</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">services.AddLogging(builder =&gt;
+directory the app was launched from). There's no time-based rolling, so the
+active file is always <span class="code">app.log</span> — it rolls by size instead once it reaches
+5MB, renaming the full file to <span class="code">app_001.log</span>, <span class="code">app_002.log</span>, etc.:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">var fileLogger = new LoggerConfiguration()
+    .WriteTo.File(
+        logFilePath, // logs/app.log next to the executable
+        shared: true,
+        fileSizeLimitBytes: 5 * 1024 * 1024,
+        rollOnFileSizeLimit: true)
+    .CreateLogger();
+
+services.AddLogging(builder =&gt;
 {
     builder.AddDebug();
-    builder.AddFile(logFilePath); // logs/app.log next to the executable
+    builder.AddSerilog(fileLogger, dispose: true);
     builder.SetMinimumLevel(LogLevel.Debug);
 });</code></pre></div></div><hr /></div><h2 id="common-services" class="quickLinkHeader">🔍 Common Services</h2><div id="IDIABSection"><p><span class="code">MainForm</span> receives these via constructor injection rather than a locator —
 add the parameter and the container supplies it:</p><div class="codeSnippet"><div class="codeHeader"><span class="codeHeaderTitle">C#</span><button class="button is-small is-light copyCode" title="Copy"><span class="icon is-small"><i class="fa fa-copy"></i></span><span>Copy</span></button></div><div class="codePanel hljs"><pre xml:space="preserve"><code class="language-csharp">using cc65Wrapper.Abstractions;
