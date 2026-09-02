@@ -16,5 +16,7 @@
     <PackageVersion Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageVersion Include="EWSoftware.SHFB" Version="2026.3.29" />
+    <PackageVersion Include="EWSoftware.SHFB.NET" Version="10.0.0" />
   </ItemGroup>
 </Project>
