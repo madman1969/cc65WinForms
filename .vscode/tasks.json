@@ -38,6 +38,17 @@
             "problemMatcher": []
         },
         {
+            "label": "run",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/src/cc65WinForms/cc65WinForms.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "clean-docs",
             "type": "shell",
             "command": "Remove-Item -Recurse -Force -ErrorAction SilentlyContinue '${workspaceFolder}/docs'",
